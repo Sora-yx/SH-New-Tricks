@@ -1,0 +1,23 @@
+{
+  "ModId": "New_Tricks",
+  "ModName": "New Tricks",
+  "ModAuthor": "Sora",
+  "ModVersion": "1.0.0",
+  "ModDescription": "New tricks for Sonic Heroes",
+  "ModDll": "New_Tricks.dll",
+  "ModIcon": "Preview.png",
+  "ModR2RManagedDll32": "x86/New_Tricks.dll",
+  "ModR2RManagedDll64": "x64/New_Tricks.dll",
+  "ModNativeDll32": "",
+  "ModNativeDll64": "",
+  "IsLibrary": false,
+  "ReleaseMetadataFileName": "New_Tricks.ReleaseMetadata.json",
+  "PluginData": {},
+  "IsUniversalMod": false,
+  "ModDependencies": [ "reloaded.sharedlib.hooks" ],
+  "OptionalDependencies": [],
+  "SupportedAppId": [
+    "tsonic_win.exe"
+  ],
+  "ProjectUrl": ""
+}
