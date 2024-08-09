@@ -35,7 +35,7 @@ namespace New_Tricks.Moveset
             }
             else
             {
-                p->mode = (UInt16)Act.Release;
+                p->mode = (Int16)Act.Release;
                 p->spd.x = spindashChargeSpd[Player.Pno];
 
                 if (p->spd.x >= 10.0f)
@@ -57,7 +57,7 @@ namespace New_Tricks.Moveset
                 return true;
             }
 
-            if (spindashChargeTimer[Player.Pno] >= 300.0f)
+            if (spindashChargeTimer[Player.Pno] >= 100.0f)
             {
                 spindashChargeTimer[Player.Pno] = 0;
                 spindashChargeSpd[Player.Pno] = 0;
@@ -84,21 +84,21 @@ namespace New_Tricks.Moveset
             {
                 p->motion = 9;
                 p->field_EC = 5.0f;
-                p->statusRelated0x1B8 = (int)(p->statusRelated0x1B8 & 0xFFFFDFFF | 0x500);
+                p->flag &= 0xDFF;
                 spindashChargeSpd[Player.Pno] = 0;
                 return false;
             }
 
             if (SonicCheckJump(p) > 0)
             {
-                p->statusRelated0x1B8 &= 0xFFFFdf;
+                p->flag &= 0x2000; //remove path
                 spindashChargeSpd[Player.Pno] = 0;
                 return false;
             }
 
             if (PlayerCheckSlowSpin(p))
             {
-                p->statusRelated0x1B8 &= 0xFFFFFA;
+                p->flag &= unchecked((short)(0xFAFF));
                 spindashChargeSpd[Player.Pno] = 0;
                 return false;
             }
@@ -107,9 +107,10 @@ namespace New_Tricks.Moveset
             if ((pad.action.status & BTN_STATUS.isPress) != 0) //pressed
             {
                 Console.WriteLine("Cancelled Spin Dash...");
-                p->statusRelated0x1B8 &= 0xFFFFFA;
+                p->flag &= 0x500;
                 p->mode = 14;
                 PChangeRunningMotion(p);
+                p->flag &= 0x500;
                 spindashChargeSpd[Player.Pno] = 0;
                 return true;
             }

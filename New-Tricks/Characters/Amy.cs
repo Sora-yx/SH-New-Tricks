@@ -1,4 +1,4 @@
-﻿using Heroes.SDK.Classes.NativeClasses;
+﻿ using Heroes.SDK.Classes.NativeClasses;
 using Heroes.SDK.Definitions.Enums;
 using Heroes.SDK.Definitions.Enums.Custom;
 using Heroes.SDK.Definitions.Structures.RenderWare;
@@ -18,10 +18,8 @@ namespace New_Tricks.Characters
                 Console.WriteLine("Team 1 Lvl: " + p->pTObjTeam->level[1]);
                 Console.WriteLine("Team 2 Lvl: " + p->pTObjTeam->level[2]);     */
 
-
-                Console.WriteLine("Team No: " + p->pTObjTeam->teamNo);
-                Console.WriteLine("Team Kind: " + p->pTObjTeam->teamKind.ToString());
                 // Console.WriteLine("Team 2 Lvl: " + p->pTObjTeam->level[2]);
+
                 switch ((int)p->pTObjTeam->level[0])
                 {
                     case 1:
@@ -41,9 +39,12 @@ namespace New_Tricks.Characters
         {
             if (p->characterKind != Character.Amy)
                 return false;
-        
+
+            ref var pad = ref HeroesVariables.player_input.AsRef(Player.Pno);
+
             switch ((PlayerMode)p->mode)
             {
+       
                 case PlayerMode.Running:
 
                     /*if (pad.ButtonFlags.HasFlag(Heroes.SDK.Definitions.Structures.Input.ButtonFlags.CameraL))
@@ -55,8 +56,23 @@ namespace New_Tricks.Characters
                 case PlayerMode.HammerFloat:
                     if (ConfigV._modConfig.BetterProp)
                     {
-                        if (p->spd.x < 12.0f && p->spd.x > 1.0f)
+                        if (p->spd.x < 12.0f && HeroesFunc.PCheckPower(null, null, p) != 0)
                             p->spd.x += 0.1f;
+                    }
+                    break;
+                case PlayerMode.Fall:
+                    if (ConfigV._modConfig.BetterProp)
+                    {
+                        if (p->spd.y <= 0.0f && (pad.jump.status & BTN_STATUS.isOn) != 0)
+                        {
+                            p->mode = 77; // start hammer float check
+                            p->motion = 102;
+                            p->flag &= 0xFAF;
+                            p->spd.y = 0.0f;
+                            p->lightDashCountSinceLastRing_HHC = 0;
+                            p->grindTimer = 0;
+                            return false;
+                        }
                     }
                     break;
             }
@@ -81,7 +97,7 @@ namespace New_Tricks.Characters
                     break;
 
                 case PlayerMode.HammerFloat:
-                    if ( (p->flag & 3) != 0)
+                    if ((p->flag & 3) != 0)
                     {
                         Console.WriteLine("ayo");
                     }
@@ -97,15 +113,17 @@ namespace New_Tricks.Characters
                 //prop
                 byte[] byteArray = new byte[] { 0x3E, 0x7 };
                 Util.WriteData(Amy.hoverTimeAddr, byteArray); //increase Amy Hover timer from 120 frames to 999
+                Util.WriteNop(0x5CEFC1, 2); //remove anim check for prop
             }
 
             if (ConfigV._modConfig.AmyTornadoTweaks)
             {
+
                 Util.WriteData(0x5D13CF, Util.nopFunc); //remove clear speed
                 Util.WriteData(0x5D114F, Util.nopFunc); //remove clear speed for Hammer mov
-                byte[] byteArray =  new byte[] { 0x3C }; 
+                byte[] byteArray = new byte[] { 0x3C };
                 Util.WriteData(0x5D1101, byteArray); //reduce delay to start tornado move
-                byteArray[0] = 0x19; 
+                byteArray[0] = 0x19;
                 Util.WriteData(0x5D1160, byteArray); //reduce delay to finish tornado move
             }
         }

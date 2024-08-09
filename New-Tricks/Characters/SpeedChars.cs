@@ -10,8 +10,7 @@ using New_Tricks.Moveset;
 using static Reloaded.Hooks.Definitions.X86.FunctionAttribute;
 using Heroes.SDK.Definitions.Structures.Player;
 using static New_Tricks.HeroesFunc;
-using Heroes.SDK.Definitions.Structures.RenderWare;
-using System.Collections.Generic;
+
 
 
 namespace New_Tricks.Characters
@@ -48,47 +47,44 @@ namespace New_Tricks.Characters
 
         int ChkInputHook(TObjPlayer* p)
         {
-            if ((p->flag & 0x1000) == 0)
+            if ( (p->flag & 0x1000) == 0)
                 return 0;
 
-            int remFlag = p->flag & ~0x100000;
             int smode = p->smode - 2;
+            int remFlag = p->flag & 0x100000;
             bool isSpinDashAllowed = ConfigV.isSpinDashAllowed(p->characterKind);
 
-            Console.WriteLine("smode is " + smode);
+            Console.Write("\nsmode: " + smode);
             switch (smode)
             {
                 case 14:
-                    //5A5AB0
-                    if (isSpinDashAllowed && p->nextAnimation_HHC == 10)
+                    if (isSpinDashAllowed)
                     {
                         p->motion = 10;
                         p->mode = 1;
-                        p->flag = remFlag | 0x500;
-                        p->gap988[0] = 60;
+                        p->flag |= 0x500;
+                        *(short*)p->gap988 = 60;
 
 
-                        Sound.IsndSE* ptr = (Sound.IsndSE*)HeroesVariables.SndSE.Get();
-                        if (ptr is not null)
-                            IsndSEPlay(8293, &p->position, ptr, 0, 0);
-                        SpinDash.SetDefaultChargeSpd(p);
+                        if (HeroesVariables.SndSE)
+                            IsndSEPlay(8293, &p->position, (Sound.IsndSE*)HeroesVariables.SndSE.Get(), 0, 0);
+
+                        SpinDash.SetDefaultChargeSpd((TObjPlayer*)p);
                         return 1;
                     }
-
                     break;
                 case 36:
                     if (isSpinDashAllowed)
                         return 0;
                     break;
                 case 45:
-                    //hammer tornado
                     if (ConfigV._modConfig.AmyTornadoTweaks)
                     {
                         if (p->characterKind == Character.Amy)
                         {
-                            p->mode = (ushort)PlayerMode.Amy_Tornado;
+                            p->mode = (short)PlayerMode.Amy_Tornado;
                             p->motion = 100;
-                            p->statusRelated0x1B8 &= 0xFFFFFAF;
+                            p->flag &= 0xFAF;
                             return 1;
                         }
                     }
@@ -105,7 +101,6 @@ namespace New_Tricks.Characters
                         return 0;
                     }
                     break;
-
             }
 
             return _TObjSonicChkInput.OriginalFunction(p);
@@ -145,10 +140,10 @@ namespace New_Tricks.Characters
                 case 1:
                     if (isSpinDash)
                     {
-                        HeroesFunc.PGetRotation(p);
-                        HeroesFunc.PGetBreak(p);
-                        HeroesFunc.RunCommonPhysics(p);
-                        HeroesFunc.SetEffectObi(Player.Pno);
+                        PGetRotation(p);
+                        PGetBreak(p);
+                        RunCommonPhysics(p);
+                        SetEffectObi(Player.Pno);
                         return true;
                     }
                     break;
@@ -174,6 +169,7 @@ namespace New_Tricks.Characters
 
         public void TObjSonicExecHook(TObjPlayer* p)
         {
+            Console.WriteLine("Cur Mode " + p->mode);
             if (RunCommonSpdCharsExec(p))
                 return;
 
@@ -183,6 +179,8 @@ namespace New_Tricks.Characters
 
         public void TObjSonicChkModeHook(TObjPlayer* p)
         {
+            //Console.WriteLine("Current Mode " + p->mode);
+           // Console.WriteLine("Cur ANim " + p->motion);
             if (RunCommonSpdCharsChkMode(p) || Amy.RunAmyChkMode(p))
                 return;
 
@@ -201,8 +199,8 @@ namespace New_Tricks.Characters
 
         public SpeedChars()
         {
-            _TObjSonicChkMode = Fun_TObjSonicChkMode.Hook(TObjSonicChkModeHook).Activate();
             _TObjSonicExecMode = Fun_TObjSonicExecMode.Hook(TObjSonicExecHook).Activate();
+            _TObjSonicChkMode = Fun_TObjSonicChkMode.Hook(TObjSonicChkModeHook).Activate();
             _TObjSonicChkInput = Fun_TObjSonicChkInput.Hook(ChkInputHook).Activate();
 
             Amy.Init();

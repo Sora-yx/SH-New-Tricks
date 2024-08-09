@@ -97,6 +97,12 @@ namespace New_Tricks
         public static IFunction<SonkChkInputType> Fun_SonkChkInput { get; } = SDK.ReloadedHooks.CreateFunction<SonkChkInputType>(0x5D35F0);
         public static SonkChkInputType SonicChkInput { get; } = Fun_SonkChkInput.GetWrapper();
 
+
+        [Function(new[] { Register.ebx, Register.edi, Register.esi }, Register.eax, StackCleanup.Caller)]
+        public delegate int PCheckPowerT(float* stroke, int* angle, TObjPlayer* p);
+        public static IFunction<PCheckPowerT> Fun_PCheckPower { get; } = SDK.ReloadedHooks.CreateFunction<PCheckPowerT>(0x591340);
+        public static PCheckPowerT PCheckPower { get; } = Fun_PCheckPower.GetWrapper();
+
         #endregion
 
         #region Misc
@@ -144,15 +150,15 @@ namespace New_Tricks
 
             if (p->spd.x > 0.0f)
             {
-                p->mode = (ushort)PlayerMode.Running;
+                p->mode = (short)PlayerMode.Running;
             }
             else
             {
                 p->mode = 0;
                 p->idleTime = 0;
             }
-            p->statusRelated0x1B8 &= ~1280;
-            p->motion = (short)PlayerAnim.PlayerAnimation_Land_;
+            p->flag &= ~1280;
+            p->motion = (short)PlayerAnim.Animation_Land_;
 
             return true;
         }

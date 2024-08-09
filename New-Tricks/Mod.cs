@@ -2,9 +2,7 @@
 using New_Tricks.Template;
 using Reloaded.Hooks.ReloadedII.Interfaces;
 using Reloaded.Mod.Interfaces;
-using Reloaded.Memory;
 using Heroes.SDK;
-using Reloaded.Memory.Interfaces;
 using New_Tricks.Characters;
 
 
@@ -48,6 +46,8 @@ namespace New_Tricks
 
         private SpeedChars _speedChars;
         private FlyChars _flyChars;
+        private NativeMod _nativemods;
+
 
 
         public Mod(ModContext context)
@@ -58,7 +58,7 @@ namespace New_Tricks
             _owner = context.Owner;
             _configuration = context.Configuration;
             _modConfig = context.ModConfig;
-
+       
             ConfigV._modConfig = _configuration;
 
             // For more information about this template, please see
@@ -71,10 +71,11 @@ namespace New_Tricks
             _modLoader.GetController<IReloadedHooks>().TryGetTarget(out var reloadedHooks);
             SDK.Init(reloadedHooks, null);
 
+            //string directoryFolder = _modLoader.GetDirectoryForModId(_modConfig.ModId);
+            //_nativemods = new NativeMod(directoryFolder);
+
             _speedChars = new SpeedChars();
             _flyChars = new FlyChars();
-
-       
 
         }
 
