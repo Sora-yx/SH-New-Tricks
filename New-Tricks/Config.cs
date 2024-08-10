@@ -95,18 +95,28 @@ namespace New_Tricks.Configuration
 
         [Category("Amy")]
         [DisplayName("Tornado Tweaks")]
-        [Description("Makes Amy's Tornado faster, remove momentum restriction and camera zoom.")]
+        [Description("Make Amy's Tornado faster, remove momentum restriction and camera zoom.")]
         [DefaultValue(true)]
         public bool AmyTornadoTweaks { get; set; } = true;
 
         [Category("Espio")]
         [DisplayName("SA1 Spin Dash")]
-        [Description("Replace Rocket Accel with Adventure Spin Dash.")]
+        [Description("Replace Rocket Accel with Adventure Spin Dash for Espio.")]
         [DefaultValue(true)]
         public bool EspioSpinDash { get; set; } = true;
 
 
+        [Category("Fly Characters")]
+        [DisplayName("Flight Tweaks")]
+        [Description("Double Flight duration and speed, also keep momentum when flight end.")]
+        [DefaultValue(true)]
+        public bool FlightTweaks { get; set; } = true;
 
+        [Category("Fly Characters")]
+        [DisplayName("Increase Vertical Speed Cap")]
+        [Description("Increase the flying vertical speed cap, allowing you to go higher.")]
+        [DefaultValue(true)]
+        public bool IncreaseSpeedCap { get; set; } = true;
 
 
         /*[DisplayName("String")]

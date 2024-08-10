@@ -84,7 +84,7 @@ namespace New_Tricks.Characters
                         {
                             p->mode = (short)PlayerMode.Amy_Tornado;
                             p->motion = 100;
-                            p->flag &= 0xFAF;
+                            p->flag &= unchecked((short)(0xFAFF));
                             return 1;
                         }
                     }
@@ -137,7 +137,7 @@ namespace New_Tricks.Characters
 
             switch (p->mode)
             {
-                case 1:
+                case (short)SpinDash.Act.Charge:
                     if (isSpinDash)
                     {
                         PGetRotation(p);
@@ -148,7 +148,7 @@ namespace New_Tricks.Characters
                     }
                     break;
 
-                case 54:
+                case (short)SpinDash.Act.Release:
                     if (isSpinDash)
                     {
                         PGetRotation(p);
