@@ -21,14 +21,29 @@ namespace New_Tricks.Moveset
         public static float[] spindashChargeSpd = { 0.0f, 0.0f, 0.0f, 0.0f };
         public static float[] spindashChargeTimer = { 0.0f, 0.0f, 0.0f, 0.0f };
 
+        private unsafe static float GetSpinDashSpdMultiplier(TObjTeam* t)
+        {
+            switch (t->level[0])
+            {
+                case 1:
+                    return 1.6f;
+                case 2:
+                    return 1.7f;
+                case 3:
+                    return 2.0f;
+            }
+
+            return 1.5f;
+        }
+
         static public bool Charge(TObjPlayer* p)
         {
             ref var pad = ref HeroesVariables.player_input.AsRef(Player.Pno);
             if ((pad.action.status & BTN_STATUS.isOn) != 0)
             {
-                Console.WriteLine("Charge Spin Dash...");
+
                 spindashChargeTimer[Player.Pno]++;
-                if (spindashChargeSpd[Player.Pno] < 10.0f * 1.6) //sa1 originally stop at 10, but it feels slow in Heroes.
+                if (spindashChargeSpd[Player.Pno] < 10.0f * GetSpinDashSpdMultiplier(p->pTObjTeam)) //sa1 originally stop at 10, but it feels slow in Heroes.
                 {
                     spindashChargeSpd[Player.Pno] += 0.40f;
                 }
@@ -37,18 +52,6 @@ namespace New_Tricks.Moveset
             {
                 p->mode = (Int16)Act.Release;
                 p->spd.x = spindashChargeSpd[Player.Pno];
-
-                if (p->spd.x >= 10.0f)
-                {
-                    var rng = new Random();
-                    int res = rng.Next(0, 2);
-                    if (res >= 1)
-                    {
-                        //SetEffDash(Player.Pno);
-                        //SetRocketHit((byte)p->characterKind);
-                        p->spd.x += 2.0f;
-                    }
-                }
 
                 Sound.IsndSE* ptr = (Sound.IsndSE*)HeroesVariables.SndSE.Get();
                 if (ptr is not null)
@@ -69,9 +72,12 @@ namespace New_Tricks.Moveset
                 }
                 else
                 {
+                    p->flag &= 0xDFF;
+                    p->smode = 0;
+
                     p->mode = 0;
                     p->motion = 0;
-                    return false;
+                    return true;
                 }
             }
 
@@ -91,7 +97,7 @@ namespace New_Tricks.Moveset
 
             if (SonicCheckJump(p) > 0)
             {
-                p->flag &= 0x2000; //remove path
+                p->flag &= 0x400; //needed to make jumpball aura show up for some weird ass reason
                 spindashChargeSpd[Player.Pno] = 0;
                 return false;
             }
@@ -106,7 +112,6 @@ namespace New_Tricks.Moveset
             ref var pad = ref HeroesVariables.player_input.AsRef(Player.Pno);
             if ((pad.action.status & BTN_STATUS.isPress) != 0) //pressed
             {
-                Console.WriteLine("Cancelled Spin Dash...");
                 p->flag &= 0x500;
                 p->mode = 14;
                 PChangeRunningMotion(p);

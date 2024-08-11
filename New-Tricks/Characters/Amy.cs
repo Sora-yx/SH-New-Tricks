@@ -1,7 +1,6 @@
 ﻿ using Heroes.SDK.Classes.NativeClasses;
 using Heroes.SDK.Definitions.Enums;
 using Heroes.SDK.Definitions.Enums.Custom;
-using Heroes.SDK.Definitions.Structures.RenderWare;
 using New_Tricks.Configuration;
 
 namespace New_Tricks.Characters
@@ -9,16 +8,12 @@ namespace New_Tricks.Characters
     public static class Amy
     {
         static int TornadoTimer = 0;
+        public static nuint hoverTimeAddr = 0x5D139E;
 
         public unsafe static float getHammerJumpSpd(TObjPlayer* p)
         {
             if (p->pTObjTeam != null)
             {
-                /*Console.WriteLine("Team 0 Lvl: " + p->pTObjTeam->level[0]);
-                Console.WriteLine("Team 1 Lvl: " + p->pTObjTeam->level[1]);
-                Console.WriteLine("Team 2 Lvl: " + p->pTObjTeam->level[2]);     */
-
-                // Console.WriteLine("Team 2 Lvl: " + p->pTObjTeam->level[2]);
 
                 switch ((int)p->pTObjTeam->level[0])
                 {
@@ -34,7 +29,53 @@ namespace New_Tricks.Characters
             return 1.5f;
         }
 
-        public static nuint hoverTimeAddr = 0x5D139E;
+        private unsafe static float GetPropSpd(TObjTeam* t)
+        {
+            switch (t->level[0]) //0 is spd formation
+            {
+                case 1:
+                    return 0.1f;
+                case 2:
+                    return 0.2f;
+                case 3:
+                    return 0.3f;
+            }
+
+            return 0.05f;
+        }
+
+        private unsafe static byte[] GetPropTimer(TObjTeam* t)
+        {
+
+      
+            byte[] bytes = { 0xF0, 0x0, 0x0, 0x0 }; //240 frames
+
+            switch (t->level[0]) //0 is spd formation
+            { 
+                case 1:
+                    bytes[0] = 0xE0; //swap to 480 frames
+                    bytes[1] = 0x1;
+                    bytes[2] = 0x0;
+                    bytes[3] = 0x0;
+                break;
+                case 2:
+                    bytes[0] = 0x58; //swap to 600 frames
+                    bytes[1] = 0x2;
+                    bytes[2] = 0x0;
+                    bytes[3] = 0x0;
+                    break;
+                case 3:
+                    bytes[0] = 0xD0; //swap to 720 frames
+                    bytes[1] = 0x02;
+                    bytes[2] = 0x0;
+                    bytes[3] = 0x0;
+                    break;
+            }
+
+            return bytes;
+        }
+
+
         public unsafe static bool RunAmyChkMode(TObjPlayer* p)
         {
             if (p->characterKind != Character.Amy)
@@ -46,7 +87,7 @@ namespace New_Tricks.Characters
             {
        
                 case PlayerMode.Running:
-
+         
                     /*if (pad.ButtonFlags.HasFlag(Heroes.SDK.Definitions.Structures.Input.ButtonFlags.CameraL))
                     {
                         if (p->spd.x >= 3.0f)
@@ -56,14 +97,18 @@ namespace New_Tricks.Characters
                 case PlayerMode.HammerFloat:
                     if (ConfigV._modConfig.BetterProp)
                     {
+                        Util.WriteData(Amy.hoverTimeAddr, GetPropTimer(p->pTObjTeam));
+
                         if (p->spd.x < 12.0f && HeroesFunc.PCheckPower(null, null, p) != 0)
-                            p->spd.x += 0.1f;
+                            p->spd.x += GetPropSpd(p->pTObjTeam);
+
+                   
                     }
                     break;
                 case PlayerMode.Fall:
                     if (ConfigV._modConfig.BetterProp)
                     {
-                        if (p->spd.y <= 0.0f && (pad.jump.status & BTN_STATUS.isOn) != 0)
+                        if (p->lightDashCountSinceLastRing_HHC == 0 && p->spd.y <= 0.0f && (pad.jump.status & BTN_STATUS.isOn) != 0)
                         {
                             p->mode = 77; // start hammer float check
                             p->motion = 102;
@@ -111,9 +156,12 @@ namespace New_Tricks.Characters
             if (ConfigV._modConfig.BetterProp)
             {
                 //prop
-                byte[] byteArray = new byte[] { 0x3E, 0x7 };
-                Util.WriteData(Amy.hoverTimeAddr, byteArray); //increase Amy Hover timer from 120 frames to 999
+                /*byte[] byteArray = new byte[] { 0x3E, 0x7, 0x0, 0x0 };
+                Util.WriteData(Amy.hoverTimeAddr, byteArray); //increase Amy Hover timer from 120 frames to 999*/
+
+
                 Util.WriteNop(0x5CEFC1, 2); //remove anim check for prop
+                Util.WriteNop(0x5CEFE8, 7); //remove reset timer for prop, we will manually set it for convenience.
             }
 
             if (ConfigV._modConfig.AmyTornadoTweaks)

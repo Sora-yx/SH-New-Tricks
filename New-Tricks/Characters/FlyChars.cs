@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using New_Tricks.Configuration;
 using static Reloaded.Hooks.Definitions.X86.FunctionAttribute;
 using Heroes.SDK.Utilities.Misc;
+using Heroes.SDK.Definitions.Enums.Custom;
 
 
 namespace New_Tricks.Characters
@@ -40,14 +41,44 @@ namespace New_Tricks.Characters
         private IHook<MilesExecMoveT> _TMilesExecMove;
         public static IFunction<MilesExecMoveT> Fun_MilesExecMove { get; } = SDK.ReloadedHooks.CreateFunction<MilesExecMoveT>(0x5C3B30);
        
-        static private nuint flyTimeOffAdd = 0x789FE4;
         static readonly byte[] flyByteNew = { 0x0, 0xC0, 0x79, 0x44 };
         static readonly byte[] flyByteOrigin = { 0x0, 0x0, 0x34, 0x43 };
 
         static private nuint flyVSpdCapAdd = 0x789FA4;
         static private byte[] flyVSpdCapNew = { 0x0, 0x0, 0x87, 0x43 };
         static private byte[] flyVSpdCapOrigin = { 0x0, 0x0, 0xB4, 0x42 };
+
         #endregion
+
+        private float GetFlyTimerIncr(TObjTeam* t)
+        {
+            switch (t->level[1]) //1 is flying formation
+            {
+                case 1:
+                    return 0.8f;
+                case 2:
+                    return 0.6f;
+                case 3:
+                    return 0.4f;
+            }
+
+            return 1.0f;
+        }
+
+        private float GetFlySpd(TObjTeam* t)
+        {
+            switch (t->level[1]) //1 is flying formation
+            {
+                case 1:
+                    return 0.08f;
+                case 2:
+                    return 0.1f;
+                case 3:
+                    return 0.15f;
+            }
+
+            return 0.04f;
+        }
 
         private void TObjMilesChkModeHook(TObjPlayer* p)
         {
@@ -61,12 +92,29 @@ namespace New_Tricks.Characters
 
         private void TObjMilesExecMoveHook(TObjPlayer* p)
         {
+            Console.WriteLine("Tails DOTP " + p->dotp);
+          //  Console.WriteLine("Tails Cur SMode " + p->smode);
             bool vSpeed = ConfigV._modConfig.IncreaseSpeedCap;
+            p->nocontimer = 0;
+
             if (vSpeed && !Player.isCPU(p))
                 Util.WriteData(flyVSpdCapAdd, flyVSpdCapNew);
 
-             /*if (ConfigV._modConfig.FlightTweaks && p->mode == 52 && p->spd.x < 12.0f && HeroesFunc.PCheckPower(null, null, p) != 0)
-                p->spd.x += 0.1f;*/
+            if (ConfigV._modConfig.FlightTweaks && p->mode == 52 && HeroesFunc.PCheckPower(null, null, p) != 0)
+            {
+                p->spd.x += GetFlySpd(p->pTObjTeam);
+                if (p->lightDashLastRingPos_HHC.z < 180.0f)
+                    p->lightDashLastRingPos_HHC.z += GetFlyTimerIncr(p->pTObjTeam);
+            }
+            else if (p->mode == 53)
+            {
+                if (HeroesFunc.PCheckPower(null, null, p) > 0 && p->spd.x < 1.0f)
+                {
+                    p->spd.x = 4.0f;
+                }
+                   
+            }
+
 
             _TMilesExecMove.OriginalFunction(p);
 
@@ -81,12 +129,16 @@ namespace New_Tricks.Characters
 
             if (ConfigV._modConfig.FlightTweaks)
             {
-                Util.WriteNop(0x5C5743, 12);         
-               // Util.WriteNop(0x5C56EB, 0x5);
+                Util.WriteNop(0x5C5743, 21);
+               // Util.WriteNop(0x5C5741, 32);   //remove clear speed once fly is over
+                Util.WriteNop(0x5C571D, 0x6); //remove flight timer we will manually update it for convenience due to how it works originally.
                 _TMilesExecMove = Fun_MilesExecMove.Hook(TObjMilesExecMoveHook).Activate();
-
+                byte[] FUCK = { 0x4 };
+                //Util.WriteData(0x5C575F, FUCK);
+                //Util.WriteNop(0x59AA54, 0x2);
 
             }
+
 
             //byte[] t = { 0x74 };
             //Util.WriteData(0x5C5734, t);

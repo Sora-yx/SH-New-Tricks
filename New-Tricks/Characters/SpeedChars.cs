@@ -40,10 +40,16 @@ namespace New_Tricks.Characters
         public delegate void PSetMotionType(mtnmanwk* a1, int a2);
         private IHook<PSetMotionType> _TPSetMotion;
         public static IFunction<PSetMotionType> Fun_PSetMotion { get; } = SDK.ReloadedHooks.CreateFunction<PSetMotionType>(0x5A22D0);
+
+
+        [Function(CallingConventions.MicrosoftThiscall)]
+        public delegate void TObjPModeChgReadyToRocketAccelT(TObjPlayer* p);
+        private IHook<TObjPModeChgReadyToRocketAccelT> _TObjPModeChgReadyToRocketAccelT;
+        public static IFunction<TObjPModeChgReadyToRocketAccelT> Fun_TObjPModeChgReadyToRocketAccel { get; } = SDK.ReloadedHooks.CreateFunction<TObjPModeChgReadyToRocketAccelT>(0x5A6E10);
+
+
         #endregion
 
-
-        private IHook<IsndSEPlayT> _TIsndSEPlay;
 
         int ChkInputHook(TObjPlayer* p)
         {
@@ -54,7 +60,7 @@ namespace New_Tricks.Characters
             int remFlag = p->flag & 0x100000;
             bool isSpinDashAllowed = ConfigV.isSpinDashAllowed(p->characterKind);
 
-            Console.Write("\nsmode: " + smode);
+          //  Console.Write("\nsmode: " + smode);
             switch (smode)
             {
                 case 14:
@@ -72,10 +78,6 @@ namespace New_Tricks.Characters
                         SpinDash.SetDefaultChargeSpd((TObjPlayer*)p);
                         return 1;
                     }
-                    break;
-                case 36:
-                    if (isSpinDashAllowed)
-                        return 0;
                     break;
                 case 45:
                     if (ConfigV._modConfig.AmyTornadoTweaks)
@@ -108,7 +110,7 @@ namespace New_Tricks.Characters
 
 
 
-        public bool RunCommonSpdCharsChkMode(TObjPlayer* p)
+        private bool RunCommonSpdCharsChkMode(TObjPlayer* p)
         {
             bool isSpinDash = ConfigV.isSpinDashAllowed(p->characterKind);
 
@@ -131,7 +133,7 @@ namespace New_Tricks.Characters
             return false;
         }
 
-        public bool RunCommonSpdCharsExec(TObjPlayer* p)
+        private bool RunCommonSpdCharsExec(TObjPlayer* p)
         {
             bool isSpinDash = ConfigV.isSpinDashAllowed(p->characterKind);
 
@@ -167,9 +169,9 @@ namespace New_Tricks.Characters
             return false;
         }
 
-        public void TObjSonicExecHook(TObjPlayer* p)
+        private void TObjSonicExecHook(TObjPlayer* p)
         {
-            Console.WriteLine("Cur Mode " + p->mode);
+            //Console.WriteLine("Cur Mode " + p->mode);
             if (RunCommonSpdCharsExec(p))
                 return;
 
@@ -177,7 +179,7 @@ namespace New_Tricks.Characters
             _TObjSonicExecMode.OriginalFunction(p);
         }
 
-        public void TObjSonicChkModeHook(TObjPlayer* p)
+        private void TObjSonicChkModeHook(TObjPlayer* p)
         {
             //Console.WriteLine("Current Mode " + p->mode);
            // Console.WriteLine("Cur ANim " + p->motion);
@@ -187,7 +189,7 @@ namespace New_Tricks.Characters
             _TObjSonicChkMode.OriginalFunction(p);
         }
 
-        public void PSetMotionHook(mtnmanwk* a1, int a2)
+        private void PSetMotionHook(mtnmanwk* a1, int a2)
         {
             if (a1->reqaction == 10 && a1->mtnmode == 10) //hacky way to force jumpball anim to not be related on speed so it can work with Spin Dash
             {
@@ -195,6 +197,21 @@ namespace New_Tricks.Characters
             }
 
             _TPSetMotion.OriginalFunction(a1, a2);
+        }
+
+        //this doesn't use TObjPlayer; it's probably TObjOld, but I'm too lazy to figure the struct properly.
+        //TObjTeam pointer seem to be at the exact same data, so we can use it instead.
+        private void TObjPModeChgReadyToRocketAccelHook(TObjPlayer* p)
+        {
+            TObjTeam* team = p->pTObjTeam;
+
+            Character player = team->playerPtr0[team->leaderPlayerNo].characterKind;
+            if (ConfigV.isSpinDashAllowed(player))
+            {
+                return;
+            }
+
+            _TObjPModeChgReadyToRocketAccelT.OriginalFunction(p);
         }
 
         public SpeedChars()
@@ -206,9 +223,10 @@ namespace New_Tricks.Characters
             Amy.Init();
 
             if (ConfigV.isSpinDashEnabledForAtLeastAPlayer())
+            {
                 _TPSetMotion = Fun_PSetMotion.Hook(PSetMotionHook).Activate();
-
-
+                _TObjPModeChgReadyToRocketAccelT = Fun_TObjPModeChgReadyToRocketAccel.Hook(TObjPModeChgReadyToRocketAccelHook).Activate();    
+            }
         }
     }
 }

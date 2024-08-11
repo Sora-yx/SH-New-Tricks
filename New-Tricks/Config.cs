@@ -71,19 +71,19 @@ namespace New_Tricks.Configuration
 
         [Category("Sonic")]
         [DisplayName("SA1 Spin Dash")]
-        [Description("Replace Rocket Accel with Adventure Spin Dash for Sonic.")]
+        [Description("Replace Rocket Accel with Adventure Spin Dash for Sonic, the Spin Dash goes faster as the Speed Level raise.")]
         [DefaultValue(true)]
         public bool SonkSpinDash { get; set; } = true;
 
         [Category("Shadow")]
         [DisplayName("SA1 Spin Dash")]
-        [Description("Replace Rocket Accel with Adventure Spin Dash for Shadow.")]
+        [Description("Replace Rocket Accel with Adventure Spin Dash for Shadow, the Spin Dash goes faster as the Speed Level raise.")]
         [DefaultValue(true)]
         public bool ShadowSpinDash { get; set; } = true;
 
         [Category("Amy")]
         [DisplayName("SA1 Spin Dash")]
-        [Description("Replace Rocket Accel with Adventure Spin Dash for Amy.")]
+        [Description("Replace Rocket Accel with SA1 Spin Dash for Amy, the Spin Dash goes faster as the Speed Level raise.")]
         [DefaultValue(true)]
         public bool AmySpinDash { get; set; } = true;
 
@@ -101,14 +101,14 @@ namespace New_Tricks.Configuration
 
         [Category("Espio")]
         [DisplayName("SA1 Spin Dash")]
-        [Description("Replace Rocket Accel with Adventure Spin Dash for Espio.")]
+        [Description("Replace Rocket Accel with SA1 Spin Dash for Espio, the Spin Dash goes faster as the Speed Level raise.")]
         [DefaultValue(true)]
         public bool EspioSpinDash { get; set; } = true;
 
 
         [Category("Fly Characters")]
         [DisplayName("Flight Tweaks")]
-        [Description("Double Flight duration and speed, also keep momentum when flight end.")]
+        [Description("Increase Flight duration and speed, the values ​​rise as the flight level increase. This also keeps momentum when flight end.")]
         [DefaultValue(true)]
         public bool FlightTweaks { get; set; } = true;
 
