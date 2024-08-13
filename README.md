@@ -5,8 +5,18 @@
 
 ## About
 
-This is a mod that tweaks the moveset of the characters and replace some of their actions, such as Rocket Accel with SA1 Spin Dash.
-It also rework some moves like Amy propeller to be a lot faster and longer.
+This is a mod that tweaks the moveset of the characters and replace or add new actions:
+
+- SA1 Spin Dash (toggleable for each speed character) replace Rocket Accel.
+- Amy Propeller Tweaks - Increase duration and speed depending on your current speed level, you can also trigger it while falling to do some fancy speed combo.
+- Flight Tweaks - Make the fly duration and speed faster as your fly level raise
+- Triangle Dive Tweaks - Duration increase as the power level raise, you can also trigger it while falling
+
+
+Some small QOL:
+- Amy Tornado - Make Amy able to move when creating a Tornado mid air
+- Wide Power Attack - Make Power characters able to move when firing Wide Power attack.
+
 
 Features are all optional, so you can toggle whatever you like.
 
