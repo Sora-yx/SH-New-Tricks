@@ -2,12 +2,8 @@
 using Reloaded.Hooks.Definitions.X86;
 using Heroes.SDK.Classes.NativeClasses;
 using Heroes.SDK;
-using static Reloaded.Hooks.Definitions.X86.FunctionAttribute;
 using Heroes.SDK.Definitions.Enums.Custom;
 using New_Tricks.Configuration;
-using Heroes.SDK.Definitions.Enums;
-using static New_Tricks.HeroesFunc;
-using Heroes.SDK.Utilities.Misc;
 
 namespace New_Tricks.Characters
 {

@@ -1,4 +1,4 @@
-﻿ using Heroes.SDK.Classes.NativeClasses;
+﻿using Heroes.SDK.Classes.NativeClasses;
 using Heroes.SDK.Definitions.Enums;
 using Heroes.SDK.Definitions.Enums.Custom;
 using New_Tricks.Configuration;
@@ -44,29 +44,43 @@ namespace New_Tricks.Characters
             return 0.05f;
         }
 
+        private unsafe static float GetPropMaxSpd(TObjTeam* t)
+        {
+            switch (t->level[0]) //0 is spd formation
+            {
+                case 1:
+                    return 5.0f;
+                case 2:
+                    return 6.0f;
+                case 3:
+                    return 7.0f;
+            }
+
+            return 4.0f;
+        }
+
         private unsafe static byte[] GetPropTimer(TObjTeam* t)
         {
 
-      
-            byte[] bytes = { 0xF0, 0x0, 0x0, 0x0 }; //240 frames
+            byte[] bytes = { 0xF0, 0x0, 0x0, 0x0 }; //240 frames (level 0)
 
             switch (t->level[0]) //0 is spd formation
-            { 
+            {
                 case 1:
-                    bytes[0] = 0xE0; //swap to 480 frames
+                    bytes[0] = 0x2C; //swap to 300 frames
                     bytes[1] = 0x1;
                     bytes[2] = 0x0;
                     bytes[3] = 0x0;
-                break;
+                    break;
                 case 2:
-                    bytes[0] = 0x58; //swap to 600 frames
-                    bytes[1] = 0x2;
+                    bytes[0] = 0x68; //swap to 360 frames
+                    bytes[1] = 0x1;
                     bytes[2] = 0x0;
                     bytes[3] = 0x0;
                     break;
                 case 3:
-                    bytes[0] = 0xD0; //swap to 720 frames
-                    bytes[1] = 0x02;
+                    bytes[0] = 0xA4; //swap to 420 frames
+                    bytes[1] = 0x01;
                     bytes[2] = 0x0;
                     bytes[3] = 0x0;
                     break;
@@ -82,12 +96,13 @@ namespace New_Tricks.Characters
                 return false;
 
             ref var pad = ref HeroesVariables.player_input.AsRef(Player.Pno);
+            var t = p->pTObjTeam;
 
             switch ((PlayerMode)p->mode)
             {
-       
+
                 case PlayerMode.Running:
-         
+
                     /*if (pad.ButtonFlags.HasFlag(Heroes.SDK.Definitions.Structures.Input.ButtonFlags.CameraL))
                     {
                         if (p->spd.x >= 3.0f)
@@ -97,19 +112,20 @@ namespace New_Tricks.Characters
                 case PlayerMode.HammerFloat:
                     if (ConfigV._modConfig.BetterProp)
                     {
-                        Util.WriteData(Amy.hoverTimeAddr, GetPropTimer(p->pTObjTeam));
+                        Util.WriteData(Amy.hoverTimeAddr, GetPropTimer(t));
 
-                        if (p->spd.x < 12.0f && HeroesFunc.PCheckPower(null, null, p) != 0)
-                            p->spd.x += GetPropSpd(p->pTObjTeam);
+                        if (p->spd.x < GetPropMaxSpd(t) && HeroesFunc.PCheckPower(null, null, p) != 0)
+                            p->spd.x += GetPropSpd(t);
 
-                   
+
                     }
                     break;
                 case PlayerMode.Fall:
                     if (ConfigV._modConfig.BetterProp)
                     {
-                        if (p->lightDashCountSinceLastRing_HHC == 0 && p->spd.y <= 0.0f && (pad.jump.status & BTN_STATUS.isOn) != 0)
+                        if (p->motion != (ushort)PlayerAnim.Animation_Trick && p->spd.y <= 0.0f && (pad.jump.status & BTN_STATUS.isOn) != 0)
                         {
+
                             p->mode = 77; // start hammer float check
                             p->motion = 102;
                             p->flag &= 0xFAF;
@@ -142,7 +158,7 @@ namespace New_Tricks.Characters
                     break;
 
                 case PlayerMode.HammerFloat:
-    
+
                     break;
             }
 

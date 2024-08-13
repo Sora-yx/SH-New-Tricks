@@ -2,12 +2,9 @@
 using Heroes.SDK.Classes.NativeClasses;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.X86;
-using Heroes.SDK.API;
 using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Runtime.InteropServices;
 using New_Tricks.Configuration;
 using static Reloaded.Hooks.Definitions.X86.FunctionAttribute;
-using Heroes.SDK.Utilities.Misc;
 using Heroes.SDK.Definitions.Enums.Custom;
 
 
@@ -65,20 +62,21 @@ namespace New_Tricks.Characters
             return 1.0f;
         }
 
-        private float GetFlySpd(TObjTeam* t)
+        private float GetFlyMaxSpd(TObjTeam* t)
         {
             switch (t->level[1]) //1 is flying formation
             {
                 case 1:
-                    return 0.08f;
+                    return 3.0f;
                 case 2:
-                    return 0.1f;
+                    return 4.0f;
                 case 3:
-                    return 0.15f;
+                    return 5.0f;
             }
 
-            return 0.04f;
+            return 2.0f;
         }
+
 
         private void TObjMilesChkModeHook(TObjPlayer* p)
         {
@@ -108,6 +106,11 @@ namespace New_Tricks.Characters
                         {
                             if (p->lightDashLastRingPos_HHC.z < 180.0f)
                                 p->lightDashLastRingPos_HHC.z += GetFlyTimerIncr(p->pTObjTeam);
+
+                            if (p->spd.x < GetFlyMaxSpd(p->pTObjTeam))
+                            {
+                                p->spd.x += 0.04f;
+                            }
                         }
                     }
                     break;
@@ -116,7 +119,7 @@ namespace New_Tricks.Characters
                     {
                         if (HeroesFunc.PCheckPower(null, null, p) > 0 && p->spd.x < 1.0f)
                         {
-                            p->spd.x = 4.0f; //goofy hacky way to interrupt kill momentum (for now).
+                            p->spd.x += 1.0f; //goofy hacky way to interrupt kill momentum (for now).
                         }
                     }
                     break;
@@ -139,21 +142,8 @@ namespace New_Tricks.Characters
                // Util.WriteNop(0x5C5741, 32);   //remove clear speed once fly is over
                 Util.WriteNop(0x5C571D, 0x6); //remove flight timer we will manually update it for convenience due to how it works originally.
                 _TMilesExecMove = Fun_MilesExecMove.Hook(TObjMilesExecMoveHook).Activate();
-                byte[] FUCK = { 0x4 };
-                //Util.WriteData(0x5C575F, FUCK);
-                //Util.WriteNop(0x59AA54, 0x2);
-
             }
 
-
-            //byte[] t = { 0x74 };
-            //Util.WriteData(0x5C5734, t);
-           // Util.WriteNop(0x5C5734, 2);
-            //Util.WriteData((nuint)0x5C5725, byteArray);
-
-            // Step 2: Convert the float to a byte array
-            //byte[] byteArray = BitConverter.GetBytes(myFloat);
-            //Util.WriteData(0x5C5725, (float*)fuck);
         }
     }
 

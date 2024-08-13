@@ -88,7 +88,7 @@ namespace New_Tricks.Configuration
         public bool AmySpinDash { get; set; } = true;
 
         [Category("Amy")]
-        [DisplayName("Better Propeller")]
+        [DisplayName("Propeller Tweaks")]
         [Description("Make Amy Propeller moves faster and increase its duration depending on the Speed Level. (Hold Jump to use it.)")]
         [DefaultValue(true)]
         public bool BetterProp { get; set; } = true;
