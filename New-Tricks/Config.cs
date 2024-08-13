@@ -95,7 +95,7 @@ namespace New_Tricks.Configuration
 
         [Category("Amy")]
         [DisplayName("Tornado Tweaks")]
-        [Description("Make Amy's Tornado faster, remove momentum restriction and camera zoom.")]
+        [Description("Make Amy's Tornado faster, also remove momentum restriction and camera zoom.")]
         [DefaultValue(true)]
         public bool AmyTornadoTweaks { get; set; } = true;
 
@@ -117,6 +117,18 @@ namespace New_Tricks.Configuration
         [Description("Increase the flying vertical speed cap, allowing you to go higher.")]
         [DefaultValue(true)]
         public bool IncreaseSpeedCap { get; set; } = true;
+
+        [Category("Power Characters")]
+        [DisplayName("Wide Power Attack Tweaks")]
+        [Description("Allow Power characters to move during the Wide Power Attack.")]
+        [DefaultValue(true)]
+        public bool WidePowerTweaks { get; set; } = true;
+
+        [Category("Power Characters")]
+        [DisplayName("Triangle Dive Tweaks")]
+        [Description("Increase Triangle Dive speed, the values rises as the power level increase, this also allow to use it while falling.")]
+        [DefaultValue(true)]
+        public bool TriangleDiveTweaks { get; set; } = true;
 
 
         /*[DisplayName("String")]

@@ -142,10 +142,7 @@ namespace New_Tricks.Characters
                     break;
 
                 case PlayerMode.HammerFloat:
-                    if ((p->flag & 3) != 0)
-                    {
-                        Console.WriteLine("ayo");
-                    }
+    
                     break;
             }
 
@@ -161,7 +158,7 @@ namespace New_Tricks.Characters
 
 
                 Util.WriteNop(0x5CEFC1, 2); //remove anim check for prop
-                Util.WriteNop(0x5CEFE8, 7); //remove reset timer for prop, we will manually set it for convenience.
+                //Util.WriteNop(0x5CEFE8, 7); //remove reset timer for prop, we will manually set it for convenience.
             }
 
             if (ConfigV._modConfig.AmyTornadoTweaks)

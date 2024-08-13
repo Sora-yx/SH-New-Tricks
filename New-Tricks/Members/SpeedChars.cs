@@ -60,7 +60,7 @@ namespace New_Tricks.Characters
             int remFlag = p->flag & 0x100000;
             bool isSpinDashAllowed = ConfigV.isSpinDashAllowed(p->characterKind);
 
-          //  Console.Write("\nsmode: " + smode);
+            //Console.Write("\nsmode: " + smode);
             switch (smode)
             {
                 case 14:
@@ -91,14 +91,20 @@ namespace New_Tricks.Characters
                         }
                     }
                     break;
-                case 50:
+                case 50: //remove legacy dash with spin dash
                     if (p->characterKind == Character.Amy && isSpinDashAllowed)
                     {
                         return 0;
                     }
                     break;
-                case 57:
-                    if (p->characterKind == Character.Sonic && isSpinDashAllowed)
+                case 55:
+                    if (p->characterKind == Character.Espio && isSpinDashAllowed)
+                    {
+                        return 0;
+                    }
+                    break;
+                case 57: //see above
+                    if ( (p->characterKind == Character.Sonic || p->characterKind == Character.Shadow) && isSpinDashAllowed)
                     {
                         return 0;
                     }

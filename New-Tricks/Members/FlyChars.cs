@@ -92,29 +92,35 @@ namespace New_Tricks.Characters
 
         private void TObjMilesExecMoveHook(TObjPlayer* p)
         {
-            Console.WriteLine("Tails DOTP " + p->dotp);
-          //  Console.WriteLine("Tails Cur SMode " + p->smode);
             bool vSpeed = ConfigV._modConfig.IncreaseSpeedCap;
-            p->nocontimer = 0;
+            bool flightT = ConfigV._modConfig.FlightTweaks;
+            bool isCpu = Player.isCPU(p);
 
-            if (vSpeed && !Player.isCPU(p))
+            if (vSpeed && !isCpu)
                 Util.WriteData(flyVSpdCapAdd, flyVSpdCapNew);
 
-            if (ConfigV._modConfig.FlightTweaks && p->mode == 52 && HeroesFunc.PCheckPower(null, null, p) != 0)
+            switch ((PlayerMode)p->mode)
             {
-                p->spd.x += GetFlySpd(p->pTObjTeam);
-                if (p->lightDashLastRingPos_HHC.z < 180.0f)
-                    p->lightDashLastRingPos_HHC.z += GetFlyTimerIncr(p->pTObjTeam);
+                case PlayerMode.Fly:
+                    if (flightT && !isCpu)
+                    {
+                        if (HeroesFunc.PCheckPower(null, null, p) != 0)
+                        {
+                            if (p->lightDashLastRingPos_HHC.z < 180.0f)
+                                p->lightDashLastRingPos_HHC.z += GetFlyTimerIncr(p->pTObjTeam);
+                        }
+                    }
+                    break;
+                case PlayerMode.FlyTired:
+                    if (flightT && !isCpu)
+                    {
+                        if (HeroesFunc.PCheckPower(null, null, p) > 0 && p->spd.x < 1.0f)
+                        {
+                            p->spd.x = 4.0f; //goofy hacky way to interrupt kill momentum (for now).
+                        }
+                    }
+                    break;
             }
-            else if (p->mode == 53)
-            {
-                if (HeroesFunc.PCheckPower(null, null, p) > 0 && p->spd.x < 1.0f)
-                {
-                    p->spd.x = 4.0f;
-                }
-                   
-            }
-
 
             _TMilesExecMove.OriginalFunction(p);
 

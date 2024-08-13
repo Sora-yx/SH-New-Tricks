@@ -51,6 +51,11 @@ namespace New_Tricks
         public static IFunction<PResetPosType> Fun_PResetPos { get; } = SDK.ReloadedHooks.CreateFunction<PResetPosType>(0x58E5C0);
         public static PResetPosType PResetPosition { get; } = Fun_PResetPos.GetWrapper();
 
+        [Function(CallingConventions.Stdcall)]
+        public delegate void PGetAccelT(TObjPlayer* p);
+        public static IFunction<PGetAccelT> Fun_PGetAccel { get; } = SDK.ReloadedHooks.CreateFunction<PGetAccelT>(0x58B290);
+        public static PGetAccelT PGetAcceleration { get; } = Fun_PGetAccel.GetWrapper();
+
 
         #endregion
 
@@ -103,6 +108,12 @@ namespace New_Tricks
         public static IFunction<PCheckPowerT> Fun_PCheckPower { get; } = SDK.ReloadedHooks.CreateFunction<PCheckPowerT>(0x591340);
         public static PCheckPowerT PCheckPower { get; } = Fun_PCheckPower.GetWrapper();
 
+
+        [Function(new[] { Register.eax }, Register.eax, StackCleanup.Caller)]
+        public delegate void TPModeChangeToTriangleDiveT(void* oldP);
+        public static IFunction<TPModeChangeToTriangleDiveT> Fun_PModeChangeToTriangelDive { get; } = SDK.ReloadedHooks.CreateFunction<TPModeChangeToTriangleDiveT>(0x5A6FB0);
+        public static TPModeChangeToTriangleDiveT PModeChangeToTriangleDive { get; } = Fun_PModeChangeToTriangelDive.GetWrapper();
+
         #endregion
 
         #region Misc
@@ -118,6 +129,8 @@ namespace New_Tricks
         public delegate void sub_63E940T(int ecx, int* a2, byte a3, int* pos, int* a4);
         public static IFunction<sub_63E940T> Fun_63E940 { get; } = SDK.ReloadedHooks.CreateFunction<sub_63E940T>(0x63E940);
         public static sub_63E940T sub_63E940 { get; } = Fun_63E940.GetWrapper();
+
+
 
         #endregion
 

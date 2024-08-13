@@ -4,6 +4,9 @@ using Reloaded.Hooks.ReloadedII.Interfaces;
 using Reloaded.Mod.Interfaces;
 using Heroes.SDK;
 using New_Tricks.Characters;
+using Heroes.SDK.Definitions.Enums;
+using New_Tricks.Members;
+using Team = New_Tricks.Members.Team;
 
 
 namespace New_Tricks
@@ -46,6 +49,9 @@ namespace New_Tricks
 
         private SpeedChars _speedChars;
         private FlyChars _flyChars;
+        private PowerChars _powerChars;
+        private Team _TeamMemb;
+
         private NativeMod _nativemods;
 
 
@@ -76,6 +82,8 @@ namespace New_Tricks
 
             _speedChars = new SpeedChars();
             _flyChars = new FlyChars();
+            _powerChars = new PowerChars();
+            _TeamMemb = new Team();
 
         }
 
