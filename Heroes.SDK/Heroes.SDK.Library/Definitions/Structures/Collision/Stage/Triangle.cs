@@ -1,0 +1,52 @@
+﻿using Reloaded.Memory;
+using System.Numerics;
+using Reloaded.Memory.Utilities;
+using IEndianConvertible = Heroes.SDK.Utilities.Misc.Interfaces.IEndianConvertible;
+
+namespace Heroes.SDK.Definitions.Structures.Collision.Stage
+{
+    /// <summary>
+    /// Note: Big Endian
+    /// </summary>
+    [Equals(DoNotAddEqualityOperators = true)]
+    public struct Triangle : IEndianConvertible
+    {
+        /// <summary>
+        /// The indexes of vertices used to define this triangle.
+        /// </summary>
+        public TriangleVertices Indices;
+
+        /// <summary>
+        /// Indexes of triangles that are adjacent to this triangle.
+        /// Adjacent triangles share 2 vertices with the current triangle.
+        /// Default value is 0xFFFF.
+        /// </summary>
+        public TriangleAdjacentIndices Adjacents;
+
+        /// <summary>
+        /// Contains a normalized unit vector, perpendicular in direction to the surface of the triangle.
+        /// </summary>
+        public Vector3 NormalUnitVector;
+
+        /// <summary>
+        /// The primary collision flags for the object.
+        /// These are believed to override the secondary flags.
+        /// </summary>
+        public TriangleCollisionProperties FlagsPrimary;
+
+        /// <summary>
+        /// The secondary flags for the object.
+        /// </summary>
+        public TriangleCollisionProperties FlagsSecondary;
+
+        public void SwapEndian()
+        {
+            Indices.SwapEndian();
+            Adjacents.SwapEndian();
+
+            NormalUnitVector.X = Endian.Reverse(NormalUnitVector.X);
+            NormalUnitVector.Y = Endian.Reverse(NormalUnitVector.Y);
+            NormalUnitVector.Z = Endian.Reverse(NormalUnitVector.Z);
+        }
+    }
+}
