@@ -71,13 +71,13 @@ namespace New_Tricks.Configuration
 
         [Category("Sonic")]
         [DisplayName("SA1 Spin Dash")]
-        [Description("Replace Rocket Accel with Adventure Spin Dash for Sonic, the Spin Dash goes faster as the Speed Level raise.")]
+        [Description("Replace Rocket Accel with SA1 Spin Dash for Sonic, the Spin Dash goes faster as the Speed Level raise.")]
         [DefaultValue(true)]
         public bool SonkSpinDash { get; set; } = true;
 
         [Category("Shadow")]
         [DisplayName("SA1 Spin Dash")]
-        [Description("Replace Rocket Accel with Adventure Spin Dash for Shadow, the Spin Dash goes faster as the Speed Level raise.")]
+        [Description("Replace Rocket Accel with SA1Spin Dash for Shadow, the Spin Dash goes faster as the Speed Level raise.")]
         [DefaultValue(true)]
         public bool ShadowSpinDash { get; set; } = true;
 
@@ -105,6 +105,12 @@ namespace New_Tricks.Configuration
         [DefaultValue(true)]
         public bool EspioSpinDash { get; set; } = true;
 
+        [Category("Espio")]
+        [DisplayName("Tornado Tweaks")]
+        [Description("Make Espio's Tornado faster, also remove momentum restriction.")]
+        [DefaultValue(true)]
+        public bool EspioTornadoTweaks { get; set; } = true;
+
 
         [Category("Fly Characters")]
         [DisplayName("Flight Tweaks")]
@@ -117,6 +123,12 @@ namespace New_Tricks.Configuration
         [Description("Increase the flying vertical speed cap, allowing you to go higher.")]
         [DefaultValue(true)]
         public bool IncreaseSpeedCap { get; set; } = true;
+
+        [Category("Cream")]
+        [DisplayName("Cheese Tweaks")]
+        [Description("Make Cheese attack faster, allow Cream to move at the same time.")]
+        [DefaultValue(true)]
+        public bool CheeseTweaks { get; set; } = true;
 
         [Category("Power Characters")]
         [DisplayName("Wide Power Attack Tweaks")]

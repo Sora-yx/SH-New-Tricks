@@ -10,6 +10,9 @@ using New_Tricks.Moveset;
 using static Reloaded.Hooks.Definitions.X86.FunctionAttribute;
 using Heroes.SDK.Definitions.Structures.Player;
 using static New_Tricks.HeroesFunc;
+using New_Tricks.Members;
+using System.Runtime.InteropServices;
+using Reloaded.Memory;
 
 
 
@@ -18,6 +21,16 @@ namespace New_Tricks.Characters
 
     public unsafe class SpeedChars
     {
+        private Amy _Amy;
+
+        #region variablesDefinition
+        static public nuint SonkMotionsAddress = 0x8C4A60;
+        static public nuint ShadowMotionsAddress = 0x8C5438;
+        static public nuint EspioMotionsAddress = 0x8C67E8;
+
+
+        #endregion
+
         #region HooksDefinition
         [Function(CallingConventions.Stdcall)]
         public delegate void TObjSonicChkMode(TObjPlayer* pwp);
@@ -36,11 +49,6 @@ namespace New_Tricks.Characters
         public static IFunction<TObjSonicChkInput> Fun_TObjSonicChkInput { get; } = SDK.ReloadedHooks.CreateFunction<TObjSonicChkInput>(0x5D35F0);
 
 
-        [Function(new[] { Register.edi }, Register.eax, StackCleanup.Callee)]
-        public delegate void PSetMotionType(mtnmanwk* a1, int a2);
-        private IHook<PSetMotionType> _TPSetMotion;
-        public static IFunction<PSetMotionType> Fun_PSetMotion { get; } = SDK.ReloadedHooks.CreateFunction<PSetMotionType>(0x5A22D0);
-
 
         [Function(CallingConventions.MicrosoftThiscall)]
         public delegate void TObjPModeChgReadyToRocketAccelT(TObjPlayer* p);
@@ -53,7 +61,7 @@ namespace New_Tricks.Characters
 
         int ChkInputHook(TObjPlayer* p)
         {
-            if ( (p->flag & 0x1000) == 0)
+            if ((p->flag & 0x1000) == 0)
                 return 0;
 
             int smode = p->smode - 2;
@@ -100,11 +108,14 @@ namespace New_Tricks.Characters
                 case 55:
                     if (p->characterKind == Character.Espio && isSpinDashAllowed)
                     {
+                        if ((p->flag & 0x400000) != 0)
+                            break;
+
                         return 0;
                     }
                     break;
                 case 57: //see above
-                    if ( (p->characterKind == Character.Sonic || p->characterKind == Character.Shadow) && isSpinDashAllowed)
+                    if ((p->characterKind == Character.Sonic || p->characterKind == Character.Shadow) && isSpinDashAllowed)
                     {
                         return 0;
                     }
@@ -141,7 +152,8 @@ namespace New_Tricks.Characters
 
         private bool RunCommonSpdCharsExec(TObjPlayer* p)
         {
-            bool isSpinDash = ConfigV.isSpinDashAllowed(p->characterKind);
+            var charID = p->characterKind;
+            bool isSpinDash = ConfigV.isSpinDashAllowed(charID);
 
             switch (p->mode)
             {
@@ -170,6 +182,14 @@ namespace New_Tricks.Characters
                         return true;
                     }
                     break;
+                case 71:
+                    if (isSpinDash && charID == Character.Espio && ConfigV._modConfig.EspioTornadoTweaks)
+                    {
+                        PGetAccelerationAir(p);
+                        PGetSpeed(p);
+                    }
+                    break;
+
             }
 
             return false;
@@ -177,7 +197,7 @@ namespace New_Tricks.Characters
 
         private void TObjSonicExecHook(TObjPlayer* p)
         {
-            //Console.WriteLine("Cur Mode " + p->mode);
+            Console.WriteLine("Cur Mode " + p->mode);
             if (RunCommonSpdCharsExec(p))
                 return;
 
@@ -188,22 +208,14 @@ namespace New_Tricks.Characters
         private void TObjSonicChkModeHook(TObjPlayer* p)
         {
             //Console.WriteLine("Current Mode " + p->mode);
-           // Console.WriteLine("Cur ANim " + p->motion);
+            // Console.WriteLine("Cur ANim " + p->motion);
             if (RunCommonSpdCharsChkMode(p) || Amy.RunAmyChkMode(p))
                 return;
 
             _TObjSonicChkMode.OriginalFunction(p);
         }
 
-        private void PSetMotionHook(mtnmanwk* a1, int a2)
-        {
-            if (a1->reqaction == 10 && a1->mtnmode == 10) //hacky way to force jumpball anim to not be related on speed so it can work with Spin Dash
-            {
-                a1->mtnmode = 3;
-            }
 
-            _TPSetMotion.OriginalFunction(a1, a2);
-        }
 
         //this doesn't use TObjPlayer; it's probably TObjOld, but I'm too lazy to figure the struct properly.
         //TObjTeam pointer seem to be at the exact same data, so we can use it instead.
@@ -226,12 +238,18 @@ namespace New_Tricks.Characters
             _TObjSonicChkMode = Fun_TObjSonicChkMode.Hook(TObjSonicChkModeHook).Activate();
             _TObjSonicChkInput = Fun_TObjSonicChkInput.Hook(ChkInputHook).Activate();
 
-            Amy.Init();
+            _Amy = new Amy();
+
+            if (ConfigV._modConfig.EspioTornadoTweaks)
+            {
+                Util.WriteNop(0x5D0F3A, 0x5);     //remove Clear Speed
+        
+            }
 
             if (ConfigV.isSpinDashEnabledForAtLeastAPlayer())
             {
-                _TPSetMotion = Fun_PSetMotion.Hook(PSetMotionHook).Activate();
-                _TObjPModeChgReadyToRocketAccelT = Fun_TObjPModeChgReadyToRocketAccel.Hook(TObjPModeChgReadyToRocketAccelHook).Activate();    
+                _TObjPModeChgReadyToRocketAccelT = Fun_TObjPModeChgReadyToRocketAccel.Hook(TObjPModeChgReadyToRocketAccelHook).Activate();
+                SpinDash.Init();
             }
         }
     }

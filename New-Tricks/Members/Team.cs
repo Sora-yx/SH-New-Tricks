@@ -17,7 +17,7 @@ namespace New_Tricks.Members
 
         private void TObjTeamHook(TObjTeam* t)
         {
-            Console.WriteLine("Team Mode " + t->formationNo);
+            //Console.WriteLine("Team Mode " + t->formationNo);
 
             TObjPlayer* p = t->playerPtr2;
             ref var pad = ref HeroesVariables.player_input.AsRef(Player.Pno);

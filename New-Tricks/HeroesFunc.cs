@@ -131,12 +131,22 @@ namespace New_Tricks
         public static sub_63E940T sub_63E940 { get; } = Fun_63E940.GetWrapper();
 
 
+        [Function(new[] { Register.eax }, Register.eax, StackCleanup.Caller)]
+        public delegate void PLNodeSetParamT(void* a1);
+        public static IFunction<PLNodeSetParamT> Fun_PLNodeSetParamT { get; } = SDK.ReloadedHooks.CreateFunction<PLNodeSetParamT>(0x581E10);
+        public static PLNodeSetParamT PLNodeSetParam { get; } = Fun_PLNodeSetParamT.GetWrapper();
+
+
+        [Function(CallingConventions.Cdecl)]
+        public delegate float AdjustFloatT(float f0, float f1, float df);
+        public static IFunction<AdjustFloatT> Fun_PAdjustFloatT { get; } = SDK.ReloadedHooks.CreateFunction<AdjustFloatT>(0x429050);
+        public static AdjustFloatT AdjustFloat { get; } = Fun_PAdjustFloatT.GetWrapper();
 
         #endregion
 
-       
 
-       
+
+
         #region Sound
 
         [Function(new[] { Register.ebx, Register.edi, Register.esi }, Register.eax, StackCleanup.Callee)]

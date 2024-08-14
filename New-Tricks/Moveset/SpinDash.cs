@@ -1,5 +1,8 @@
 ﻿using Heroes.SDK.Classes.NativeClasses;
 using Heroes.SDK.Definitions.Enums;
+using New_Tricks.Characters;
+using New_Tricks.Configuration;
+using New_Tricks.Members;
 using static New_Tricks.HeroesFunc;
 
 namespace New_Tricks.Moveset
@@ -132,6 +135,49 @@ namespace New_Tricks.Moveset
         {
             spindashChargeTimer[Player.Pno] = 0;
             spindashChargeSpd[Player.Pno] = p->spd.x <= 2.0f ? 2.0f : p->spd.x;
+        }
+
+        public static void Init() //make jump ball anim loop instead of being based on speed
+        {
+            if (ConfigV.isSpinDashAllowed(Character.Sonic))
+            {
+                var anim = HeroesVariables.sonk_motions.AsRef(10);
+                if (anim.mtnmode == 10)
+                {
+                    anim.mtnmode = 3;
+                    Util.WriteDataInArray(SpeedChars.SonkMotionsAddress, anim, 10);
+                }
+            }
+
+            if (ConfigV.isSpinDashAllowed(Character.Shadow))
+            {
+                var anim = HeroesVariables.shadow_motions.AsRef(10);
+                if (anim.mtnmode == 10)
+                {
+                    anim.mtnmode = 3;
+                    Util.WriteDataInArray(SpeedChars.ShadowMotionsAddress, anim, 10);
+                }
+            }
+
+            if (ConfigV.isSpinDashAllowed(Character.Amy))
+            {
+                var anim = HeroesVariables.amy_motions.AsRef(10);
+                if (anim.mtnmode == 10)
+                {
+                    anim.mtnmode = 3;
+                    Util.WriteDataInArray(Amy.MotionsAddress, anim, 10);
+                }
+            }
+
+            if (ConfigV.isSpinDashAllowed(Character.Espio))
+            {
+                var anim = HeroesVariables.espio_motions.AsRef(10);
+                if (anim.mtnmode == 10)
+                {
+                    anim.mtnmode = 3;
+                    Util.WriteDataInArray(SpeedChars.EspioMotionsAddress, anim, 10);
+                }
+            }
         }
     }
 }

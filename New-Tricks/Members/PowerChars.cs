@@ -4,6 +4,7 @@ using Heroes.SDK.Classes.NativeClasses;
 using Heroes.SDK;
 using Heroes.SDK.Definitions.Enums.Custom;
 using New_Tricks.Configuration;
+using New_Tricks.Members;
 
 namespace New_Tricks.Characters
 {
