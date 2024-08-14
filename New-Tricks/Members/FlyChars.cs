@@ -6,6 +6,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using New_Tricks.Configuration;
 using static Reloaded.Hooks.Definitions.X86.FunctionAttribute;
 using Heroes.SDK.Definitions.Enums.Custom;
+using New_Tricks.Members;
 
 
 namespace New_Tricks.Characters
@@ -123,6 +124,12 @@ namespace New_Tricks.Characters
                         }
                     }
                     break;
+                case PlayerMode.Cream_CheeseAtk:
+                    if (ConfigV._modConfig.CheeseTweaks)
+                    {
+                        HeroesFunc.PGetAcceleration(p);
+                    }
+                    break;
             }
 
             _TMilesExecMove.OriginalFunction(p);
@@ -143,6 +150,9 @@ namespace New_Tricks.Characters
                 Util.WriteNop(0x5C571D, 0x6); //remove flight timer we will manually update it for convenience due to how it works originally.
                 _TMilesExecMove = Fun_MilesExecMove.Hook(TObjMilesExecMoveHook).Activate();
             }
+
+            if (ConfigV._modConfig.CheeseTweaks)
+                Util.WriteNop(0x5C3C71, 0x5); //remove PGetBreak so Cream doesn't slow down when using Cheese
 
         }
     }
