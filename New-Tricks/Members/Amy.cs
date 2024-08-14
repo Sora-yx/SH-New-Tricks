@@ -2,13 +2,41 @@
 using Heroes.SDK.Definitions.Enums;
 using Heroes.SDK.Definitions.Enums.Custom;
 using New_Tricks.Configuration;
+using New_Tricks.Members;
+using Reloaded.Hooks.Definitions;
+using Reloaded.Hooks.Definitions.X86;
+using Heroes.SDK;
+using static New_Tricks.HeroesFunc;
+using Heroes.SDK.Definitions.Structures.RenderWare.Object;
+using Heroes.SDK.Definitions.Structures.RenderWare;
 
 namespace New_Tricks.Characters
 {
-    public static class Amy
+    public unsafe class Amy
     {
+        static public nuint MotionsAddress = 0x8C5E10;
         static int TornadoTimer = 0;
         public static nuint hoverTimeAddr = 0x5D139E;
+
+        public static PlayerAnim[] HoldHammerAnims = { PlayerAnim.Animation_JumpRoll, PlayerAnim.Animation_JumpDash, PlayerAnim.Animation_BackFlip, PlayerAnim.Animation_BackFlip2, PlayerAnim.Animation_SideFlip };
+
+        [Function(CallingConventions.MicrosoftThiscall)]
+        public delegate void TObjTriggerAmyHammerT(TObjPlayer* p);
+        private IHook<TObjTriggerAmyHammerT> _TObjTrigAmyHamT;
+        public static IFunction<TObjTriggerAmyHammerT> Fun_TObjTrigAmyHam { get; } = SDK.ReloadedHooks.CreateFunction<TObjTriggerAmyHammerT>(0x5CCDD0);
+
+        public static short GetHammerAnims(PlayerAnim mtn)
+        {
+            foreach (var t in HoldHammerAnims)
+            {
+                if (t == mtn)
+                {
+                    return (short)t;
+                }
+            }
+
+            return -1;
+        }
 
         public unsafe static float getHammerJumpSpd(TObjPlayer* p)
         {
@@ -164,15 +192,36 @@ namespace New_Tricks.Characters
 
         }
 
-        public static void Init()
+        //hacky way to make Amy's hammer show up on different action because I'm too lazy to rewrite the function
+        void TriggerAmyHammerHook(TObjPlayer* p)
         {
+            byte mode = (byte)p->mode;
+            bool triggered = false;
+            if (p->mode < byte.MaxValue && (mode == (byte)PlayerMode.Jumping || mode == (byte)PlayerMode.JumpDash))
+            {
+                ushort mtn = (ushort)p->motion;
+                short hamMtn = GetHammerAnims((PlayerAnim)p->motion);
+
+                if (hamMtn > -1 && mtn == hamMtn)
+                {
+                    triggered = true;
+                    Util.WriteData(0x5CCDEA, mode); //change the action check 
+                }
+            }
+
+             _TObjTrigAmyHamT.OriginalFunction(p);
+
+            if (triggered)
+                Util.WriteData(0x5CCDEA, 0x48); //restore original action check
+        }
+
+        public Amy()
+        {
+            _TObjTrigAmyHamT = Fun_TObjTrigAmyHam.Hook(TriggerAmyHammerHook).Activate();
+
             if (ConfigV._modConfig.BetterProp)
             {
                 //prop
-                /*byte[] byteArray = new byte[] { 0x3E, 0x7, 0x0, 0x0 };
-                Util.WriteData(Amy.hoverTimeAddr, byteArray); //increase Amy Hover timer from 120 frames to 999*/
-
-
                 Util.WriteNop(0x5CEFC1, 2); //remove anim check for prop
                 //Util.WriteNop(0x5CEFE8, 7); //remove reset timer for prop, we will manually set it for convenience.
             }
