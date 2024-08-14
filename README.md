@@ -34,8 +34,6 @@ Enjoy!
 
 - Download this repo
 - Get [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/)
-- Install ["Git for Windows"](https://gitforwindows.org/) if you don't have it already.
-- Execute the script ``HeroesMod_InstallSubModules.bat`` from this repo.
 - Load the project from Visual Studio and use the Build menu to build the solution.
 
 
