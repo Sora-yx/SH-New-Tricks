@@ -211,7 +211,7 @@ namespace Heroes.SDK.Classes.NativeClasses
         [FieldOffset(0x3A5)]
         public fixed byte gap3A5[7];
         [FieldOffset(0x3AC)]
-        public float field_3AC;
+        public float AnimFrame;
         [FieldOffset(0x3B0)]
         public float field_3B0;
         [FieldOffset(0x3B4)]
