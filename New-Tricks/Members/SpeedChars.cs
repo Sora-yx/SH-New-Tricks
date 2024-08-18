@@ -7,12 +7,8 @@ using Heroes.SDK.Definitions.Enums;
 using Heroes.SDK.Definitions.Enums.Custom;
 using New_Tricks.Configuration;
 using New_Tricks.Moveset;
-using static Reloaded.Hooks.Definitions.X86.FunctionAttribute;
-using Heroes.SDK.Definitions.Structures.Player;
 using static New_Tricks.HeroesFunc;
-using New_Tricks.Members;
-using System.Runtime.InteropServices;
-using Reloaded.Memory;
+using System.Diagnostics;
 
 
 
@@ -58,9 +54,11 @@ namespace New_Tricks.Characters
 
         #endregion
 
-
+        private bool once = false;
         int ChkInputHook(TObjPlayer* p)
         {
+
+
             if ((p->flag & 0x1000) == 0)
                 return 0;
 
@@ -108,7 +106,7 @@ namespace New_Tricks.Characters
                 case 55:
                     if (p->characterKind == Character.Espio && isSpinDashAllowed)
                     {
-                        if ((p->flag & 0x400000) != 0)
+                        if (p->field_395 > 0)
                             break;
 
                         return 0;
@@ -160,10 +158,7 @@ namespace New_Tricks.Characters
                 case (short)SpinDash.Act.Charge:
                     if (isSpinDash)
                     {
-                        PGetRotation(p);
-                        PGetBreak(p);
-                        RunCommonPhysics(p);
-                        SetEffectObi(Player.Pno);
+                        SpinDash.RunChargePhysics(p);
                         return true;
                     }
                     break;
@@ -171,14 +166,7 @@ namespace New_Tricks.Characters
                 case (short)SpinDash.Act.Release:
                     if (isSpinDash)
                     {
-                        PGetRotation(p);
-                        PGetInertia(p);
-                        RunCommonPhysics(p);
-
-                        if (p->animCopy == 10 || p->motion == 10)
-                        {
-                            SetEffectObi(Player.Pno);
-                        }
+                        SpinDash.RunReleasePhysics(p);
                         return true;
                     }
                     break;
@@ -197,7 +185,7 @@ namespace New_Tricks.Characters
 
         private void TObjSonicExecHook(TObjPlayer* p)
         {
-            Console.WriteLine("Cur Mode " + p->mode);
+            //Console.WriteLine("Cur Mode " + p->mode);
             if (RunCommonSpdCharsExec(p))
                 return;
 

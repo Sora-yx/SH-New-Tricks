@@ -90,10 +90,26 @@ namespace New_Tricks.Moveset
 
         static public bool Release(TObjPlayer* p)
         {
+            ref var pad = ref HeroesVariables.player_input.AsRef(Player.Pno);
+            if ((pad.action.status & BTN_STATUS.isPress) != 0) //pressed
+            {
+                p->flag &= 0x500;
+                p->mode = 14;
+                PChangeRunningMotion(p);
+                p->flag &= 0x500;
+
+                return true;
+            }
 
             if (SonicChkInput(p) > 0)
             {
                 return true;
+            }
+
+            if ( (p->flag & 0x1000) != 0) //if player is on path change action to running but keep ball form
+            {
+                p->mode = 14;
+                return false;
             }
 
             if (CheckBeInTheAir(p) > 0)
@@ -116,16 +132,7 @@ namespace New_Tricks.Moveset
                 return false;
             }
 
-            ref var pad = ref HeroesVariables.player_input.AsRef(Player.Pno);
-            if ((pad.action.status & BTN_STATUS.isPress) != 0) //pressed
-            {
-                p->flag &= 0x500;
-                p->mode = 14;
-                PChangeRunningMotion(p);
-                p->flag &= 0x500;
 
-                return true;
-            }
 
 
             return true;
@@ -135,6 +142,26 @@ namespace New_Tricks.Moveset
         {
             spindashChargeTimer[Player.Pno] = 0;
             spindashChargeSpd[Player.Pno] = p->spd.x <= 2.0f ? 2.0f : p->spd.x;
+        }
+
+        public static void RunChargePhysics(TObjPlayer* p)
+        {
+            PGetRotation(p);
+            PGetBreak(p);
+            RunCommonPhysics(p);
+            SetEffectObi(Player.Pno);
+        }        
+        
+        public static void RunReleasePhysics(TObjPlayer* p)
+        {
+            PGetRotation(p);
+            PGetInertia(p);
+            RunCommonPhysics(p);
+
+            if (p->animCopy == 10 || p->motion == 10)
+            {
+                SetEffectObi(Player.Pno);
+            }
         }
 
         public static void Init() //make jump ball anim loop instead of being based on speed

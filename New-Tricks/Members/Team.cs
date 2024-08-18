@@ -14,10 +14,11 @@ namespace New_Tricks.Members
         private IHook<TeamExecT> _TeamExec;
         public static IFunction<TeamExecT> Fun_TeamExec { get; } = SDK.ReloadedHooks.CreateFunction<TeamExecT>(0x5B10E0);
 
+        bool once = false;
 
         private void TObjTeamHook(TObjTeam* t)
         {
-            //Console.WriteLine("Team Mode " + t->formationNo);
+
 
             TObjPlayer* p = t->playerPtr2;
             ref var pad = ref HeroesVariables.player_input.AsRef(Player.Pno);

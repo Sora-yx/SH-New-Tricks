@@ -138,7 +138,7 @@ namespace New_Tricks.Configuration
 
         [Category("Power Characters")]
         [DisplayName("Triangle Dive Tweaks")]
-        [Description("Increase Triangle Dive speed, the values rises as the power level increase, this also allow to use it while falling.")]
+        [Description("Allow to use Triangle Dive while falling.")]
         [DefaultValue(true)]
         public bool TriangleDiveTweaks { get; set; } = true;
 

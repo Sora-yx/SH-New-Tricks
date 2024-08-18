@@ -56,6 +56,17 @@ namespace New_Tricks
         public static IFunction<PGetAccelT> Fun_PGetAccel { get; } = SDK.ReloadedHooks.CreateFunction<PGetAccelT>(0x58B290);
         public static PGetAccelT PGetAcceleration { get; } = Fun_PGetAccel.GetWrapper();
 
+        [Function(new[] { Register.eax }, Register.eax, StackCleanup.Caller)]
+        public delegate void PResetAngleT(TObjPlayer* p);
+        public static IFunction<PResetAngleT> Fun_PResetAngle { get; } = SDK.ReloadedHooks.CreateFunction<PResetAngleT>(0x591930);
+        public static PResetAngleT PResetAngle { get; } = Fun_PResetAngle.GetWrapper();
+
+
+        [Function(CallingConventions.MicrosoftThiscall)]
+        public delegate int PCheckStopT(TObjPlayer* p);
+        public static IFunction<PCheckStopT> Fun_PCheckStop { get; } = SDK.ReloadedHooks.CreateFunction<PCheckStopT>(0x5A56A0);
+        public static PCheckStopT PCheckStop { get; } = Fun_PCheckStop.GetWrapper();
+
 
         #endregion
 

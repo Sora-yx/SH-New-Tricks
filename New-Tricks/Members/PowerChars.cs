@@ -28,11 +28,11 @@ namespace New_Tricks.Characters
             switch (t->level[2])
             {
                 case 1:
-                    return 3.0f;
+                    return 2.6f;
                 case 2:
-                    return 4.0f;
+                    return 2.8f;
                 case 3:
-                    return 4.5f;
+                    return 3.0f;
             }
 
             return 2.5f;
@@ -47,25 +47,14 @@ namespace New_Tricks.Characters
             ref var pad = ref HeroesVariables.player_input.AsRef(Player.Pno);
             TObjTeam* t = p->pTObjTeam;
 
-            switch ((PlayerMode)p->mode)
-            {
-                case PlayerMode.Power_Gliding:
-                    if (triangleDive)
-                    {
-                        if (HeroesFunc.PCheckPower(null, null, p) != 0 && (p->spd.x < GetTriangleDiveMaxSpd(p->pTObjTeam)))
-                        {
-                            p->spd.x += 0.2f;
-                        }
-                    }
-                    break;
-            }
+
 
             _TObjKnuxChkMode.OriginalFunction(p);
         }
 
         private void TObjKnuxExecMoveHook(TObjPlayer* p)
         {
-
+            Console.WriteLine("Knux Mod: " + p->mode);
             switch (p->mode)
             {
                 case 58:

@@ -26,5 +26,7 @@ namespace New_Tricks
         public static FixedArrayPtr<PL_MOTION> amy_motions { get; } = new FixedArrayPtr<PL_MOTION>((PL_MOTION*)Amy.MotionsAddress, 105);
         public static FixedArrayPtr<PL_MOTION> espio_motions { get; } = new FixedArrayPtr<PL_MOTION>((PL_MOTION*)SpeedChars.EspioMotionsAddress, 105);
 
+
+        public static FixedArrayPtr<PL_MOTION> cream_motions { get; } = new FixedArrayPtr<PL_MOTION>((PL_MOTION*)FlyChars.creamMtnAddress, 93);
     }
 }

@@ -2,13 +2,11 @@
 using Heroes.SDK.Definitions.Enums;
 using Heroes.SDK.Definitions.Enums.Custom;
 using New_Tricks.Configuration;
-using New_Tricks.Members;
 using Reloaded.Hooks.Definitions;
 using Reloaded.Hooks.Definitions.X86;
 using Heroes.SDK;
-using static New_Tricks.HeroesFunc;
-using Heroes.SDK.Definitions.Structures.RenderWare.Object;
-using Heroes.SDK.Definitions.Structures.RenderWare;
+using New_Tricks.Moveset;
+using Heroes.SDK.Definitions.Structures.Input;
 
 namespace New_Tricks.Characters
 {
@@ -18,7 +16,7 @@ namespace New_Tricks.Characters
         static int TornadoTimer = 0;
         public static nuint hoverTimeAddr = 0x5D139E;
 
-        public static PlayerAnim[] HoldHammerAnims = { PlayerAnim.Animation_JumpRoll, PlayerAnim.Animation_JumpDash, PlayerAnim.Animation_BackFlip, PlayerAnim.Animation_BackFlip2, PlayerAnim.Animation_SideFlip };
+        public static PlayerAnim[] HoldHammerAnims = { PlayerAnim.Animation_JumpRoll, PlayerAnim.Animation_JumpDash, PlayerAnim.Animation_BackFlip, PlayerAnim.Animation_BackFlip2, PlayerAnim.Animation_SideFlip, (PlayerAnim)HammerJump.HammerJumpMtn };
 
         [Function(CallingConventions.MicrosoftThiscall)]
         public delegate void TObjTriggerAmyHammerT(TObjPlayer* p);
@@ -38,24 +36,7 @@ namespace New_Tricks.Characters
             return -1;
         }
 
-        public unsafe static float getHammerJumpSpd(TObjPlayer* p)
-        {
-            if (p->pTObjTeam != null)
-            {
 
-                switch ((int)p->pTObjTeam->level[0])
-                {
-                    case 1:
-                        return 2.0f;
-                    case 2:
-                        return 3.0f;
-                    case 3:
-                        return 4.5f;
-                }
-            }
-
-            return 1.5f;
-        }
 
         private unsafe static float GetPropSpd(TObjTeam* t)
         {
@@ -118,26 +99,44 @@ namespace New_Tricks.Characters
         }
 
 
+        public static bool CheckHammerFloatInput(TObjPlayer* p, ref PLAYER_INPUT pad)
+        {
+            if (p->motion != (ushort)PlayerAnim.Animation_Trick && p->spd.y <= 0.0f && (pad.jump.status & BTN_STATUS.isOn) != 0)
+            {
+                p->mode = (short)PlayerMode.HammerFloat; // start hammer float check
+                p->motion = (short)PlayerAnim.Animation_HammerFloat;
+                p->flag &= 0xFAF;
+                p->spd.y = 0.0f;
+                p->lightDashCountSinceLastRing_HHC = 0;
+                p->grindTimer = 0;
+                return true;
+            }
+
+            return false;
+        }
+
+
+
         public unsafe static bool RunAmyChkMode(TObjPlayer* p)
         {
             if (p->characterKind != Character.Amy)
                 return false;
 
-            ref var pad = ref HeroesVariables.player_input.AsRef(Player.Pno);
+            ref var pad = ref HeroesVariables.player_input.AsRef(p->playerNo);
             var t = p->pTObjTeam;
 
-            switch ((PlayerMode)p->mode)
+            switch (p->mode)
             {
 
-                case PlayerMode.Running:
+                case (short)PlayerMode.Running:
 
-                    /*if (pad.ButtonFlags.HasFlag(Heroes.SDK.Definitions.Structures.Input.ButtonFlags.CameraL))
+                    if ( (pad.sfa.status & BTN_STATUS.isPress) != 0)
                     {
-                        if (p->spd.x >= 3.0f)
-                            p->spd.y += getHammerJumpSpd(p);
-                    }*/
+                        p->mode = HammerJump.HammerJumpAct;
+                        p->motion = HammerJump.HammerJumpMtn;
+                    }
                     break;
-                case PlayerMode.HammerFloat:
+                case (short)PlayerMode.HammerFloat:
                     if (ConfigV._modConfig.BetterProp)
                     {
                         Util.WriteData(Amy.hoverTimeAddr, GetPropTimer(t));
@@ -148,21 +147,14 @@ namespace New_Tricks.Characters
 
                     }
                     break;
-                case PlayerMode.Fall:
+                case (short)PlayerMode.Fall:
                     if (ConfigV._modConfig.BetterProp)
                     {
-                        if (p->motion != (ushort)PlayerAnim.Animation_Trick && p->spd.y <= 0.0f && (pad.jump.status & BTN_STATUS.isOn) != 0)
-                        {
-
-                            p->mode = 77; // start hammer float check
-                            p->motion = 102;
-                            p->flag &= 0xFAF;
-                            p->spd.y = 0.0f;
-                            p->lightDashCountSinceLastRing_HHC = 0;
-                            p->grindTimer = 0;
-                            return false;
-                        }
+                        CheckHammerFloatInput(p, ref pad);
                     }
+                    break;
+                case 90:
+                    HammerJump.RunChkMode(p);
                     break;
             }
 
@@ -172,9 +164,9 @@ namespace New_Tricks.Characters
         public static unsafe void RunAmyExecMode(TObjPlayer* p)
         {
 
-            switch ((PlayerMode)p->mode)
+            switch (p->mode)
             {
-                case PlayerMode.Amy_Tornado:
+                case (short)PlayerMode.Amy_Tornado:
                     if (ConfigV._modConfig.AmyTornadoTweaks)
                     {
                         if (p->spd.y <= 0.0f)
@@ -185,8 +177,12 @@ namespace New_Tricks.Characters
                     }
                     break;
 
-                case PlayerMode.HammerFloat:
+                case (short)PlayerMode.HammerFloat:
 
+                    break;
+
+                case 90:
+                    HammerJump.RunPhysics(p);
                     break;
             }
 
@@ -197,7 +193,7 @@ namespace New_Tricks.Characters
         {
             byte mode = (byte)p->mode;
             bool triggered = false;
-            if (p->mode < byte.MaxValue && (mode == (byte)PlayerMode.Jumping || mode == (byte)PlayerMode.JumpDash))
+            if (p->mode < byte.MaxValue && (mode == (byte)PlayerMode.Jumping || mode == (byte)PlayerMode.JumpDash || mode == 90))
             {
                 ushort mtn = (ushort)p->motion;
                 short hamMtn = GetHammerAnims((PlayerAnim)p->motion);
@@ -236,6 +232,8 @@ namespace New_Tricks.Characters
                 byteArray[0] = 0x19;
                 Util.WriteData(0x5D1160, byteArray); //reduce delay to finish tornado move
             }
+
+            HammerJump.Init();
         }
     }
 }

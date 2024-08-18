@@ -7,6 +7,7 @@ using New_Tricks.Configuration;
 using static Reloaded.Hooks.Definitions.X86.FunctionAttribute;
 using Heroes.SDK.Definitions.Enums.Custom;
 using New_Tricks.Members;
+using System.Diagnostics;
 
 
 namespace New_Tricks.Characters
@@ -38,13 +39,15 @@ namespace New_Tricks.Characters
         public delegate void MilesExecMoveT(TObjPlayer* a1);
         private IHook<MilesExecMoveT> _TMilesExecMove;
         public static IFunction<MilesExecMoveT> Fun_MilesExecMove { get; } = SDK.ReloadedHooks.CreateFunction<MilesExecMoveT>(0x5C3B30);
-       
+
         static readonly byte[] flyByteNew = { 0x0, 0xC0, 0x79, 0x44 };
         static readonly byte[] flyByteOrigin = { 0x0, 0x0, 0x34, 0x43 };
 
         static private nuint flyVSpdCapAdd = 0x789FA4;
         static private byte[] flyVSpdCapNew = { 0x0, 0x0, 0x87, 0x43 };
         static private byte[] flyVSpdCapOrigin = { 0x0, 0x0, 0xB4, 0x42 };
+
+        public static nuint creamMtnAddress = 0x8C3140;
 
         #endregion
 
@@ -81,7 +84,7 @@ namespace New_Tricks.Characters
 
         private void TObjMilesChkModeHook(TObjPlayer* p)
         {
-           // Util.WriteData(flyTimeOffAdd, flyByteNew);
+            // Util.WriteData(flyTimeOffAdd, flyByteNew);
             _TObjMilesChkMode.OriginalFunction(p);
 
 
@@ -91,6 +94,8 @@ namespace New_Tricks.Characters
 
         private void TObjMilesExecMoveHook(TObjPlayer* p)
         {
+            //Console.WriteLine("Miles Mod: " + p->mode);
+
             bool vSpeed = ConfigV._modConfig.IncreaseSpeedCap;
             bool flightT = ConfigV._modConfig.FlightTweaks;
             bool isCpu = Player.isCPU(p);
@@ -146,13 +151,23 @@ namespace New_Tricks.Characters
             if (ConfigV._modConfig.FlightTweaks)
             {
                 Util.WriteNop(0x5C5743, 21);
-               // Util.WriteNop(0x5C5741, 32);   //remove clear speed once fly is over
+                // Util.WriteNop(0x5C5741, 32);   //remove clear speed once fly is over
                 Util.WriteNop(0x5C571D, 0x6); //remove flight timer we will manually update it for convenience due to how it works originally.
                 _TMilesExecMove = Fun_MilesExecMove.Hook(TObjMilesExecMoveHook).Activate();
             }
 
             if (ConfigV._modConfig.CheeseTweaks)
+            {
                 Util.WriteNop(0x5C3C71, 0x5); //remove PGetBreak so Cream doesn't slow down when using Cheese
+
+                var anim = HeroesVariables.cream_motions.AsRef((ushort)PlayerAnim.Animation_CheeseAttack);
+                
+                if (anim.speed < 2.5f)
+                {
+                    anim.speed = 2.5f;
+                    Util.WriteDataInArray(creamMtnAddress, anim, (ushort)PlayerAnim.Animation_CheeseAttack);
+                }
+            }
 
         }
     }
