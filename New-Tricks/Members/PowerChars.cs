@@ -54,7 +54,7 @@ namespace New_Tricks.Characters
 
         private void TObjKnuxExecMoveHook(TObjPlayer* p)
         {
-            Console.WriteLine("Knux Mod: " + p->mode);
+           // Console.WriteLine("Knux Mod: " + p->mode);
             switch (p->mode)
             {
                 case 58:

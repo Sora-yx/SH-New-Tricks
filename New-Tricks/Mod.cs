@@ -80,11 +80,12 @@ namespace New_Tricks
             //string directoryFolder = _modLoader.GetDirectoryForModId(_modConfig.ModId);
             //_nativemods = new NativeMod(directoryFolder);
 
-            _speedChars = new SpeedChars();
-            _flyChars = new FlyChars();
-            _powerChars = new PowerChars();
-            _TeamMemb = new Team();
+           // _speedChars = new SpeedChars();
+            //_flyChars = new FlyChars();
+            //_powerChars = new PowerChars();
+            //_TeamMemb = new Team();
 
+            _nativemods = new();
         }
 
         #region Standard Overrides
