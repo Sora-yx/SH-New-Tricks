@@ -1,5 +1,4 @@
 #include "pch.h"
-#include "Trampoline.h"
 
 
 struct TObjChocola
@@ -71,7 +70,6 @@ void ChocolaDestructor()
 }
 
 
-
 void ChocolaDisp()
 {
 	for (uint8_t i = 0; i < 2; i++)
@@ -88,8 +86,6 @@ void ChocolaTDisp()
 void ChocolaPDisp()
 {
 }
-
-RwV3d ChocolaBallOffset = { 8.0f, 6.0f, 0.17f };
 
 
 void ChocolaExec()
@@ -127,7 +123,7 @@ void ChocolaExec()
 				break;
 			}
 
-			if (i >= 8)
+			if (i >= PMax)
 				return;
 		}
 	}
@@ -328,30 +324,6 @@ struct vftableChocola {
 
 static vftableChocola vfTable = { ChocolaDestructor, ChocolaExec, ChocolaDisp, ChocolaTDisp, ChocolaPDisp, nullsub, nullsub, nullsub, nullsub, nullsub };
 
-void COLLIFv(C_COLLI* param_1)
-{
-	param_1->info = 0x0;
-	param_1->flag = 0;
-	param_1->nbHit = 0;
-	param_1->nbInfo = 0;
-	param_1->strength = 1;
-	param_1->vitality = 1;
-	param_1->field_7C.y = 0.0f;
-}
-
-void ObjMoveOnGroundFv(OBJ_MoveOnGround* obj)
-{
-	obj->spdObject.z = 0.0f;
-	obj->spdObject.y = 0.0f;
-	obj->spdObject.x = 0.0f;
-	obj->cCheck = 1;
-	obj->bound_mode = OBJ_MOG_BOUND_MODE_REAL;
-	obj->bound_coef = 0.75f;
-	obj->flagMOG = obj->flagMOG & 0xf0ff;
-	obj->flagMOG = obj->flagMOG & 0xfff0;
-	obj->lattr_Ignore = 0;
-}
-
 
 void LoadChocola()
 {
@@ -467,228 +439,7 @@ void* __fastcall MallocCheese(unsigned int size, THeapCtrl* this_)
 }
 
 
-void TObjCheeseSetAnimation(int result, TObjCheese* a2)
-{
-	int animNo; // ecx
-	RpHAnimHierarchy* v3; // edx
-
-	animNo = a2->animno;
-	if (animNo != result)
-	{
-		if (pHAA_List_Cheese[animNo])
-		{
-			v3 = pHAH_Cheese;
-			a2->animno = result;
-			RtAnimInterpolatorSetCurrentAnim(v3->currentAnim, pHAA_List_Cheese[(char)result]);
-			RtAnimInterpolatorSetCurrentTime(pHAH_Cheese->currentAnim, 0.0f);
-			a2->nframe = 0.0;
-		}
-	}
-}
-
-Trampoline* TObjCheeseExec_t = nullptr;
-
-
-void TObjCheeseExeco(TObjCheese* cheese, int edi0)
-{
-	auto target = TObjCheeseExec_t->Target();
-
-	__asm
-	{
-		mov edi, edi0
-		mov ecx, cheese
-		call target
-
-	}
-}
-
-void TObjCheeseExec_r(TObjCheese* cheese, int edi0)
-{
-
-	PrintVarHex("cheese PTR: ", (intptr_t)cheese);
-	PrintVarHex("OffsetHead: ", offsetof(TObjCheese, head));
-
-	return TObjCheeseExeco(cheese, edi0);
-
-	if (cheese->playerno == -1)
-	{
-		for (uint8_t i = 0; i < 8; i++)
-		{
-			auto p = playerTop[i];
-			if (p && p->characterKind == Char_Cream)
-			{
-				cheese->playerno = i;
-				auto v5 = GetTeamCharacterIdFromCCLCharacterId(playerTop[(char)i]->C_COLLI_.character_id);
-				cheese->ccl.character_id = GetTeamCharacterIdFromCCLCharacterId(v5);
-				RpClumpForAllAtomics(
-					TObjCheesePclump[0],
-					(RpAtomicCallBack)plCallbackRpAtomicToSetRenderCallbackToUseLight,
-					(void*)cheese->playerno);
-
-				break;
-			}
-
-			if (i == 8)
-				return;
-		}
-	}
-
-	cheese->pos.x = cheese->ccl.pos.x;
-	cheese->pos.y = cheese->ccl.pos.y;
-	cheese->pos.z = cheese->ccl.pos.z;
-
-	auto p = playerTop[cheese->playerno];
-
-	switch (cheese->mode)
-	{
-	case 0:
-		TObjChocolaGetTargetPositionToChaseHer((TObjChocola*)cheese);
-
-		if (!TObjCheeseCalcRotationAndSpeedToReach(cheese))
-		{
-			//set anim
-			TObjCheeseSetAnimation(1, cheese);
-		}
-		else
-		{
-			cheese->mode++;
-		}
-		break;
-	case 1:
-		TObjChocolaGetTargetPositionToChaseHer((TObjChocola*)cheese);
-		if (TObjCheeseCalcPosSomething(cheese))
-		{
-			cheese->mode = 0;
-			TObjCheeseSetAnimation(1, cheese);
-		}
-		else
-		{
-			TObjCheeseSetAnimation(0, cheese);
-		}
-		break;
-	}
-
-	if (pHAH_Cheese)
-	{
-		float v27 = cheese->nframe;
-		if (cheese->animno == 4)
-		{
-			float v29 = v27 + 1.0;
-			cheese->nframe = v29;
-			if (v29 >= 30.0f)
-				TObjCheeseSetAnimation(5, cheese);
-		}
-		else if (cheese->animno == 6)
-		{
-			float v28 = v27 + 0.5;
-			cheese->nframe = v28;
-			if (v28 >= 155.0)
-				cheese->nframe = 105.0f;
-		}
-		else
-		{
-			cheese->nframe = v27 + 1.0f;
-		}
-		float timea = cheese->nframe * 0.016f;
-		RtAnimInterpolatorSetCurrentTime(pHAH_Cheese->currentAnim, timea);
-		RpHAnimHierarchyUpdateMatrices(pHAH_Cheese);
-	}
-
-	auto v30 = &cheese->pPtcl_SFA[2];              // break cheese following if skipped somewhat
-	int v31 = 8;
-	PARTICLE_TASK* v32;
-	do
-	{
-		if (*v30)
-		{
-			v32 = *v30;
-			while ((v32->Signal & 1) == 0)
-			{
-				v32 = (struct PARTICLE_TASK*)v32->Parent;
-				if (!v32)
-				{
-					if (cheese->mode == 3)
-						goto LABEL_82;
-					(*v30)->Signal |= 1u;
-					break;
-				}
-			}
-			*v30 = 0;
-		}
-	LABEL_82:
-		++v30;
-		--v31;
-	} while (v31);
-
-	if (TObjCheesePclump[0])
-	{
-		auto v33 = (RwFrame*)TObjCheesePclump[0]->object.parent;
-
-		float Cos = 1.0f - (sine[-(cheese->ang.y) & 0xffff]);
-		float Sin = (sine[-(cheese->ang.y) - 0x4000u & 0xffff]);
-
-		RwMatrixRotateOneMinusCosineSine(
-			&v33->modelling,
-			&AxisY, Cos, Sin,
-			rwCOMBINEREPLACE);
-
-		RwFrameTranslate(v33, &cheese->pos, rwCOMBINEPOSTCONCAT);
-	}
-
-	//PLNodeSetParameter(&cheese->head);
-	if (TObjCheesePclump[1])  // Chao ball head
-	{
-		auto v35 = (RwFrame*)TObjCheesePclump[1]->object.parent;
-		memcpy(&v35->modelling, &cheese->head.matrix, sizeof(v35->modelling));
-		//RwFrameTranslate(v35, &ChaoBallOffset, rwCOMBINEPRECONCAT);
-		auto FUCK = cheese->pos;
-		FUCK.y += 10.0f;
-		RwFrameTranslate(v35, &FUCK, rwCOMBINEPOSTCONCAT);
-		//RwFrameUpdateObjects(v35);
-	}
-	C_COLLIEntry(&cheese->ccl, &cheese->pos, &cheese->ang);
-}
-
-
-static void __declspec(naked) TObjCheeseExecASM()
-{
-	__asm
-	{
-		push edi // edi0
-		push ecx // cheese
-
-		call TObjCheeseExec_r
-
-		pop ecx // cheese
-		pop edi // edi0
-		retn
-	}
-}
-
-
-
 void InitChocola()
 {
-
-	//WriteData<5>((int*)0x5B6A5F, 0x90);
-	//TObjCheeseExec_t = new Trampoline(0x5B63B0, (intptr_t)0x5B63B6, TObjCheeseExecASM);
-
-	//WriteCall((void*)0x5B6A1F, RwMatrixRotateOneMinusCosineSine_r);
-	//WriteJump((void*)0x5B63B0, TObjCheeseExecASM);
-	//WriteJump((void*)0x5B6A36, func);
-
 	WriteCall((void*)0x5C1629, MallocCheese);
-
-
-	//fuck_t = new Trampoline(0x42F3C0, 0x42F3C7, OneFileLoadTextureDictionaryASM);
-
-	//WriteData<5>((int*)0x5C1629, 0x90);
-	//WriteData<45>((int*)0x5C161E, 0x90);	
-	// 
-	//WriteData<5>((int*)0x5C1646, 0x90);
-
-
-	//WriteJump((void*)0x5B6985, func2);
-
-
 }

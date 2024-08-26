@@ -12,5 +12,6 @@
 #include "Heroes-Util.h"
 #include "MinHookWrapper.h"
 #include "mod.h"
+#include "Util.h"
 
 #endif //PCH_H
