@@ -60,10 +60,6 @@ void TObjChocolaGetTargetPositionToChaseHer(TObjChocola* chocola)
 }
 
 
-void nullsub()
-{
-
-}
 
 void ChocolaDestructor()
 {
@@ -72,6 +68,16 @@ void ChocolaDestructor()
 
 void ChocolaDisp()
 {
+	if (!chocolaPtr)
+		return;
+
+	auto p = playerTop[chocolaPtr->playerno];
+	if (p)
+	{
+		if (p->mode == 999 || p->charMode == CHAR_MODE_Inactive)
+			return;
+	}
+
 	for (uint8_t i = 0; i < 2; i++)
 	{
 		if (TObjChocolaPclump[i])
@@ -343,7 +349,7 @@ void LoadChocola()
 		auto P = playerTop[i];
 		if (P)
 		{
-			if (P->characterKind == Char_Cream)
+			if (P->characterKind == Char_Cream && (P->mode != 999))
 			{
 				PrintMessage("Found Cream, execution of the task will continue\n");
 				break;

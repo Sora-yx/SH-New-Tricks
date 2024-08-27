@@ -157,6 +157,7 @@
   <ItemGroup>
     <ClInclude Include="..\..\SH.Solo.Duo\Solo.Duo\MinHook.h" />
     <ClInclude Include="..\..\SH.Solo.Duo\Solo.Duo\MinHookWrapper.h" />
+    <ClInclude Include="Amy.h" />
     <ClInclude Include="Chocola.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="mod.h" />

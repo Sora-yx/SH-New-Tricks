@@ -5,6 +5,7 @@
 #include <fcntl.h>
 #include <io.h>
 #include "Chocola.h"
+#include "Amy.h"
 
 extern "C"
 {
@@ -58,5 +59,6 @@ extern "C"
 			}
 
 		InitChocola();
+		initBird();
 	}
 }

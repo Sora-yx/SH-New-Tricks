@@ -64,7 +64,7 @@ namespace New_Tricks
             _owner = context.Owner;
             _configuration = context.Configuration;
             _modConfig = context.ModConfig;
-       
+
             ConfigV._modConfig = _configuration;
 
             // For more information about this template, please see
@@ -78,11 +78,10 @@ namespace New_Tricks
             SDK.Init(reloadedHooks, null);
 
             //string directoryFolder = _modLoader.GetDirectoryForModId(_modConfig.ModId);
-            //_nativemods = new NativeMod(directoryFolder);
 
-           // _speedChars = new SpeedChars();
-            //_flyChars = new FlyChars();
-            //_powerChars = new PowerChars();
+            _speedChars = new SpeedChars();
+            _flyChars = new FlyChars();
+            _powerChars = new PowerChars();
             //_TeamMemb = new Team();
 
             _nativemods = new();
