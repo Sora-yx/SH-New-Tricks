@@ -21,6 +21,9 @@ This is a mod that tweaks the moveset of the characters and replace or add new a
 - Wide Power Attack - Make Power characters able to move when firing Wide Power attack.
 
 
+### Bonus:
+- Add Chocola following Cheese once Team Rose is finished
+- Add Amy's bird from SA1
 
 Features are all optional, so you can toggle whatever you like.
 
