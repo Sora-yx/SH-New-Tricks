@@ -16,12 +16,12 @@ enum RwRasterType
 
 enum ENUM_TEAM_KIND
 {
-	TEAM_SONIC = 0x0,
-	TEAM_DARK = 0x1,
-	TEAM_ROSES = 0x2,
-	TEAM_CHAOTIX = 0x3,
-	TEAM_forEDIT = 0x4,
-	NUM_TEAM_KINDS = 0x5,
+    TEAM_SONIC = 0x0,
+    TEAM_DARK = 0x1,
+    TEAM_ROSES = 0x2,
+    TEAM_CHAOTIX = 0x3,
+    TEAM_forEDIT = 0x4,
+    NUM_TEAM_KINDS = 0x5,
 };
 
 enum ENUM_TEAMPLAY_MODE
@@ -55,64 +55,64 @@ enum ENUM_TEAMPLAY_MODE
 };
 
 
-enum ItemFlags : __int16
+enum ItemFlags
 {
-	Powerups_Barrier = 0x1,
-	ItemFlags_Magnetic = 0x2,
-	Powerups_SpeedShoes = 0x4,
-	ItemFlags_ResetFlyTime = 0x8,
-	Powerups1_10 = 0x10,
-	Powerups1_20 = 0x20,
-	Powerups1_40 = 0x40,
-	Powerups1_80 = 0x80,
-	ItemFlags_KnockbackLaunch = 0x400,
-	ItemFlags_NotPosted = 0x800,
-	ItemFlags_TeamBattleIsCPU = 0x1000,
-	ItemFlags_2000 = 0x2000,
-	ItemFlags_Dead = 0x4000,
-	ItemFlags_Muteki = 0x8000,
+    Powerups_Barrier = 0x1,
+    ItemFlags_Magnetic = 0x2,
+    Powerups_SpeedShoes = 0x4,
+    ItemFlags_ResetFlyTime = 0x8,
+    Powerups1_10 = 0x10,
+    Powerups1_20 = 0x20,
+    Powerups1_40 = 0x40,
+    Powerups1_80 = 0x80,
+    ItemFlags_KnockbackLaunch = 0x400,
+    ItemFlags_NotPosted = 0x800,
+    ItemFlags_TeamBattleIsCPU = 0x1000,
+    ItemFlags_2000 = 0x2000,
+    ItemFlags_Dead = 0x4000,
+    ItemFlags_Muteki = 0x8000,
 };
 
 enum ENUM_CHAR_MODE : __int16
 {
-	CharMode_UnderControl = 0x0,
-	CharMode_Normal = 0x1,
-	CharMode_FlyFormation = 0x2,
-	CharMode_PowerAirSpin = 0x4,
-	CharMode_PowerAttackHold = 0x8,
-	CharMode_PowerAttackGather = 0x9,
-	CharMode_ThunderShoot = 0xE,
-	CharMode_Return = 0xF,
-	CHAR_MODE_Inactive = 0x11,
-	CHAR_MODE_Disabled = 0x12,
+    CharMode_UnderControl = 0x0,
+    CharMode_Normal = 0x1,
+    CharMode_FlyFormation = 0x2,
+    CharMode_PowerAirSpin = 0x4,
+    CharMode_PowerAttackHold = 0x8,
+    CharMode_PowerAttackGather = 0x9,
+    CharMode_ThunderShoot = 0xE,
+    CharMode_Return = 0xF,
+    CHAR_MODE_Inactive = 0x11,
+    CHAR_MODE_Disabled = 0x12,
 };
 
 enum RwMatrixFlag
 {
-	rwMATRIXINTERNALIDENTITY = 0x20000,
+    rwMATRIXINTERNALIDENTITY = 0x20000,
 };
 
 enum Character : char
 {
-	Char_Sonic,
-	Char_Knuckles,
-	Char_Tails,
-	Char_Shadow,
-	Char_Omega,
-	Char_Rouge,
-	Char_Amy,
-	Char_Big,
-	Char_Cream,
-	Char_Espio,
-	Char_Vector,
-	Char_Charmy
+    Char_Sonic,
+    Char_Knuckles,
+    Char_Tails,
+    Char_Shadow,
+    Char_Omega,
+    Char_Rouge,
+    Char_Amy,
+    Char_Big,
+    Char_Cream,
+    Char_Espio,
+    Char_Vector,
+    Char_Charmy
 };
 
 enum BTN_STATUS : uint8_t
 {
-	isOn = 0x1,
-	isPress = 0x4,
-	isRelease = 0x8,
+    isOn = 0x1,
+    isPress = 0x4,
+    isRelease = 0x8,
 };
 
 enum PlayerMode
@@ -475,5 +475,22 @@ enum RwOpCombineType : __int32
     rwCOMBINEPRECONCAT = 0x1,
     rwCOMBINEPOSTCONCAT = 0x2,
 };
+
+enum ENUM_CHARACTER_KIND_HHC : __int8
+{
+    ENUM_CHARACTER_KIND_SONIC = 0x0,
+    ENUM_CHARACTER_KIND_KNUCKLES = 0x1,
+    ENUM_CHARACTER_KIND_TAILS = 0x2,
+    ENUM_CHARACTER_KIND_SHADOW = 0x3,
+    ENUM_CHARACTER_KIND_OMEGA = 0x4,
+    ENUM_CHARACTER_KIND_ROUGE = 0x5,
+    ENUM_CHARACTER_KIND_AMY = 0x6,
+    ENUM_CHARACTER_KIND_BIG = 0x7,
+    ENUM_CHARACTER_KIND_CREAM = 0x8,
+    ENUM_CHARACTER_KIND_ESPIO = 0x9,
+    ENUM_CHARACTER_KIND_VECTOR = 0xA,
+    ENUM_CHARACTER_KIND_BEE = 0xB,
+};
+
 
 #endif

@@ -1,6 +1,6 @@
 #include "pch.h"
 
-MHook<TObjPlayer*, TObjTeam*, unsigned int, char> SetAmyRose_Team_t(0x5CB7D0);
+FastFunctionHook<TObjPlayer*, TObjTeam*, unsigned int, char> SetAmyRose_Team_t(0x5CB7D0);
 
 struct TObjBird
 {
@@ -26,62 +26,50 @@ RpClump* TObjBirdPclump[2] = { nullptr };
 RwTexDictionary* BirdTexDictionary = nullptr;
 
 struct vftableBird {
-	void(*destructor)();
-	void(*exec)();
-	void(*disp)();
-	void(*Tdisp)();
-	void(*Pdisp)();
-	void(*null0)();
-	void(*null1)();
-	void(*null2)();
-	void(*null3)();
-	void(*null4)();
+	void(__fastcall* destructor)(TObjBird* ptr, char unused, char signal);
+	void(__fastcall* exec)(TObjBird* ptr);
+	void(__fastcall* disp)(TObjBird* ptr, char unused);
+	void(__fastcall* tdisp)(TObjBird* ptr, char unused);
+	void(__fastcall* pdisp)(TObjBird* ptr, char unused);
+	void(__fastcall* null2)();
+	void(__fastcall* null3)();
+	void(__fastcall* null4)();
+	void(__fastcall* null5)();
+	void(__fastcall* null6)();
 };
 
 
-
-void BirdDestructor()
+void __fastcall BirdDestructor(TObjBird* ptr, char unusued, char signal)
 {
 
 }
 
-
-void BirdDisp()
+void __fastcall BirdDisp(TObjBird* ptr, char unused)
 {
+	if (!birdPtr)
+		return;
+
+	auto p = playerTop[birdPtr->playerno];
+	if (p)
+	{
+		if (p->mode == 999 || p->charMode == CHAR_MODE_Inactive)
+			return;
+	}
+
 	if (TObjBirdPclump[0])
 		RPClumpRender(TObjBirdPclump[0]);
 }
 
-void BirdTDisp()
+void __fastcall BirdTDisp(TObjBird* ptr, char unused)
 {
 }
 
-void BirdPDisp()
+void __fastcall BirdPDisp(TObjBird* ptr, char unused)
 {
 }
 
-int __cdecl AdjustAngle(__int16 bams_a, unsigned __int16 bams_b, int limit)
-{
-	int result; // eax
-	__int16 v4; // cx
 
-	result = bams_b;
-	v4 = bams_b - bams_a;
-	if ((bams_b - bams_a) > limit || v4 < -limit)
-	{
-		if (v4 >= 0)
-		{
-			result = (limit + bams_a);
-		}
-		else
-		{
-			result = (bams_a - limit);
-		}
-	}
-	return result;
-}
-
-void BirdExec()
+void __fastcall BirdExec(TObjBird* ptr)
 {
 	if (pHAH_Bird)
 	{
@@ -157,7 +145,7 @@ void LoadAmyBird()
 {
 	PrintMessage("Init Amy Bird Task..\n");
 	birdPtr = (TObjBird*)THeapCtrlMalloc(sizeof(TObjBird) + 8, TaskHeap);
-	TObjectCreate(&birdPtr->obj, TL_03);
+	tobject::tobject(&birdPtr->obj, TL_03);
 
 	ObjMoveOnGroundFv(&birdPtr->objMove);
 	birdPtr->obj.ClassName = (char*)"TObjBird";
@@ -199,7 +187,6 @@ void LoadAmyBird()
 
 	//load model
 	TObjBirdPclump[0] = OneFileLoadClump(2, BufferData, oneFileMem); //model
-	//TObjChocolaPclump[1] = OneFileLoadClump(4, BufferData, oneFileMem); //ball
 
 
 	uint8_t indexOneFile = 4; 
@@ -240,11 +227,11 @@ void LoadAmyBird()
 
 TObjPlayer* __cdecl SetAmyRose_Team_r(TObjTeam* a2, unsigned int a3, char a5)
 {
-	auto res = SetAmyRose_Team_t.originalFunc(a2, a3, a5);
+	auto res = SetAmyRose_Team_t.Original(a2, a3, a5);
 	LoadAmyBird();
-	return res;
-
+	return NULL;
 }
+
 
 void initBird()
 {

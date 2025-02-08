@@ -61,17 +61,22 @@ void TObjChocolaGetTargetPositionToChaseHer(TObjChocola* chocola)
 
 
 
-void ChocolaDestructor()
+void __fastcall ChocolaDestructor(TObjChocola* ptr, char unused, char signal)
 {
+	printf("DELETED\n");
+	auto pnum = ptr->playerno;
+	TObjectDestructor(&ptr->obj);
+	if ((signal & 1) != 0)
+		THeapCtrlFree(ptr, TaskHeap);
 }
 
 
-void ChocolaDisp()
+void __fastcall ChocolaDisp(TObjChocola* ptr, char unused)
 {
-	if (!chocolaPtr)
+	if (!ptr)
 		return;
 
-	auto p = playerTop[chocolaPtr->playerno];
+	auto p = playerTop[ptr->playerno];
 	if (p)
 	{
 		if (p->mode == 999 || p->charMode == CHAR_MODE_Inactive)
@@ -85,18 +90,18 @@ void ChocolaDisp()
 	}
 }
 
-void ChocolaTDisp()
+void __fastcall ChocolaTDisp(TObjChocola* ptr, char unused)
 {
 }
 
-void ChocolaPDisp()
+void __fastcall ChocolaPDisp(TObjChocola* ptr, char unused)
 {
 }
 
 
-void ChocolaExec()
+void __fastcall ChocolaExec(TObjChocola* ptr)
 {
-	if (!chocolaPtr)
+	if (!ptr)
 		return;
 
 	if (!playerTop[0])
@@ -105,7 +110,7 @@ void ChocolaExec()
 	TObjPlayer* p = nullptr;
 
 
-	if (chocolaPtr->playerno == -1)
+	if (ptr->playerno == -1)
 	{
 		for (uint8_t i = 0; i < 8; i++)
 		{
@@ -139,7 +144,13 @@ void ChocolaExec()
 	if (!p)
 		return;
 
-	switch (p->reqaction)
+
+
+	if (p->mode == 999 || p->charMode == CHAR_MODE_Inactive)
+		return;
+
+
+	switch (p->mm.reqaction)
 	{
 	case 1u:
 	case 2u:
@@ -316,16 +327,16 @@ void ChocolaExec()
 }
 
 struct vftableChocola {
-	void(*destructor)();
-	void(*exec)();
-	void(*disp)();
-	void(*Tdisp)();
-	void(*Pdisp)();
-	void(*null0)();
-	void(*null1)();
-	void(*null2)();
-	void(*null3)();
-	void(*null4)();
+	void(__fastcall* destructor)(TObjChocola* ptr, char unused, char signal);
+	void(__fastcall* exec)(TObjChocola* ptr);
+	void(__fastcall* disp)(TObjChocola* ptr, char unused);
+	void(__fastcall* tdisp)(TObjChocola* ptr, char unused);
+	void(__fastcall* pdisp)(TObjChocola* ptr, char unused);
+	void(__fastcall* null0)();
+	void(__fastcall* null1)();
+	void(__fastcall* null2)();
+	void(__fastcall* null3)();
+	void(__fastcall* null4)();
 };
 
 static vftableChocola vfTable = { ChocolaDestructor, ChocolaExec, ChocolaDisp, ChocolaTDisp, ChocolaPDisp, nullsub, nullsub, nullsub, nullsub, nullsub };
@@ -335,7 +346,7 @@ void LoadChocola()
 {
 	PrintMessage("Init Chocola Custom Task..\n");
 	chocolaPtr = (TObjChocola*)THeapCtrlMalloc(sizeof(TObjChocola) + 8, TaskHeap);
-	TObjectCreate(&chocolaPtr->obj, TL_03);
+	tobject::tobject(&chocolaPtr->obj, TL_03);
 	COLLIFv(&chocolaPtr->ccl);
 	ObjMoveOnGroundFv(&chocolaPtr->objMove);
 	chocolaPtr->obj.ClassName = (char*)"TObjChocola";

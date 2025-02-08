@@ -10,8 +10,10 @@
 // add headers that you want to pre-compile here
 #include "framework.h"
 #include "Heroes-Util.h"
-#include "MinHookWrapper.h"
+#include "UsercallFunctionHandler.h"
+#include "FastFunctionHook.hpp"
 #include "mod.h"
 #include "Util.h"
+#include "SH-Util.h"
 
 #endif //PCH_H

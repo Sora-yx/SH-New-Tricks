@@ -2,12 +2,15 @@
 
 void COLLIFv(C_COLLI* param_1);
 void ObjMoveOnGroundFv(OBJ_MoveOnGround* obj);
-void nullsub();
+void __fastcall nullsub();
 
-DataPointer(RwV3d, AxisX, 0x742EBC);
-
-DataPointer(RwV3d, AxisZ, 0x742ED4);
-FunctionPointer(RwFrame*, RwFrameRotate, (RwFrame* frame, const RwV3d* axis, RwReal angle, RwOpCombineType combineOp), 0x64C800);
 
 float njCos(int n);
 float njSin(int n);
+int AdjustAngle(__int16 bams_a, unsigned __int16 bams_b, int limit);
+void WriteNop(intptr_t address, const uint16_t count);
+bool PlayerCheckSlowSpinSpinDash(TObjPlayer* p);
+void RunCommonPhysics(TObjPlayer* p);
+
+bool ChkInputLight(TObjPlayer* p);
+bool IsOnPath(TObjPlayer* p);

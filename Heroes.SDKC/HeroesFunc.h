@@ -15,7 +15,7 @@ StdcallFunctionPointer(void, TobjSonicExecMode, (TObjPlayer* p), 0x5CD670);
 StdcallFunctionPointer(int, TObjSonicChkInput, (TObjSonic* p), 0x5D35F0);
 
 
-static auto SonicCheckJump = GenerateUsercallWrapper<int (*)(TObjPlayer* p)>(rEAX, 0x5D35D0, rEAX, rEAX);
+static auto SonicCheckJump = GenerateUsercallWrapper<int (*)(TObjPlayer * p)>(rEAX, 0x5D35D0, rEAX, rEAX);
 static auto PCheckPower = GenerateUsercallWrapper<int (*)(float* stroke, int* angle, TObjPlayer * p)>(rEAX, 0x591340, rEAX, rEBX, rEDI, rESI);
 
 static auto PGetSpeed = GenerateUsercallWrapper<void (*)(TObjPlayer * p)>(noret, 0x59E8C0, rEAX);
@@ -29,6 +29,109 @@ static auto PGetAccelerationAir = GenerateUsercallWrapper<void (*)(TObjPlayer * 
 static auto SetEffectObi = GenerateUsercallWrapper<void (*)(int charNo)>(noret, 0x639120, rEDI);
 static auto SetEffDash = GenerateUsercallWrapper<int* (*)(char p)>(rEAX, 0x639120, rBL);
 static auto ReleaseOneFile = GenerateUsercallWrapper<signed int (*)(ONEFILE * this_)>(rEAX, 0x42F210, rEBX);
+
+
+//void __usercall EffBall::~EffBall(EffBall *ball@<eax>)
+static const void* const EffBallDestructorPtr = (void*)0x62F770;
+static inline void EffBallDestructor(EffBall* eff)
+{
+	__asm
+	{
+		mov eax, [eff]
+		call EffBallDestructorPtr
+	}
+}
+
+
+namespace IsndADX
+{
+	DataArray(TObjBGM*, BGMTask, 0xA7785C, 0x2);
+	FunctionPointer(char, ALL_Stop, (), 0x43EA30);
+	FunctionPointer(char, BGM_Replay, (), 0x43E8B0);
+	VoidFunc(BGM_MainPlay, 0x43E8F0);
+};
+
+namespace tobjbgm
+{
+	//unsigned __int8 __usercall TObjBGM::Stop@<al>(TObjBGM* a1@<esi>)
+	static const void* const StopPtr = (void*)0x43F400;
+	static inline unsigned __int8 Stop(TObjBGM* p)
+	{
+		uint8_t res;
+		__asm
+		{
+			mov esi, [p]
+			call StopPtr
+			mov res, al
+		}
+		return res;
+	}
+
+	//unsigned int __usercall TObjBGM::Play@<eax>(TObjBGM *bgmTask@<edi>)
+	static const void* const PlayPtr = (void*)0x43F270;
+	static inline unsigned int Play(TObjBGM* p)
+	{
+		unsigned int res;
+		__asm
+		{
+			mov edi, [p]
+			call PlayPtr
+			mov res, eax
+		}
+		return res;
+	}
+
+	//int __userpurge TObjBGM::SetFileName@<eax>(int a1@<ecx>, const char *a2@<esi>, int a3)
+	static const void* const SetFileNamePtr = (void*)0x43F360;
+	static inline int SetFileName(const char* a2, TObjBGM* a3)
+	{
+		unsigned int res;
+		__asm
+		{
+			push[a3]
+			mov esi, [a2]
+			call SetFileNamePtr
+			mov res, eax
+		}
+		return res;
+	}
+
+	//char __usercall TObjBGM::ReqCrossOut@<al>(TObjBGM *a1@<eax>)
+	static const void* const ReqCrossOutPtr = (void*)0x43F470;
+	static inline char ReqCrossOut(TObjBGM* p)
+	{
+		char res;
+		__asm
+		{
+			mov eax, [p]
+			call ReqCrossOutPtr
+			mov res, al
+		}
+		return res;
+	}
+
+};
+
+namespace ADV_STORY
+{
+	FunctionPointer(int, IsLastEnable, (), 0x456410);
+}
+
+namespace tobject
+{
+
+	//void __usercall __spoils<ecx,edx> TObject::TObject(TObject *this@<eax>, TObject *parent@<ecx>)
+	static const void* const tobjectPtr = (void*)0x443260;
+	static inline void tobject(TObject* t, TObject* parent)
+	{
+		__asm
+		{
+			mov ecx, parent
+			mov eax, t
+			call tobjectPtr
+		}
+	}
+};
 
 FunctionPointer(void, SetRocketHit, (char charNo), 0x639EA0);
 
@@ -65,18 +168,6 @@ ThiscallFunctionPointer(void, TObjOldPlayerPlayerModeChangeToFall, (TObjPlayer* 
 ThiscallFunctionPointer(TObject*, TObjCheeseCreate, (TObject* this_, TObjCheese* cheese), 0x5B51C0);
 FastcallFunctionPointer(void*, THeapCtrlMalloc, (unsigned int size, THeapCtrl* this_), 0x428280);
 
-
-//void __usercall __spoils<ecx,edx> TObject::TObject(TObject *this@<eax>, TObject *parent@<ecx>)
-static const void* const TObjectCreatePtr = (void*)0x443260;
-static inline void TObjectCreate(TObject* t, TObject* parent)
-{
-	__asm
-	{
-		mov ecx, parent
-		mov eax, t
-		call TObjectCreatePtr
-	}
-}
 
 //void __usercall C_COLLI::Init(unsigned __int8 id@<al>, C_COLLI *this@<esi>, CCL_INFO *info, int nbInfo)
 static const void* const C_ColInitPtr = (void*)0x4074B0;

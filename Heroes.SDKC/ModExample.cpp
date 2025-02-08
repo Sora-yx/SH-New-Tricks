@@ -4,6 +4,8 @@
 #include <windows.h>
 #include <fcntl.h>
 #include <io.h>
+#include "UsercallFunctionHandler.h"
+#include "FastFunctionHook.hpp"
 
 /*Example of function you can make Reloaded use from C++ such as printing*/
 

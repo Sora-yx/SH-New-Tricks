@@ -60,6 +60,9 @@
     <ClInclude Include="HeroesVariables.h">
       <Filter>Header Files\include</Filter>
     </ClInclude>
+    <ClInclude Include="FastFunctionHook.hpp">
+      <Filter>Header Files\memory</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

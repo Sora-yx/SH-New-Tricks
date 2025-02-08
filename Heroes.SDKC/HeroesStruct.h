@@ -69,7 +69,6 @@ struct RwMatrixTag
 };
 
 
-
 struct TObject
 {
 	void* __vftable /*VFT*/;
@@ -86,17 +85,6 @@ struct TObject
 	unsigned __int16 PDispTime;
 	unsigned __int16 ImmAftSetRasterTime;
 	__int16 field_26;
-};
-
-struct PL_BUTTON_STATUS
-{
-	char jump;
-	char action;
-	char sfa;
-	char formChangeL;
-	char formChangeR;
-	char BYTE_0X5;
-	char BYTE_0X6;
 };
 
 struct RwRaster
@@ -133,8 +121,8 @@ struct RwFrame
 {
 	RwObject object;
 	RwLLLink inDirtyListLink;
-	RwMatrixTag modelling;
-	RwMatrixTag ltm;
+	RwMatrix modelling;
+	RwMatrix ltm;
 	RwLinkList objectList;
 	RwFrame* child;
 	RwFrame* next;
@@ -172,7 +160,7 @@ struct RwStreamMemory {
 	unsigned char* memBlock; // offset 0x8, size 0x4
 };
 
-struct RwStreamCustom 
+struct RwStreamCustom
 {
 	signed int (*sfnclose)(void*); // offset 0x0, size 0x4
 	unsigned int (*sfnread)(void*, void*, unsigned int); // offset 0x4, size 0x4
@@ -183,20 +171,20 @@ struct RwStreamCustom
 
 
 
-struct RwStreamFile 
+struct RwStreamFile
 {
 	void* fpFile; // offset 0x0, size 0x4
 	void* constfpFile; // offset 0x0, size 0x4
 };
 
-struct RwStreamUnion 
+struct RwStreamUnion
 {
 	RwStreamMemory memory; // offset 0x0, size 0xC
 	RwStreamFile file; // offset 0x0, size 0x4
 	RwStreamCustom custom; // offset 0x0, size 0x14
 };
 
-struct ONE_FILEINFO 
+struct ONE_FILEINFO
 {
 	char filename[256][64]; // offset 0x0, size 0x4000
 };
@@ -253,7 +241,7 @@ struct RpAtomic
 };
 
 
-struct RwStream 
+struct RwStream
 {
 	RwStreamType type; // offset 0x0, size 0x4
 	RwStreamAccessType accessType; // offset 0x4, size 0x4
@@ -354,15 +342,69 @@ struct ONEFILE
 	RwStream* mCurStream; // offset 0x58, size 0x4
 };
 
+struct PL_BUTTON_STATUS
+{
+	signed __int8 status;
+};
+
+
+struct sGamePeri
+{
+	unsigned int on;
+	unsigned int off;
+	unsigned int press;
+	unsigned int release;
+	unsigned __int16 r;
+	unsigned __int16 l;
+	__int16 x1;
+	__int16 y1;
+	__int16 x2;
+	__int16 y2;
+	int angle;
+	float stroke;
+	int angle2;
+	float stroke2;
+	__int16 rep_cnt[10];
+	int noInputTime;
+	unsigned int a_on;
+	unsigned int a_press;
+};
+
+
+struct PeriCtrl
+{
+	int Flag[6];
+	int Enable[6];
+	int Impossible[6];
+	sGamePeri menu[6];
+	sGamePeri game[6];
+	int unknown_0x3D8[6];
+	sGamePeri unknownPeri_0x3F0[4];
+};
+
+
+struct sPeriCtrl
+{
+	int Flag[6];
+	int Enable[6];
+	int Impossible[6];
+	sGamePeri SystemPeri[6];
+	sGamePeri GamePeri[6];
+	int ForceOff[6];
+	sGamePeri SuperPeri[6];
+};
 
 struct PLAYER_INPUT
 {
 	float stroke;
-	DWORD angle;
-	BYTE moveEdgePressed;
-	PL_BUTTON_STATUS PL_BUTTON_STATUS;
+	signed int angle;
+	signed __int8 lever_gotcha;
+	PL_BUTTON_STATUS jump;
+	PL_BUTTON_STATUS action;
+	PL_BUTTON_STATUS sfa;
+	PL_BUTTON_STATUS change_leader;
+	PL_BUTTON_STATUS change_leaderR;
 };
-
 
 
 struct PARTICLE_SPRITE
@@ -435,17 +477,15 @@ struct RpClump
 };
 
 
-
 struct MOTIONWK
 {
 	RwV3d spd;
 	RwV3d acc;
 	sAngle ang_aim;
 	sAngle ang_spd;
-	signed int ang_shoulder;
-	unsigned int reserve0;
-	unsigned int reserve1;
-	unsigned int reserve2;
+	float force;
+	float accel;
+	float frict;
 };
 
 struct player_parameter
@@ -570,8 +610,6 @@ struct EffWink
 };
 
 
-
-
 struct RpHAnimHierarchy
 {
 	RwInt32 flags;
@@ -596,18 +634,15 @@ struct PL_NODE_PARAMETER
 	struct RwV3d vec;
 };
 
-struct PL_NODE_PARAMETERT //test
+struct PL_NODE_PARAMETER_
 {
 	signed int node_number;
-	struct RwFrame* pFrame_Root;
-	struct RwFrame* pFrame;
-	int paddingCrap;
-	struct RwMatrixTag matrix;
-	struct RwV3d pos;
-	struct RwV3d vec;
-	int padding[2];
+	RwFrame* rootFrame;
+	char field_8;
+	_BYTE gap9[7];
+	RwMatrix matrix;
+	RwV3d pos;
 };
-
 
 struct EffShadow
 {
@@ -638,6 +673,35 @@ struct SONICWK
 	char pClump[144];
 	EffWink Eyelid;
 };
+
+
+struct NJS_MOTION
+{
+	void* mdata;
+	unsigned int nbFrame;
+	unsigned __int16 type;
+	unsigned __int16 inp_fn;
+};
+
+struct RpUVAnimAnimation
+{
+	RtAnimAnimation* pAnim;
+	RtAnimInterpolator* instance;
+	signed int type;
+};
+
+struct MML_OBJECTTABLE
+{
+	char ext[4];
+	union
+	{
+		RpClump* ptr;
+		RpUVAnimAnimation* ptrUVAnim;
+		NJS_MOTION* ptrTMB;
+
+	};
+};
+
 
 struct TObjSonic
 {
@@ -765,13 +829,41 @@ struct TObjSonic
 	int field_A04;
 };
 
-
-//I removed some alignement to do check if it still work
-struct TObjPlayer : TObject
+struct __declspec(align(4)) mtnmanwk
 {
+	signed __int16 mtnmode;
+	signed __int16 reqaction;
+	signed __int16 action;
+	signed __int16 lastaction;
+	signed __int16 nextaction;
+	signed __int16 acttimer;
+	signed __int16 flag;
+	signed __int16 blendaction;
+	signed __int16 nextblendaction;
+	signed __int16 dummy;
+	float nframe;
+	float last_frame;
+	float start_frame;
+	float blendratio;
+	float nextblendratio;
+	float* spdp;
+	float* workp;
+	PL_MOTION* plmotptr;
+	RpClump* pClump;
+	RpHAnimHierarchy* pNHAH;
+	RpHAnimHierarchy* pTHAH;
+	RpHAnimHierarchy* pIHAH;
+	signed __int16 mot[14];
+	signed __int8 mot_timer[14];
+};
+
+struct TObjPlayer
+{
+	void* __vftableTObj /*VFT*/;
+	TObject tobj;
 	_BYTE gap28[4];
 	C_COLLI C_COLLI_;
-	_BYTE gapB4[6];
+	_BYTE gapB4[4];
 	char playerNo;
 	char characterKind;
 	BYTE suitNo;
@@ -816,12 +908,13 @@ struct TObjPlayer : TObject
 	_BYTE gap1B0[4];
 	int field_1B4;
 	int statusRelated0x1B8;
-	__int16 flag;
+	int flag;
 	int playerStatus_0x1C0;
 	player_parameter p;
-	BYTE waterEffectIs2;
-	DWORD DWORD_0x250;
-	DWORD DWORD_0x254;
+	char waterEffectIs2;
+	int gap_0x24c;
+	int DWORD_0x250;
+	int DWORD_0x254;
 	float groundBelowFallMaybe;
 	float groundHeight;
 	_BYTE gap260[12];
@@ -839,20 +932,20 @@ struct TObjPlayer : TObject
 	RwReal hpos;
 	PATHTAG* pathtag;
 	_BYTE gap2D8[5];
-	BYTE finaleFlipType;
-	WORD airAttackTimer;
-	_WORD airAttackTimer2;
+	char finaleFlipType;
+	short airAttackTimer;
+	short airAttackTimer2;
 	C_COLLI* cwp;
-	DWORD flyFormationYTilt;
-	DWORD idk;
-	DWORD flyFormationZTilt;
-	DWORD flyFormationBoostYTilt;
+	int flyFormationYTilt;
+	int idk;
+	int flyFormationZTilt;
+	int flyFormationBoostYTilt;
 	_BYTE gap2F8[20];
-	WORD grindTimer;
+	short grindTimer;
 	_BYTE gap30E[6];
-	WORD powerAirSpinTimer;
+	short powerAirSpinTimer;
 	float powerAirSpinPositionRelated;
-	WORD tornadoTimer;
+	short tornadoTimer;
 	_BYTE gap31E[6];
 	RwV3d tornadoOrigin;
 	float alphaAmount__;
@@ -863,43 +956,24 @@ struct TObjPlayer : TObject
 	char field_394;
 	char field_395;
 	char field_396[2];
-	WORD animationIndex;
-	WORD motion;
-	WORD reqaction;
-	__int16 action;
-	__int16 lastaction;
-	__int16 nextaction;
-	__int16 acttimer;
-	_BYTE gap3A5[6];
-	float animFrameMaybe;
-	float field_3B0;
-	_BYTE gap3B4[8];
-	RwReal field_3BC;
-	_BYTE gap3C0[4];
-	float* field_3C4;
-	PL_MOTION* animList;
-	RpClump* clump_3CC;
-	RpHAnimHierarchy* field_3D0;
-	RpHAnimHierarchy* field_3D4;
-	RpHAnimHierarchy* field_3D8;
-	_BYTE gap3DC[40];
-	PL_NODE_PARAMETER field_404;
+	mtnmanwk mm;
+	char field_408[88];
 	_BYTE gap460[4];
 	char field_464;
-	PL_NODE_PARAMETER field_468;
+	PL_NODE_PARAMETER_ field_468;
 	_BYTE gap4C4[8];
-	PL_NODE_PARAMETER field_4CC;
+	PL_NODE_PARAMETER_ field_4CC;
 	int gap528[2];
-	PL_NODE_PARAMETER field_530;
+	PL_NODE_PARAMETER_ field_530;
 	_BYTE gap58C[8];
-	PL_NODE_PARAMETER field_594;
+	PL_NODE_PARAMETER_ field_594;
 	_BYTE gap5F0[108];
-	PL_NODE_PARAMETER field_65C;
+	PL_NODE_PARAMETER_ field_65C;
 	_BYTE gap6B8[4];
 	_BYTE gap6BC[608 / 2];
 	_BYTE gapAgain[608 / 2];
-	void* pTexture;
-	void* textureRelated;
+	RwTexDictionary* pTexture;
+	MML_OBJECTTABLE* clumps;
 	int muteCount;
 	EffShadow EffShadow;
 	EffBall EffBall_HHC;
@@ -909,23 +983,16 @@ struct TObjPlayer : TObject
 	__int16 lightDashRingCount_HHC;
 	RwV3d lightDashLastRingPos_HHC;
 	_BYTE gap998[12];
-	float field_9A4;
-	int field_9A8;
-	int field_9AC;
+	void* pCamera_Win[3];
 	EffWink pEffWink;
-	int field_9D8;
-	int field_9DC;
-	int field_9E0;
-	int field_9E4;
-	int field_9E8;
-	RpClump* pClumpSuperAura_HHC;
+	RpClump* Mabuta[5];
+	RpClump* SuperEffect;
 	RpHAnimHierarchy* pSuperSonicAura;
 	RwV3d field_9F4;
 	void* pSuperSonicSparkles;
 	_BYTE gapA04[56];
 	char field_0;
 };
-
 
 struct TObjTeam : TObject
 {
@@ -1216,6 +1283,34 @@ struct CCL_SEARCH
 	int Kind;
 };
 
+struct ClumpAnim_HHC
+{
+	const char field_0[64];
+	RpClump* data_HHC;
+};
+
+
+
+struct TObjBGM
+{
+	TObject obj;
+	signed __int8 type;
+	signed __int8 mode;
+	signed __int8 special_mode;
+	unsigned __int8 flag;
+	unsigned __int8 reqtimer;
+	unsigned int request;
+	signed int defVolume;
+	signed int nowVolume;
+	signed int adxt_stat;
+	signed int endTime;
+	int what;
+	void* adxt;
+	void* adxt_work;
+	char filename[260];
+	char mainBGMName[260];
+};
+
 #pragma pack(pop)
 
-#endif /* SADXMODLOADER_SADXSTRUCTS_H */
+#endif /* MODLOADER_HEROESSTRUCTS_H */

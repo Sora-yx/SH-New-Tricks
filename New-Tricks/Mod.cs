@@ -73,15 +73,12 @@ namespace New_Tricks
             // If you want to implement e.g. unload support in your mod,
             // and some other neat features, override the methods in ModBase.
 
-            // TODO: Implement some mod logic
+
             _modLoader.GetController<IReloadedHooks>().TryGetTarget(out var reloadedHooks);
             SDK.Init(reloadedHooks, null);
 
             //string directoryFolder = _modLoader.GetDirectoryForModId(_modConfig.ModId);
 
-            _speedChars = new SpeedChars();
-            _flyChars = new FlyChars();
-            _powerChars = new PowerChars();
             //_TeamMemb = new Team();
 
             _nativemods = new();

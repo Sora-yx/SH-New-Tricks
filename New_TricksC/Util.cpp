@@ -25,7 +25,7 @@ void ObjMoveOnGroundFv(OBJ_MoveOnGround* obj)
 }
 
 
-void nullsub()
+void __fastcall nullsub()
 {
 
 }
@@ -164,4 +164,75 @@ float njSin(int n)
 	}
 
 	return result;
+}
+
+int AdjustAngle(__int16 bams_a, unsigned __int16 bams_b, int limit)
+{
+	int result = bams_b;
+	int diff = bams_b - bams_a;
+	if ((bams_b - bams_a) > limit || diff < -limit)
+	{
+		if (diff >= 0)
+		{
+			result = (limit + bams_a);
+		}
+		else
+		{
+			result = (bams_a - limit);
+		}
+	}
+	return result;
+}
+
+void WriteNop(intptr_t address, const uint16_t count)
+{
+	for (size_t i = 0; i < count; i++)
+	{
+		WriteData((intptr_t*)address + i, 0x90);
+	}
+
+}
+
+ bool PlayerCheckSlowSpinSpinDash(TObjPlayer* p)
+{
+	if (p->spd.x >= p->p.jog_speed)
+		return false;
+
+	if (p->spd.x > 0.0f)
+	{
+		p->mode = PlayerMode::ModeRunning;
+	}
+	else
+	{
+		p->mode = 0;
+		p->idleTime = 0;
+	}
+
+	p->mm.reqaction = PlayerAnim::Animation_Land_;
+
+	return true;
+}
+
+void RunCommonPhysics(TObjPlayer* p)
+{
+	PGetSpeed(p);
+	PSetPosition(p);
+	PResetPosition(p);
+}
+
+
+bool ChkInputLight(TObjPlayer* p)
+{
+	if ((p->flag & PL_FLAG_INPUT) == 0)
+		return FALSE;
+
+	return TRUE;
+}
+
+bool IsOnPath(TObjPlayer* p)
+{
+	if ((p->flag & PL_FLAG_PATH) == 0)
+		return FALSE;
+
+	return TRUE;
 }

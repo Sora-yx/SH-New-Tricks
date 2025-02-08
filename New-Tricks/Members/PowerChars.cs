@@ -69,7 +69,7 @@ namespace New_Tricks.Characters
         {
             _TObjKnuxChkMode = Fun_TObjKnuxChkMode.Hook(TObjKnuxChkModeHook).Activate();
             _TKnuxExecMove = Fun_TObjKnuxExecMove.Hook(TObjKnuxExecMoveHook).Activate();
-
+            
             if (ConfigV._modConfig.WidePowerTweaks)
             {
                 Util.WriteNop(0x5B9FE5, 5); //nope PGetBreak so characters don't slow down

@@ -13,11 +13,23 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Cream">
+    <Filter Include="Source Files\Team">
+      <UniqueIdentifier>{4fd5e550-38b0-49ce-b7a8-be27a141790f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Team\Fly">
+      <UniqueIdentifier>{9f4cf10e-cdb3-48a0-b290-1b30d5ff0636}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Team\Fly\Cream">
       <UniqueIdentifier>{4469fdb7-31a8-41b0-bc23-2e636971954e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Amy">
+    <Filter Include="Source Files\Team\Speed">
+      <UniqueIdentifier>{586dc84d-1742-40f7-8165-192988ccb072}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Team\Speed\Amy">
       <UniqueIdentifier>{04ea9b84-2b04-46ec-8bec-f56c465ddbef}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Team\Speed\Moveset">
+      <UniqueIdentifier>{cacf0494-f42b-4fb5-8709-093f239d9777}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,11 +57,14 @@
     <ClInclude Include="Amy.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="SH-Util.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="speed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="dllmain.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="pch.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -57,13 +72,28 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Chocola.cpp">
-      <Filter>Source Files\Cream</Filter>
+      <Filter>Source Files\Team\Fly\Cream</Filter>
     </ClCompile>
     <ClCompile Include="Bird.cpp">
-      <Filter>Source Files\Amy</Filter>
+      <Filter>Source Files\Team\Speed\Amy</Filter>
     </ClCompile>
     <ClCompile Include="Util.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Speed.cpp">
+      <Filter>Source Files\Team\Speed</Filter>
+    </ClCompile>
+    <ClCompile Include="Amy.cpp">
+      <Filter>Source Files\Team\Speed\Amy</Filter>
+    </ClCompile>
+    <ClCompile Include="SpinDash.cpp">
+      <Filter>Source Files\Team\Speed\Moveset</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="common.cpp">
+      <Filter>Source Files\Team</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
