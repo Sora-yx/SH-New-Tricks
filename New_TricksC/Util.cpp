@@ -194,16 +194,6 @@ void WriteNop(intptr_t address, const uint16_t count)
 
 }
 
-void WriteDataArray(intptr_t address, int* data, const uint16_t size)
-{
-	for (size_t i = 0; i < size; i++)
-	{
-		intptr_t addr = address + i;
-		WriteData<1>((void*)addr, data[i]);
-	}
-
-}
-
  bool PlayerCheckSlowSpinSpinDash(TObjPlayer* p)
 {
 	if (p->spd.x >= p->p.jog_speed)

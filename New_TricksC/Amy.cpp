@@ -104,7 +104,7 @@ namespace Amy
 			{
 				p->mode = (short)HammerFloat; // start hammer float check
 				p->mm.reqaction = Animation_HammerFloat;
-				p->flag &= 0xFFFFAF;
+				//p->flag &= 0xFFFFAF;
 				p->spd.y = 0.0f;
 				p->lightDashCountSinceLastRing_HHC = 0;
 				p->grindTimer = 0;
@@ -115,7 +115,17 @@ namespace Amy
 		return false;
 	}
 
+	void UpdateHoverMaxTimer(TObjTeam* t)
+	{
 
+		GetPropTimer(t);
+		for (size_t i = 0; i < 4; i++)
+		{
+			intptr_t addr = hoverTimeAddr + i;
+			uint8_t value = (uint8_t)bytesHoverDuration[i];
+			WriteData<1>((void*)addr, value);
+		}
+	}
 
 	bool RunAmyChkMode(TObjPlayer* p)
 	{
@@ -139,9 +149,10 @@ namespace Amy
 		case (short)ModeHammerFloat:
 			if (1 /**ConfigV._modConfig.BetterProp*/)
 			{
-				/**printf_s("Current Timer %d\n", p->lightDashCountSinceLastRing_HHC);
-				GetPropTimer(t);
-				WriteDataArray(hoverTimeAddr, (int*)bytesHoverDuration, 4);*/
+				if (ChkInputLight(p))
+					break;
+			
+				UpdateHoverMaxTimer(t);
 	
 
 				if (p->spd.x < GetPropMaxSpd(t) && PCheckPower(0, 0, p) != 0)
@@ -151,9 +162,12 @@ namespace Amy
 		case PlayerMode::ModeFall:
 			if (1 /**ConfigV._modConfig.BetterProp*/)
 			{
+				if (ChkInputLight(p))
+					break;
+
 				CheckHammerFloatInput(p);
 			}
-			return true;
+			break;
 		case 90:
 			//HammerJump.RunChkMode(p);
 			break;

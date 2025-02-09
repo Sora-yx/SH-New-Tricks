@@ -7,7 +7,7 @@ namespace FlyChars
 	void  TObjMilesExecMove_r(TObjPlayer* p);
 	FastUsercallHook<void, TObjPlayer*> TObjMilesExecMove_h(0x5C3B30);
 
-	intptr_t flyVSpdCapAdd = 0x789FA4;
+	intptr_t flyVSpdCapAddr = 0x789FA4;
 
 	static const int flyByteNew[] = { 0x0, 0xC0, 0x79, 0x44 };
 	static const int flyByteOrigin[] = { 0x0, 0x0, 0x34, 0x43 };
@@ -44,6 +44,26 @@ namespace FlyChars
 		return 2.0f;
 	}
 
+	void UpdateVerticalSpeedCap()
+	{
+		for (uint8_t i = 0; i < LengthOfArray(flyVSpdCapNew); i++)
+		{
+			intptr_t addr = flyVSpdCapAddr + i;
+			uint8_t value = (uint8_t)flyVSpdCapNew[i];
+			WriteData<1>((void*)addr, value);
+		}
+	}
+
+	void ResetVerticalSpeedCap()
+	{
+		for (uint8_t i = 0; i < LengthOfArray(flyVSpdCapOrigin); i++)
+		{
+			intptr_t addr = flyVSpdCapAddr + i;
+			uint8_t value = (uint8_t)flyVSpdCapOrigin[i];
+			WriteData<1>((void*)addr, value);
+		}
+	}
+
 	void TObjMilesExecMove_r(TObjPlayer* p)
 	{
 		bool vSpeed = true; /** ConfigV._modConfig.IncreaseSpeedCap;*/
@@ -52,7 +72,7 @@ namespace FlyChars
 
 		if (vSpeed && !isCpu)
 		{
-			WriteDataArray(flyVSpdCapAdd, (int*)flyVSpdCapNew, 4); 
+			UpdateVerticalSpeedCap();
 		}
 
 		switch (p->mode)
@@ -93,7 +113,7 @@ namespace FlyChars
 
 		if (vSpeed && !isCPU(p))
 		{
-			WriteDataArray(flyVSpdCapAdd, (int*)flyVSpdCapOrigin, 4);
+			ResetVerticalSpeedCap();
 		}
 	}
 
