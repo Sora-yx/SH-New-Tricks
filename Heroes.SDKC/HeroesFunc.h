@@ -9,6 +9,7 @@
 
 ThiscallFunctionPointer(void, PChangeRunningMotion, (TObjPlayer* p), 0x5A49F0);
 StdcallFunctionPointer(int, CheckBeInTheAir, (TObjPlayer* p), 0x5A5860);
+StdcallFunctionPointer(void, PGetAcceleration, (TObjPlayer* p), 0x58B290);
 
 StdcallFunctionPointer(void, TobjSonicChkMode, (TObjSonic* p), 0x5CE550);
 StdcallFunctionPointer(void, TobjSonicExecMode, (TObjPlayer* p), 0x5CD670);
@@ -16,7 +17,6 @@ StdcallFunctionPointer(int, TObjSonicChkInput, (TObjSonic* p), 0x5D35F0);
 
 
 static auto SonicCheckJump = GenerateUsercallWrapper<int (*)(TObjPlayer * p)>(rEAX, 0x5D35D0, rEAX, rEAX);
-static auto PCheckPower = GenerateUsercallWrapper<int (*)(float* stroke, int* angle, TObjPlayer * p)>(rEAX, 0x591340, rEAX, rEBX, rEDI, rESI);
 
 static auto PGetSpeed = GenerateUsercallWrapper<void (*)(TObjPlayer * p)>(noret, 0x59E8C0, rEAX);
 static auto PGetRotation = GenerateUsercallWrapper<void (*)(TObjPlayer * p)>(noret, 0x58E7A0, rEAX);
@@ -458,6 +458,23 @@ static inline CCL_HIT_INFO* C_COLLIIsHitKindEx(unsigned __int8 kind, C_COLLI* tw
 		mov result, eax
 	}
 	return result;
+}
+
+
+////signed int __usercall PCheckPower@<eax>(float *stroke@<ebx>, int *angle@<edi>, TObjPlayer *TObjPlayer@<esi>)
+static const void* const PCheckPowerPtr = (void*)0x591340;
+static inline signed int PCheckPower(float* stroke, int* angle, TObjPlayer* p)
+{
+	signed int res;
+	__asm
+	{
+		mov esi, p
+		mov edi, angle
+		mov ebx, stroke
+		call PCheckPowerPtr
+		mov res, eax
+	}
+	return res;
 }
 
 

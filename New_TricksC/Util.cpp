@@ -188,7 +188,18 @@ void WriteNop(intptr_t address, const uint16_t count)
 {
 	for (size_t i = 0; i < count; i++)
 	{
-		WriteData((intptr_t*)address + i, 0x90);
+		intptr_t add = address + i;
+		WriteData<1>((void*)add, 0x90);
+	}
+
+}
+
+void WriteDataArray(intptr_t address, int* data, const uint16_t size)
+{
+	for (size_t i = 0; i < size; i++)
+	{
+		intptr_t addr = address + i;
+		WriteData<1>((void*)addr, data[i]);
 	}
 
 }
@@ -235,4 +246,9 @@ bool IsOnPath(TObjPlayer* p)
 		return FALSE;
 
 	return TRUE;
+}
+
+bool isCPU(TObjPlayer* p) //need to be checked because idk if this is correct
+{
+	return p && (p->item & 0x1000) != 0;
 }

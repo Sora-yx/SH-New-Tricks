@@ -31,6 +31,9 @@
     <Filter Include="Source Files\Team\Speed\Moveset">
       <UniqueIdentifier>{cacf0494-f42b-4fb5-8709-093f239d9777}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Team\Power">
+      <UniqueIdentifier>{5399d75e-1af5-43a8-8abf-0de58397cd1f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -61,6 +64,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="speed.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Fly.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Power.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -94,6 +103,15 @@
     </ClCompile>
     <ClCompile Include="common.cpp">
       <Filter>Source Files\Team</Filter>
+    </ClCompile>
+    <ClCompile Include="Fly.cpp">
+      <Filter>Source Files\Team\Fly</Filter>
+    </ClCompile>
+    <ClCompile Include="Power.cpp">
+      <Filter>Source Files\Team\Power</Filter>
+    </ClCompile>
+    <ClCompile Include="HammerJump.cpp">
+      <Filter>Source Files\Team\Speed\Moveset</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

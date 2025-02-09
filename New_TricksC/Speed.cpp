@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "speed.h"
+#include "Amy.h"
 
 namespace SpeedChars
 {
@@ -11,14 +12,12 @@ namespace SpeedChars
 
 	signed int __stdcall TobjSonkChkInput_r(TObjPlayer* p)
 	{
-
 		if ((p->flag & PL_FLAG_INPUT) == 0)
 			return 0;
 
 		int smode = p->smode - 2;
 
 		bool isSpinDashAllowed = true; /** ConfigV.isSpinDashAllowed(p->characterKind);*/
-
 
 		switch (smode)
 		{
@@ -30,7 +29,6 @@ namespace SpeedChars
 				{
 					p->flag &= 0xFFFFDFFF;
 					p->mode = PlayerMode::ModeRunning;
-					//p->mm.reqaction = 19;
 					PChangeRunningMotion(p);
 				}
 				else
@@ -96,15 +94,15 @@ namespace SpeedChars
 	{
 		bool isSpinDash = true; /**ConfigV.isSpinDashAllowed(p->characterKind);*/
 
-		switch ((PlayerMode)p->mode)
+		switch (p->mode)
 		{
-		case PlayerMode::ModeRocketAccelCharge:
+		case ModeRocketAccelCharge:
 			if (isSpinDash)
 			{
 				return SpinDash::Charge(p);
 			}
 			break;
-		case PlayerMode::ModeRocketAccelRelease:
+		case ModeRocketAccelRelease:
 		{
 			if (isSpinDash)
 			{
@@ -150,9 +148,10 @@ namespace SpeedChars
 	{
 		
 		//Console.WriteLine("Cur Mode " + p->mode);
-		if (ExecModeSpdChars(p) /**|| Amy.RunAmyExecMode(p)*/)
+		if (ExecModeSpdChars(p))
 			return;
 
+		Amy::RunAmyExecMode(p);
 
 		TObjSonicExecMode_h.Original(p);
 
@@ -162,7 +161,7 @@ namespace SpeedChars
 	void __stdcall TObjSonicChkMode_r(TObjPlayer* p)
 	{
 
-		if ((ChkModeSpdChars(p) /** || Amy.RunAmyChkMode(p)*/))
+		if ((ChkModeSpdChars(p) || Amy::RunAmyChkMode(p)))
 			return;
 
 
@@ -202,5 +201,7 @@ namespace SpeedChars
 			SpinDash::Init();
 			WriteData<6>((int*)0x5A70AC, 0x90);
 		}
+
+		Amy::Init();
 	}
 }

@@ -14,3 +14,5 @@ void RunCommonPhysics(TObjPlayer* p);
 
 bool ChkInputLight(TObjPlayer* p);
 bool IsOnPath(TObjPlayer* p);
+bool isCPU(TObjPlayer* p);
+void WriteDataArray(intptr_t address, int* data, const uint16_t size);

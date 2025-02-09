@@ -13,7 +13,6 @@ namespace New_Tricks.Characters
     public unsafe class Amy
     {
         static public nuint MotionsAddress = 0x8C5E10;
-        static int TornadoTimer = 0;
         public static nuint hoverTimeAddr = 0x5D139E;
 
         public static PlayerAnim[] HoldHammerAnims = { PlayerAnim.Animation_JumpRoll, PlayerAnim.Animation_JumpDash, PlayerAnim.Animation_BackFlip, PlayerAnim.Animation_BackFlip2, PlayerAnim.Animation_SideFlip, (PlayerAnim)HammerJump.HammerJumpMtn };

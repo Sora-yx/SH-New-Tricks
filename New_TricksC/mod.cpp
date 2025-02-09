@@ -4,9 +4,9 @@
 #include <windows.h>
 #include <fcntl.h>
 #include <io.h>
-#include "Chocola.h"
-#include "Amy.h"
 #include "speed.h"
+#include "Fly.h"
+#include "Power.h"
 
 
 extern "C"
@@ -40,7 +40,7 @@ extern "C"
 
 		PrintMessage("New Tricks says Hello from C++\n");
 		SpeedChars::Init();
-		InitChocola();
-		initBird();
+		FlyChars::Init();
+		PowerChars::Init();
 	}
 }

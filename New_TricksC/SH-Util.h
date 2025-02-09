@@ -79,6 +79,7 @@ FunctionPointer(RwFrame*, RwFrameRotate, (RwFrame* frame, const RwV3d* axis, RwR
 FunctionPointer(int, RwRenderStateGet, (RwRenderState state, void* value), 0x64CA00);
 FunctionPointer(int, RwRenderStateSet, (RwRenderState state, void* value), 0x64C9B0);
 FastcallFunctionPointer(void, TObjectDestructor, (TObject* t), 0x443320);
+FastcallFunctionPointer(BOOL, PCheckStop, (TObjPlayer* p), 0x5A56A0);
 DataPointer(int, IsndSE, 0xA2F8B0);
 
 intptr_t ShadowMotionsAddress = 0x8C5438;
