@@ -13,6 +13,8 @@ namespace Amy
 		HammerFloat = 77
 	};
 
+	bool usedHover = false;
+
 	uint8_t bytesHoverDuration[4] = { 0xF0, 0x0, 0x0, 0x0 };
 	intptr_t hoverTimeAddr = 0x5D139E;
 
@@ -98,6 +100,9 @@ namespace Amy
 
 	bool CheckHammerFloatInput(TObjPlayer* p)
 	{
+		if (usedHover)
+			return false;
+
 		if (player_input[p->playerNo].jump.status & isOn)
 		{
 			if (p->mm.reqaction != Animation_Trick && p->spd.y <= 0.0f)
@@ -127,11 +132,34 @@ namespace Amy
 		}
 	}
 
+	int prevAction = -1;
 	bool RunAmyChkMode(TObjPlayer* p)
 	{
 
 		if (p->characterKind != Char_Amy)
 			return false;
+
+		if (prevAction != p->mode) //prevent to spam amy hover infinitely 
+		{
+			if (p->mode == ModeHammerFloat)
+			{
+				if (usedHover)
+				{
+					p->mode = ModeFall;
+					p->mm.reqaction = Animation_Falling;
+				}
+				else
+				{
+					usedHover = true;
+				}
+			}
+			prevAction = p->mode;
+		}
+
+		if ((p->flag & 3) != 0)
+		{
+			usedHover = false;
+		}
 
 		auto t = p->pTObjTeam;
 
@@ -149,6 +177,8 @@ namespace Amy
 		case (short)ModeHammerFloat:
 			if (1 /**ConfigV._modConfig.BetterProp*/)
 			{
+				usedHover = true;
+
 				if (ChkInputLight(p))
 					break;
 			
