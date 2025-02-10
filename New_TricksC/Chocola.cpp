@@ -372,9 +372,9 @@ static vftableChocola vfTable = { ChocolaDestructor, ChocolaExec, ChocolaDisp, C
 
 void LoadChocola()
 {
-	int res = ADV_STORY::GetStoryProgress(TEAM_ROSES);
+	/**int res = ADV_STORY::GetStoryProgress(TEAM_ROSES);
 	if (res < 100)
-		return;
+		return;*/
 
 	PrintMessage("Init Chocola Custom Task..\n");
 	chocolaPtr = (TObjChocola*)THeapCtrlMalloc(sizeof(TObjChocola) + 8, TaskHeap);
