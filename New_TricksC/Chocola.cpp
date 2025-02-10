@@ -47,10 +47,10 @@ void TObjChocolaSetAnimation(int result, TObjChocola* a2)
 
 void TObjChocolaGetTargetPositionToChaseHer(TObjChocola* chocola)
 {
-	auto v1 = chocola->playerno;
-	if (v1 != -1)
+	auto pno = chocola->playerno;
+	if (pno != -1)
 	{
-		auto Cream = playerTop[v1];
+		auto Cream = playerTop[pno];
 		if (Cream)
 		{
 			chocola->pos_Target = Cream->position;
@@ -266,24 +266,23 @@ void __fastcall ChocolaExec(TObjChocola* ptr, char unused)
 
 	if (pHAH_Chocola)
 	{
-		float v27 = chocolaPtr->nframe;
+		float nframe = chocolaPtr->nframe;
 		if (chocolaPtr->animno == 4)
 		{
-			float v29 = v27 + 1.0f;
-			chocolaPtr->nframe = v29;
-			if (v29 >= 30.0f)
+			chocolaPtr->nframe++;
+			if (chocolaPtr->nframe >= 30.0f)
 				TObjChocolaSetAnimation(5, chocolaPtr);
 		}
 		else if (chocolaPtr->animno == 6)
 		{
-			float v28 = v27 + 0.5f;
-			chocolaPtr->nframe = v28;
-			if (v28 >= 155.0f)
+			float nframePlus05 = nframe + 0.5f;
+			chocolaPtr->nframe = nframePlus05;
+			if (nframePlus05 >= 155.0f)
 				chocolaPtr->nframe = 105.0f;
 		}
 		else
 		{
-			chocolaPtr->nframe = v27 + 1.0f;
+			chocolaPtr->nframe = nframe + 1.0f;
 		}
 		float timea = chocolaPtr->nframe * 0.016f;
 		RtAnimInterpolatorSetCurrentTime(pHAH_Chocola->currentAnim, timea);
@@ -325,15 +324,15 @@ void __fastcall ChocolaExec(TObjChocola* ptr, char unused)
 
 	if (p->mode != 43)
 	{
-		auto v42 = chocolaPtr->ccl.info;
+		auto cclInfo = chocolaPtr->ccl.info;
 		if (chocolaPtr->mode == 2)
 		{
-			v42->damage = v42->damage & 0xFE | 2;
+			cclInfo->damage = cclInfo->damage & 0xFE | 2;
 			chocolaPtr->ccl.strength = 15;
 		}
 		else
 		{
-			v42->damage &= 0xFCu;
+			cclInfo->damage &= 0xFCu;
 		}
 
 		if (chocolaPtr->mode == 3)
@@ -372,6 +371,7 @@ static vftableChocola vfTable = { ChocolaDestructor, ChocolaExec, ChocolaDisp, C
 
 void LoadChocola()
 {
+	//break chocola???
 	/**int res = ADV_STORY::GetStoryProgress(TEAM_ROSES);
 	if (res < 100)
 		return;*/

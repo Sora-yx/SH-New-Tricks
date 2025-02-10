@@ -3,10 +3,7 @@ using New_Tricks.Template;
 using Reloaded.Hooks.ReloadedII.Interfaces;
 using Reloaded.Mod.Interfaces;
 using Heroes.SDK;
-using New_Tricks.Characters;
 using Heroes.SDK.Definitions.Enums;
-using New_Tricks.Members;
-using Team = New_Tricks.Members.Team;
 
 
 namespace New_Tricks
@@ -47,9 +44,8 @@ namespace New_Tricks
         /// </summary>
         private readonly IModConfig _modConfig;
 
-        private SpeedChars _speedChars;
-        private FlyChars _flyChars;
-        private PowerChars _powerChars;
+
+
         private Team _TeamMemb;
 
         private NativeMod _nativemods;
@@ -80,8 +76,10 @@ namespace New_Tricks
             //string directoryFolder = _modLoader.GetDirectoryForModId(_modConfig.ModId);
 
             //_TeamMemb = new Team();
+            
+              _nativemods = new();
 
-            _nativemods = new();
+
         }
 
         #region Standard Overrides

@@ -112,7 +112,7 @@ void __fastcall BirdExec(TObjBird* ptr, char unused_edx)
 		RtAnimInterpolatorSetCurrentTime(pHAH_Bird->currentAnim, timea);
 		RpHAnimHierarchyUpdateMatrices(pHAH_Bird);
 	}
-	
+
 	auto bird = birdPtr;
 
 	if (bird->playerno == -1)
@@ -139,7 +139,10 @@ void __fastcall BirdExec(TObjBird* ptr, char unused_edx)
 	}
 
 	auto p = playerTop[bird->playerno];
-	bird->ang.y = AdjustAngle(bird->ang.y, 0xC000 + p->ang.y, 1024);
+	//bird->ang.y = AdjustAngle(bird->ang.y, 0x8000 - p->ang.y, 1024);
+
+	bird->ang = p->ang;
+	bird->ang.y -= 0x4000; //to match heroes rot
 	bird->ang.x += 16;
 	bird->ang.z += 1024;
 
@@ -224,7 +227,7 @@ void LoadAmyBird()
 	TObjBirdPclump[0] = OneFileLoadClump(2, BufferData, oneFileMem); //model
 
 
-	uint8_t indexOneFile = 4; 
+	uint8_t indexOneFile = 4;
 	pHAA_List_Bird[0] = OneFileLoadHAnimation(indexOneFile, (void*)BufferData, oneFileMem);
 
 
