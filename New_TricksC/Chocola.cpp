@@ -63,8 +63,30 @@ void TObjChocolaGetTargetPositionToChaseHer(TObjChocola* chocola)
 
 void __fastcall ChocolaDestructor(TObjChocola* ptr, char unused, char signal)
 {
-	printf("DELETED\n");
-	auto pnum = ptr->playerno;
+	printf("Deleted Chocola\n");
+	for (uint16_t i = 0; i < LengthOfArray(pHAA_List_Chocola); i++)
+	{
+		RtAnimAnimation* animList = pHAA_List_Chocola[i];
+		if (animList)
+		{
+			RtAnimAnimationDestroy(animList);
+			animList = 0;
+		}
+
+	}
+
+	for (uint16_t i = 0; i < LengthOfArray(TObjChocolaPclump); i++)
+	{
+		RpClump* clump = TObjChocolaPclump[i];
+		RpClumpDestroy(clump);
+		clump = 0;
+	}
+
+	pHAH_Chocola = 0;
+
+	RwTexDictionaryDestroy(ChocolaTexDictionary);
+	ChocolaTexDictionary = 0;
+	COLLI_::Destructor(&ptr->ccl);
 	TObjectDestructor(&ptr->obj);
 	if ((signal & 1) != 0)
 		THeapCtrlFree(ptr, TaskHeap);
@@ -99,7 +121,7 @@ void __fastcall ChocolaPDisp(TObjChocola* ptr, char unused)
 }
 
 
-void __fastcall ChocolaExec(TObjChocola* ptr)
+void __fastcall ChocolaExec(TObjChocola* ptr, char unused)
 {
 	if (!ptr)
 		return;
@@ -328,22 +350,32 @@ void __fastcall ChocolaExec(TObjChocola* ptr)
 
 struct vftableChocola {
 	void(__fastcall* destructor)(TObjChocola* ptr, char unused, char signal);
-	void(__fastcall* exec)(TObjChocola* ptr);
+	void(__fastcall* exec)(TObjChocola* ptr, char unused);
 	void(__fastcall* disp)(TObjChocola* ptr, char unused);
 	void(__fastcall* tdisp)(TObjChocola* ptr, char unused);
 	void(__fastcall* pdisp)(TObjChocola* ptr, char unused);
-	void(__fastcall* null0)();
-	void(__fastcall* null1)();
-	void(__fastcall* null2)();
-	void(__fastcall* null3)();
-	void(__fastcall* null4)();
+	void(__fastcall* null0)(TObjChocola* ptr, char unused);
+	void(__fastcall* null1)(TObjChocola* ptr, char unused);
+	void(__fastcall* null2)(TObjChocola* ptr, char unused);
+	void(__fastcall* null3)(TObjChocola* ptr, char unused);
+	void(__fastcall* null4)(TObjChocola* ptr, char unused);
 };
+
+static void __fastcall nullsub(TObjChocola* ptr, char unused)
+{
+
+}
 
 static vftableChocola vfTable = { ChocolaDestructor, ChocolaExec, ChocolaDisp, ChocolaTDisp, ChocolaPDisp, nullsub, nullsub, nullsub, nullsub, nullsub };
 
 
+
 void LoadChocola()
 {
+	int res = ADV_STORY::GetStoryProgress(TEAM_ROSES);
+	if (res < 100)
+		return;
+
 	PrintMessage("Init Chocola Custom Task..\n");
 	chocolaPtr = (TObjChocola*)THeapCtrlMalloc(sizeof(TObjChocola) + 8, TaskHeap);
 	tobject::tobject(&chocolaPtr->obj, TL_03);

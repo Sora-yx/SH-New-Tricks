@@ -27,21 +27,55 @@ RwTexDictionary* BirdTexDictionary = nullptr;
 
 struct vftableBird {
 	void(__fastcall* destructor)(TObjBird* ptr, char unused, char signal);
-	void(__fastcall* exec)(TObjBird* ptr);
+	void(__fastcall* exec)(TObjBird* ptr, char unused_edx);
 	void(__fastcall* disp)(TObjBird* ptr, char unused);
 	void(__fastcall* tdisp)(TObjBird* ptr, char unused);
 	void(__fastcall* pdisp)(TObjBird* ptr, char unused);
-	void(__fastcall* null2)();
-	void(__fastcall* null3)();
-	void(__fastcall* null4)();
-	void(__fastcall* null5)();
-	void(__fastcall* null6)();
+	void(__fastcall* null2)(TObjBird* ptr, char unused);
+	void(__fastcall* null3)(TObjBird* ptr, char unused);
+	void(__fastcall* null4)(TObjBird* ptr, char unused);
+	void(__fastcall* null5)(TObjBird* ptr, char unused);
+	void(__fastcall* null6)(TObjBird* ptr, char unused);
 };
 
 
-void __fastcall BirdDestructor(TObjBird* ptr, char unusued, char signal)
+static void __fastcall nullsub(TObjBird* ptr, char unused)
 {
 
+}
+
+
+void __fastcall BirdDestructor(TObjBird* ptr, char unused, char signal)
+{
+	printf("Deleted Birbo\n");
+	for (uint16_t i = 0; i < LengthOfArray(pHAA_List_Bird); i++)
+	{
+		RtAnimAnimation* animList = pHAA_List_Bird[i];
+		if (animList)
+		{
+			RtAnimAnimationDestroy(animList);
+			animList = 0;
+		}
+
+	}
+
+	for (uint16_t i = 0; i < LengthOfArray(TObjBirdPclump); i++)
+	{
+		RpClump* clump = TObjBirdPclump[i];
+		if (clump)
+		{
+			RpClumpDestroy(clump);
+			clump = 0;
+		}
+	}
+
+	pHAH_Bird = 0;
+
+	RwTexDictionaryDestroy(BirdTexDictionary);
+	BirdTexDictionary = 0;
+	TObjectDestructor(&ptr->obj);
+	if ((signal & 1) != 0)
+		THeapCtrlFree(ptr, TaskHeap);
 }
 
 void __fastcall BirdDisp(TObjBird* ptr, char unused)
@@ -69,7 +103,7 @@ void __fastcall BirdPDisp(TObjBird* ptr, char unused)
 }
 
 
-void __fastcall BirdExec(TObjBird* ptr)
+void __fastcall BirdExec(TObjBird* ptr, char unused_edx)
 {
 	if (pHAH_Bird)
 	{
@@ -165,7 +199,7 @@ void LoadAmyBird()
 		}
 	}
 
-	auto oneFileMem = (ONEFILE*)RwEngineInstance->memoryFuncs.rwmalloc(92);
+	auto oneFileMem = (ONEFILE*)RwEngineInstance->memoryFuncs.rwmalloc(sizeof(ONEFILE));
 
 	if (oneFileMem)
 	{
@@ -180,6 +214,7 @@ void LoadAmyBird()
 	{
 		//3 is texID
 		BirdTexDictionary = OneFileLoadTextureDictionary(3, BufferData, oneFileMem);
+		BirdTexDictionary = BirdTexDictionary;
 	}
 
 	if (BirdTexDictionary)

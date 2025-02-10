@@ -86,7 +86,8 @@ intptr_t ShadowMotionsAddress = 0x8C5438;
 intptr_t EspioMotionsAddress = 0x8C67E8;
 DataPointer(sPeriCtrl, PeriCtrl, 0xA23678);
 DataArray(unsigned int, PeriCtrlMap, 0x7C7418, 7);
-
+FunctionPointer(RwBool, RpClumpDestroy, (RpClump* clump), 0x66BC60);
+FunctionPointer(RwBool, RwTexDictionaryDestroy, (RwTexDictionary* dict), 0x64E060);
 
 
 //void __userpurge THeapCtrl::Free(void *addr@<eax>, THeapCtrl *this)
@@ -119,4 +120,39 @@ static inline int IsndSEPlay(__int16 seId_HHC, RwV3d* pos, void* this_, char a4,
         mov result, eax
     }
 	return result;
+}
+
+namespace COLLI_
+{
+    //CCL_INFO *__usercall C_COLLI::~C_COLLI@<eax>(C_COLLI *a1@<edi>)
+    static const void* const DestructorPtr = (void*)0x407440;
+    static inline CCL_INFO* Destructor(C_COLLI* a1)
+    {
+        CCL_INFO* result;
+        __asm
+        {
+            mov edi, a1
+            call DestructorPtr
+            mov result, eax
+        }
+        return result;
+    }
+}
+
+
+namespace ADV_STORY
+{
+    //int __usercall ADV_STORY::GetStoryProgress@<eax>(int a1@<eax>)
+    static const void* const GetStoryProgressPtr = (void*)0x4564E0;
+    static inline int GetStoryProgress(int teamID)
+    {
+        int result;
+        __asm
+        {
+            mov eax, teamID
+            call GetStoryProgressPtr
+            mov result, eax
+        }
+        return result;
+    }
 }

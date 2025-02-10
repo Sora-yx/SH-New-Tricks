@@ -25,10 +25,6 @@ void ObjMoveOnGroundFv(OBJ_MoveOnGround* obj)
 }
 
 
-void __fastcall nullsub()
-{
-
-}
 
 
 float njSinCosTbl[1025] = {
