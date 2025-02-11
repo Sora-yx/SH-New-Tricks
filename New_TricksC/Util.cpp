@@ -238,3 +238,15 @@ bool isCPU(TObjPlayer* p) //need to be checked because idk if this is correct
 {
 	return p && (p->item & 0x1000) != 0;
 }
+
+
+bool isTeamRoseFinished()
+{
+	int res = TQuestSeqCtrl::CheckSequenceVars(3);
+	int resultat = 0;
+
+	if (res < 0 || (resultat = 100 * res / (dword_7C8BE4 - 1), resultat > 100))
+		resultat = 100;
+
+	return resultat >= 100;
+}

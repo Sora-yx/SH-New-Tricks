@@ -156,3 +156,22 @@ namespace ADV_STORY
         return result;
     }
 }
+
+DataPointer(int, dword_7C8BE4, 0x7C8BE4);
+
+namespace TQuestSeqCtrl
+{
+    //int __usercall ADV_STORY::GetStoryProgress@<eax>(int a1@<eax>)
+    static const void* const CheckSequenceVarsPtr = (void*)0x442BC0;
+    static inline int CheckSequenceVars(int teamID)
+    {
+        int result;
+        __asm
+        {
+            mov eax, teamID
+            call CheckSequenceVarsPtr
+            mov result, eax
+        }
+        return result;
+    }
+}

@@ -23,7 +23,19 @@ struct TObjChocola
 	PARTICLE_TASK* pPtcl_SFA[8];
 };
 
-TObjChocola* chocolaPtr = nullptr;
+struct vftableChocola {
+	void(__fastcall* destructor)(TObjChocola* ptr, char unused, char signal);
+	void(__fastcall* exec)(TObjChocola* ptr, char unused);
+	void(__fastcall* disp)(TObjChocola* ptr, char unused);
+	void(__fastcall* tdisp)(TObjChocola* ptr, char unused);
+	void(__fastcall* pdisp)(TObjChocola* ptr, char unused);
+	void(__fastcall* null0)(TObjChocola* ptr, char unused);
+	void(__fastcall* null1)(TObjChocola* ptr, char unused);
+	void(__fastcall* null2)(TObjChocola* ptr, char unused);
+	void(__fastcall* null3)(TObjChocola* ptr, char unused);
+	void(__fastcall* null4)(TObjChocola* ptr, char unused);
+};
+
 RpHAnimHierarchy* pHAH_Chocola = nullptr;
 RtAnimAnimation* pHAA_List_Chocola[7] = { nullptr };
 RpClump* TObjChocolaPclump[2] = { nullptr };
@@ -121,9 +133,9 @@ void __fastcall ChocolaPDisp(TObjChocola* ptr, char unused)
 }
 
 
-void __fastcall ChocolaExec(TObjChocola* ptr, char unused)
+void __fastcall ChocolaExec(TObjChocola* chocolaPtr, char unused)
 {
-	if (!ptr)
+	if (!chocolaPtr)
 		return;
 
 	if (!playerTop[0])
@@ -132,7 +144,7 @@ void __fastcall ChocolaExec(TObjChocola* ptr, char unused)
 	TObjPlayer* p = nullptr;
 
 
-	if (ptr->playerno == -1)
+	if (chocolaPtr->playerno == -1)
 	{
 		for (uint8_t i = 0; i < 8; i++)
 		{
@@ -142,8 +154,8 @@ void __fastcall ChocolaExec(TObjChocola* ptr, char unused)
 			{
 				PrintMessage("Chocola Exec: Cream Found\n");
 				chocolaPtr->playerno = i;
-				auto v5 = GetTeamCharacterIdFromCCLCharacterId(playerTop[(char)i]->C_COLLI_.character_id);
-				chocolaPtr->ccl.character_id = GetTeamCharacterIdFromCCLCharacterId(v5);
+				auto cclCharID = GetTeamCharacterIdFromCCLCharacterId(playerTop[(char)i]->C_COLLI_.character_id);
+				chocolaPtr->ccl.character_id = GetTeamCharacterIdFromCCLCharacterId(cclCharID);
 				RpClumpForAllAtomics(
 					TObjChocolaPclump[1],
 					(RpAtomicCallBack)plCallbackRpAtomicToSetRenderCallbackToUseLight,
@@ -347,18 +359,6 @@ void __fastcall ChocolaExec(TObjChocola* ptr, char unused)
 	}
 }
 
-struct vftableChocola {
-	void(__fastcall* destructor)(TObjChocola* ptr, char unused, char signal);
-	void(__fastcall* exec)(TObjChocola* ptr, char unused);
-	void(__fastcall* disp)(TObjChocola* ptr, char unused);
-	void(__fastcall* tdisp)(TObjChocola* ptr, char unused);
-	void(__fastcall* pdisp)(TObjChocola* ptr, char unused);
-	void(__fastcall* null0)(TObjChocola* ptr, char unused);
-	void(__fastcall* null1)(TObjChocola* ptr, char unused);
-	void(__fastcall* null2)(TObjChocola* ptr, char unused);
-	void(__fastcall* null3)(TObjChocola* ptr, char unused);
-	void(__fastcall* null4)(TObjChocola* ptr, char unused);
-};
 
 static void __fastcall nullsub(TObjChocola* ptr, char unused)
 {
@@ -371,21 +371,11 @@ static vftableChocola vfTable = { ChocolaDestructor, ChocolaExec, ChocolaDisp, C
 
 void LoadChocola()
 {
-	//break chocola???
-	/**int res = ADV_STORY::GetStoryProgress(TEAM_ROSES);
-	if (res < 100)
-		return;*/
+	if (isTeamRoseFinished() == false)
+		return;
 
 	PrintMessage("Init Chocola Custom Task..\n");
-	chocolaPtr = (TObjChocola*)THeapCtrlMalloc(sizeof(TObjChocola) + 8, TaskHeap);
-	tobject::tobject(&chocolaPtr->obj, TL_03);
-	COLLIFv(&chocolaPtr->ccl);
-	ObjMoveOnGroundFv(&chocolaPtr->objMove);
-	chocolaPtr->obj.ClassName = (char*)"TObjChocola";
-	chocolaPtr->obj.__vftable = &vfTable;
-	chocolaPtr->playerno = -1;
-	for (uint8_t i = 0; i < 7; i++)
-		pHAA_List_Chocola[i] = 0;
+
 
 	for (uint8_t i = 0; i < PMax; i++)
 	{
@@ -398,7 +388,20 @@ void LoadChocola()
 				break;
 			}
 		}
+
+		if (i >= PMax)
+			return;
 	}
+
+	TObjChocola* chocolaPtr = (TObjChocola*)THeapCtrlMalloc(sizeof(TObjChocola) + 8, TaskHeap);
+	tobject::tobject(&chocolaPtr->obj, TL_03);
+	COLLIFv(&chocolaPtr->ccl);
+	ObjMoveOnGroundFv(&chocolaPtr->objMove);
+	chocolaPtr->obj.ClassName = (char*)"TObjChocola";
+	chocolaPtr->obj.__vftable = &vfTable;
+	chocolaPtr->playerno = -1;
+	for (uint8_t i = 0; i < 7; i++)
+		pHAA_List_Chocola[i] = 0;
 
 	auto oneFileMem = (ONEFILE*)RwEngineInstance->memoryFuncs.rwmalloc(92);
 
@@ -480,15 +483,17 @@ void LoadChocola()
 	C_COLLIInit(1u, &chocolaPtr->ccl, &Cheese_Col, 1);
 }
 
-void* __fastcall MallocCheese(unsigned int size, THeapCtrl* this_)
+FastFunctionHook<void, TObjTeam*, unsigned int, char> loadCreamAndCheese_h(0x5C1580);
+
+void loadCreamAndCheese_r(TObjTeam* Team, unsigned int formationType, char a3)
 {
+	loadCreamAndCheese_h.Original(Team, formationType, a3);
 	LoadChocola();
-	TObjCheese* cheeseTask = (TObjCheese*)THeapCtrlMalloc(0x1BCu, TaskHeap);
-	return cheeseTask;
 }
+
 
 
 void InitChocola()
 {
-	WriteCall((void*)0x5C1629, MallocCheese);
+	loadCreamAndCheese_h.Hook(loadCreamAndCheese_r);
 }
