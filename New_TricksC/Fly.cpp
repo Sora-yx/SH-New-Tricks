@@ -9,9 +9,7 @@ namespace FlyChars
 
 	intptr_t flyVSpdCapAddr = 0x789FA4;
 
-	static const int flyByteNew[] = { 0x0, 0xC0, 0x79, 0x44 };
-	static const int flyByteOrigin[] = { 0x0, 0x0, 0x34, 0x43 };
-	static const int flyVSpdCapNew[] = { 0x0, 0x0, 0x87, 0x43 };
+	static const int flyVSpdCapNew[] = { 0x0, 0x0, 0x5C, 0x43 };
 	static const int flyVSpdCapOrigin[] = { 0x0, 0x0, 0xB4, 0x42 };
 
 	float GetFlyTimerIncr(TObjTeam* t)
@@ -66,8 +64,9 @@ namespace FlyChars
 
 	void TObjMilesExecMove_r(TObjPlayer* p)
 	{
-		bool vSpeed = true; /** ConfigV._modConfig.IncreaseSpeedCap;*/
-		bool flightT = true;  /**ConfigV._modConfig.FlightTweaks;*/
+		auto config = GetConfig();
+		bool vSpeed = config.IncreaseSpeedCap;
+		bool flightT = config.FlightTweaks;
 		bool isCpu = isCPU(p);
 
 		if (vSpeed && !isCpu)
@@ -87,7 +86,7 @@ namespace FlyChars
 
 					if (p->spd.x < GetFlyMaxSpd(p->pTObjTeam))
 					{
-						p->spd.x += 0.04f;
+						p->spd.x += 0.03f;
 					}
 				}
 			}
@@ -102,10 +101,24 @@ namespace FlyChars
 			}
 			break;
 		case 73: //cheese attack
-			if (1 /*ConfigV._modConfig.CheeseTweaks*/)
+			if (config.CheeseTweaks)
 			{
 				PGetAcceleration(p);
 			}
+			break;
+		case 80:
+		
+			if (p->mwp.spd.x <= 0.0f)
+			{
+				p->mwp.spd.x = 0.0f;
+				p->mwp.spd.z = 0.0f;
+			}
+				
+
+			p->mwp.spd.x += 0.5f;
+			p->mwp.spd.z += 0.5f;
+			p->spd = p->mwp.spd;
+
 			break;
 		}
 
@@ -119,17 +132,17 @@ namespace FlyChars
 
 	void Init()
 	{
-
+		auto config = GetConfig();
 		TObjMilesExecMove_h.Hook(TObjMilesExecMove_r, noret, rEAX);
 
-		if (1/**ConfigV._modConfig.FlightTweaks*/)
+		if (config.FlightTweaks)
 		{
 			WriteNop(0x5C5743, 21);
 			// Util.WriteNop(0x5C5741, 32);   //remove clear speed once fly is over
 			WriteNop(0x5C571D, 0x6); //remove flight timer we will manually update it for convenience due to how it works originally.
 		}
 
-		if (1/**ConfigV._modConfig.CheeseTweaks*/)
+		if (config.CheeseTweaks)
 		{
 			WriteData<5>((int*)0x5C3C71, 0x90); //remove PGetBreak so Cream doesn't slow down when using Cheese
 
@@ -139,6 +152,11 @@ namespace FlyChars
 			{
 				anim->speed = 2.5f;
 			}
+		}
+
+		if (1)
+		{
+			//WriteData<5>((int*)0x5C6054, 0x90); //remove PClearSpeed so Charmy doesn't stop when using his dart attack
 		}
 
 		InitChocola();

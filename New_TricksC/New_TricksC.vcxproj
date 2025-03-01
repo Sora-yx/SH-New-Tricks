@@ -159,8 +159,10 @@
     <ClInclude Include="..\..\SH.Solo.Duo\Solo.Duo\MinHookWrapper.h" />
     <ClInclude Include="Amy.h" />
     <ClInclude Include="Chocola.h" />
+    <ClInclude Include="config.h" />
     <ClInclude Include="Fly.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="InteropBridge.h" />
     <ClInclude Include="mod.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Power.h" />
@@ -173,6 +175,7 @@
     <ClCompile Include="Bird.cpp" />
     <ClCompile Include="Chocola.cpp" />
     <ClCompile Include="common.cpp" />
+    <ClCompile Include="config.cpp" />
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Fly.cpp" />
     <ClCompile Include="HammerJump.cpp" />

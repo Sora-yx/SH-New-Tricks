@@ -3,9 +3,28 @@ using Reloaded.Mod.Interfaces;
 using Reloaded.Mod.Interfaces.Structs;
 using System.ComponentModel;
 using Heroes.SDK.Definitions.Enums;
+using System.Runtime.InteropServices;
 
 namespace New_Tricks.Configuration
 {
+
+    [StructLayout(LayoutKind.Sequential, Pack = 1)]
+    public struct ConfigData
+    {
+        [MarshalAs(UnmanagedType.I1)] public bool SonkSpinDash;
+        [MarshalAs(UnmanagedType.I1)] public bool ShadowSpinDash;
+        [MarshalAs(UnmanagedType.I1)] public bool AmySpinDash;
+        [MarshalAs(UnmanagedType.I1)] public bool BetterProp;
+        [MarshalAs(UnmanagedType.I1)] public bool AmyTornadoTweaks;
+        [MarshalAs(UnmanagedType.I1)] public bool EspioSpinDash;
+        [MarshalAs(UnmanagedType.I1)] public bool EspioTornadoTweaks;
+        [MarshalAs(UnmanagedType.I1)] public bool FlightTweaks;
+        [MarshalAs(UnmanagedType.I1)] public bool IncreaseSpeedCap;
+        [MarshalAs(UnmanagedType.I1)] public bool CheeseTweaks;
+        [MarshalAs(UnmanagedType.I1)] public bool WidePowerTweaks;
+        [MarshalAs(UnmanagedType.I1)] public bool TriangleDiveTweaks;
+    }
+
 
     public static class ConfigV
     {
@@ -47,27 +66,18 @@ namespace New_Tricks.Configuration
         }
     }
 
+
     public class Config : Configurable<Config>
     {
-        /*
-            User Properties:
-                - Please put all of your configurable properties here.
-    
-            By default, configuration saves as "Config.json" in mod user config folder.    
-            Need more config files/classes? See Configuration.cs
-    
-            Available Attributes:
-            - Category
-            - DisplayName
-            - Description
-            - DefaultValue
+        public ConfigData config = new();
 
-            // Technically Supported but not Useful
-            - Browsable
-            - Localizable
+        [DllImport("New_TricksC.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void SetConfigData(ConfigData data);
 
-            The `DefaultValue` attribute is used as part of the `Reset` button in Reloaded-Launcher.
-        */
+        [DllImport("New_TricksC.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern ConfigData GetConfig();
+
+
 
         [Category("Sonic")]
         [DisplayName("SA1 Spin Dash")]
@@ -143,81 +153,24 @@ namespace New_Tricks.Configuration
         public bool TriangleDiveTweaks { get; set; } = true;
 
 
-        /*[DisplayName("String")]
-        [Description("This is a string.")]
-        [DefaultValue("Default Name")]
-        public string String { get; set; } = "Default Name";
 
-        [DisplayName("Int")]
-        [Description("This is an int.")]
-        [DefaultValue(42)]
-        public int Integer { get; set; } = 42;
-
-        [DisplayName("Bool")]
-        [Description("This is a bool.")]
-        [DefaultValue(true)]
-        public bool Boolean { get; set; } = true;
-
-        [DisplayName("Float")]
-        [Description("This is a floating point number.")]
-        [DefaultValue(6.987654F)]
-        public float Float { get; set; } = 6.987654F;
-
-        [DisplayName("Enum")]
-        [Description("This is an enumerable.")]
-        [DefaultValue(SampleEnum.ILoveIt)]
-        public SampleEnum Reloaded { get; set; } = SampleEnum.ILoveIt;
-
-        public enum SampleEnum
+        public void InitCppConfig()
         {
-            NoOpinion,
-            Sucks,
-            IsMediocre,
-            IsOk,
-            IsCool,
-            ILoveIt
+            config.SonkSpinDash = SonkSpinDash;
+            config.ShadowSpinDash = ShadowSpinDash;
+            config.AmySpinDash = AmySpinDash;
+            config.BetterProp = BetterProp;
+            config.AmyTornadoTweaks = AmyTornadoTweaks;
+            config.EspioSpinDash = EspioSpinDash;
+            config.EspioTornadoTweaks = EspioTornadoTweaks;
+            config.FlightTweaks = FlightTweaks;
+            config.IncreaseSpeedCap = IncreaseSpeedCap;
+            config.CheeseTweaks = CheeseTweaks;
+            config.WidePowerTweaks = WidePowerTweaks;
+            config.TriangleDiveTweaks = TriangleDiveTweaks;
+            SetConfigData(config);
         }
 
-        [DisplayName("Int Slider")]
-        [Description("This is a int that uses a slider control similar to a volume control slider.")]
-        [DefaultValue(100)]
-        [SliderControlParams(
-            minimum: 0.0,
-            maximum: 100.0,
-            smallChange: 1.0,
-            largeChange: 10.0,
-            tickFrequency: 10,
-            isSnapToTickEnabled: false,
-            tickPlacement: SliderControlTickPlacement.BottomRight,
-            showTextField: true,
-            isTextFieldEditable: true,
-            textValidationRegex: "\\d{1-3}")]
-        public int IntSlider { get; set; } = 100;
-
-        [DisplayName("Double Slider")]
-        [Description("This is a double that uses a slider control without any frills.")]
-        [DefaultValue(0.5)]
-        [SliderControlParams(minimum: 0.0, maximum: 1.0)]
-        public double DoubleSlider { get; set; } = 0.5;
-
-        [DisplayName("File Picker")]
-        [Description("This is a sample file picker.")]
-        [DefaultValue("")]
-        [FilePickerParams(title: "Choose a File to load from")]
-        public string File { get; set; } = "";
-
-        [DisplayName("Folder Picker")]
-        [Description("Opens a file picker but locked to only allow folder selections.")]
-        [DefaultValue("")]
-        [FolderPickerParams(
-            initialFolderPath: Environment.SpecialFolder.Desktop,
-            userCanEditPathText: false,
-            title: "Custom Folder Select",
-            okButtonLabel: "Choose Folder",
-            fileNameLabel: "ModFolder",
-            multiSelect: true,
-            forceFileSystem: true)]
-        public string Folder { get; set; } = "";*/
     }
 
     /// <summary>

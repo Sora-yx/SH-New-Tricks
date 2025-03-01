@@ -163,6 +163,7 @@ namespace Amy
 
 		auto t = p->pTObjTeam;
 
+		auto config = GetConfig();
 		switch (p->mode)
 		{
 
@@ -175,7 +176,7 @@ namespace Amy
 			}*/
 			break;
 		case (short)ModeHammerFloat:
-			if (1 /**ConfigV._modConfig.BetterProp*/)
+			if (config.BetterProp)
 			{
 				usedHover = true;
 
@@ -190,7 +191,7 @@ namespace Amy
 			}
 			break;
 		case PlayerMode::ModeFall:
-			if (1 /**ConfigV._modConfig.BetterProp*/)
+			if (config.BetterProp)
 			{
 				if (ChkInputLight(p))
 					break;

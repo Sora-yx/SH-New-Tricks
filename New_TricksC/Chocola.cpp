@@ -72,7 +72,6 @@ void TObjChocolaGetTargetPositionToChaseHer(TObjChocola* chocola)
 }
 
 
-
 void __fastcall ChocolaDestructor(TObjChocola* ptr, char unused, char signal)
 {
 	printf("Deleted Chocola\n");
@@ -126,10 +125,12 @@ void __fastcall ChocolaDisp(TObjChocola* ptr, char unused)
 
 void __fastcall ChocolaTDisp(TObjChocola* ptr, char unused)
 {
+	;
 }
 
 void __fastcall ChocolaPDisp(TObjChocola* ptr, char unused)
 {
+	;
 }
 
 
@@ -362,7 +363,7 @@ void __fastcall ChocolaExec(TObjChocola* chocolaPtr, char unused)
 
 static void __fastcall nullsub(TObjChocola* ptr, char unused)
 {
-
+	;
 }
 
 static vftableChocola vfTable = { ChocolaDestructor, ChocolaExec, ChocolaDisp, ChocolaTDisp, ChocolaPDisp, nullsub, nullsub, nullsub, nullsub, nullsub };
@@ -490,7 +491,6 @@ void loadCreamAndCheese_r(TObjTeam* Team, unsigned int formationType, char a3)
 	loadCreamAndCheese_h.Original(Team, formationType, a3);
 	LoadChocola();
 }
-
 
 
 void InitChocola()

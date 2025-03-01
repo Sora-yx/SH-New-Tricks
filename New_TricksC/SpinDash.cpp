@@ -149,7 +149,7 @@ namespace SpinDash
 
     void Init() //make jump ball anim loop instead of being based on speed
     {
-        if (1/**ConfigV.isSpinDashAllowed(Character.Sonic)*/)
+        if (isSpinDashAllowed(Char_Sonic))
         {
             auto anim = &sonic_motions[10];
             if (anim && anim->mtnmode == 10)
@@ -158,7 +158,7 @@ namespace SpinDash
             }
         }
 
-        if (1 /**ConfigV.isSpinDashAllowed(Character.Shadow)*/)
+        if (isSpinDashAllowed(Char_Shadow))
         {
             auto anim = &shadow_motions[10];
             if (anim && anim->mtnmode == 10)
@@ -167,7 +167,7 @@ namespace SpinDash
             }
         }
 
-        if (1/**ConfigV.isSpinDashAllowed(Character.Amy)*/)
+        if (isSpinDashAllowed(Char_Amy))
         {
             auto anim = &amy_motions[10];
             if (anim && anim->mtnmode == 10)
@@ -176,7 +176,7 @@ namespace SpinDash
             }
         }
 
-        if (1/**onfigV.isSpinDashAllowed(Character.Espio)*/)
+        if (isSpinDashAllowed(Char_Espio))
         {
             auto anim = &espio_motions[10];
             if (anim && anim->mtnmode == 10)

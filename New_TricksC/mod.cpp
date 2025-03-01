@@ -7,6 +7,7 @@
 #include "speed.h"
 #include "Fly.h"
 #include "Power.h"
+#include "config.h"
 
 
 extern "C"
@@ -39,6 +40,7 @@ extern "C"
 	{
 
 		PrintMessage("New Tricks says Hello from C++\n");
+
 		SpeedChars::Init();
 		FlyChars::Init();
 		PowerChars::Init();

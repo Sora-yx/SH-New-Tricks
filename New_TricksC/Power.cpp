@@ -101,15 +101,16 @@ namespace PowerChars
 
 	void Init()
 	{
+		auto config = GetConfig();
 		TObjKnuxExecMode_h.Hook(TObjKnuxExecMode_r);
 		TObjKnuxChkMode_h.Hook(TObjKnuxChkMode_r);
 
-		if (1 /**ConfigV._modConfig.WidePowerTweaks*/)
+		if (config.WidePowerTweaks)
 		{
 			WriteNop(0x5B9FE5, 5); //nope PGetBreak so characters don't slow down
 		}
 
-		if (1 /**ConfigV._modConfig.TriangleDiveTweaks*/)
+		if (config.TriangleDiveTweaks)
 			WriteNop(0x5AECFC, 0x2); //remove anim fan check so Triangle Dive can be used when falling.
 
 		if (1)

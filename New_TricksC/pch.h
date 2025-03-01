@@ -14,6 +14,7 @@
 #include "FastFunctionHook.hpp"
 #include "mod.h"
 #include "Util.h"
+#include "config.h"
 #include "SH-Util.h"
 
 #endif //PCH_H

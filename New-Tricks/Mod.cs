@@ -76,7 +76,7 @@ namespace New_Tricks
             //string directoryFolder = _modLoader.GetDirectoryForModId(_modConfig.ModId);
 
             //_TeamMemb = new Team();
-            
+            _configuration.InitCppConfig();
               _nativemods = new();
 
 

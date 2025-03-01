@@ -14,7 +14,7 @@ FastUsercallHook<void, TObjPlayer*> TObjPlayExecCommonmode_h(0x5A7B50, TObjPlayE
 bool RunCommonExec(TObjPlayer* p)
 {
 	auto charID = p->characterKind;
-	bool isSpinDash = true; /** ConfigV.isSpinDashAllowed(charID)*/;
+	bool isSpinDash = isSpinDashAllowed((Character)charID);
 
 	switch (p->mode)
 	{

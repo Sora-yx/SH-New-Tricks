@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "speed.h"
 #include "Amy.h"
+#include "config.h"
 
 namespace SpeedChars
 {
@@ -17,12 +18,13 @@ namespace SpeedChars
 
 		int smode = p->smode - 2;
 
-		bool isSpinDashAllowed = true; /** ConfigV.isSpinDashAllowed(p->characterKind);*/
+		bool isSpinDash = isSpinDashAllowed((Character)p->characterKind);
+		ConfigData config = GetConfig();
 
 		switch (smode)
 		{
 		case 14:
-			if (isSpinDashAllowed)
+			if (isSpinDash)
 			{
 				p->flag &= ~0x100000;
 				if (p->mode == SpinDash::ActRelease)
@@ -47,7 +49,7 @@ namespace SpeedChars
 			}
 			break;
 		case 45:
-			if (1/**ConfigV._modConfig.AmyTornadoTweaks*/)
+			if (config.AmyTornadoTweaks)
 			{
 				if (p->characterKind == Char_Amy)
 				{
@@ -60,14 +62,14 @@ namespace SpeedChars
 			}
 			break;
 		case 50: //remove legacy dash with spin dash
-			if (p->characterKind == Char_Amy && isSpinDashAllowed)
+			if (p->characterKind == Char_Amy && isSpinDash)
 			{
 				p->flag &= ~0x100000;
 				return 0;
 			}
 			break;
 		case 55:
-			if (p->characterKind == Char_Espio && isSpinDashAllowed)
+			if (p->characterKind == Char_Espio && isSpinDash)
 			{
 				p->flag &= ~0x100000;
 
@@ -78,7 +80,7 @@ namespace SpeedChars
 			}
 			break;
 		case 57: //see above
-			if ((p->characterKind == Char_Sonic || p->characterKind == Char_Shadow) && isSpinDashAllowed)
+			if ((p->characterKind == Char_Sonic || p->characterKind == Char_Shadow) && isSpinDash)
 			{
 				p->flag &= ~0x100000;
 				return 0;
@@ -92,7 +94,7 @@ namespace SpeedChars
 
 	bool ChkModeSpdChars(TObjPlayer* p)
 	{
-		bool isSpinDash = true; /**ConfigV.isSpinDashAllowed(p->characterKind);*/
+		bool isSpinDash = isSpinDashAllowed((Character)p->characterKind);
 
 		switch (p->mode)
 		{
@@ -119,7 +121,8 @@ namespace SpeedChars
 	bool ExecModeSpdChars(TObjPlayer* p)
 	{
 		auto charID = p->characterKind;
-		bool isSpinDash = true; /** ConfigV.isSpinDashAllowed(charID)*/;
+		bool isSpinDash = isSpinDashAllowed((Character)charID);
+		ConfigData config = GetConfig();
 
 		switch (p->mode)
 		{
@@ -131,7 +134,7 @@ namespace SpeedChars
 			}
 			break;
 		case 71:
-			if (isSpinDash && charID == Char_Espio && 1 /**ConfigV._modConfig.EspioTornadoTweaks*/)
+			if (isSpinDash && charID == Char_Espio && config.EspioTornadoTweaks)
 			{
 				PGetAccelerationAir(p);
 				PGetSpeed(p);
@@ -174,7 +177,8 @@ namespace SpeedChars
 		TObjTeam* team = p->pTObjTeam;
 
 		Character player = (Character)team->playerPtr[team->leaderPlayerNo]->characterKind;
-		if (1 /**ConfigV.isSpinDashAllowed(player)*/)
+
+		if (isSpinDashAllowed(player))
 		{
 			return;
 		}
@@ -188,14 +192,15 @@ namespace SpeedChars
 		TOBJSonicChkMode_h.Hook(TObjSonicChkMode_r);
 		TObjSonicChkInput_h.Hook(TobjSonkChkInput_r);
 
+		ConfigData config = GetConfig();
 
-		if (1/**ConfigV._modConfig.EspioTornadoTweaks*/)
+		if (config.EspioTornadoTweaks)
 		{
 			WriteNop(0x5D0F3A, 0x5);     //remove Clear Speed
 
 		}
 
-		if (1 /**ConfigV.isSpinDashEnabledForAtLeastAPlayer()*/)
+		if (isSpinDashEnabledForAtLeastOneCharacter())
 		{
 			TObjPModeChgReadyToRocketAccel_h.Hook(TObjPModeChgReadyToRocketAccelHook);
 			SpinDash::Init();
