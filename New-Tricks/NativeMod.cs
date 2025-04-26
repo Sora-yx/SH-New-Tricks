@@ -17,10 +17,8 @@ namespace New_Tricks
         public static extern void ReloadedStart();
 
 
-
         public NativeMod()
         {
-     
             InitializeOutput();
             ReloadedStart();
         }
