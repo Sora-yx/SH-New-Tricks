@@ -1,8 +1,5 @@
 ﻿using New_Tricks.Template.Configuration;
-using Reloaded.Mod.Interfaces;
-using Reloaded.Mod.Interfaces.Structs;
 using System.ComponentModel;
-using Heroes.SDK.Definitions.Enums;
 using System.Runtime.InteropServices;
 
 namespace New_Tricks.Configuration
@@ -29,41 +26,6 @@ namespace New_Tricks.Configuration
     public static class ConfigV
     {
         static public Config _modConfig;
-
-        public static bool isSpinDashAllowed(Character curChar)
-        {
-            if (_modConfig != null)
-            {
-                switch (curChar)
-                {
-                    case Character.Sonic:
-                        return _modConfig.SonkSpinDash;
-                    case Character.Shadow:
-                        return _modConfig.ShadowSpinDash;
-                    case Character.Amy:
-                        return _modConfig.AmySpinDash;
-                    case Character.Espio:
-                        return _modConfig.EspioSpinDash;
-                }
-            }
-
-
-            return false;
-        }
-
-        public static bool isSpinDashEnabledForAtLeastAPlayer()
-        {
-            if (_modConfig != null)
-            {
-                for (byte i = 0; i < (byte)Character.Charmy + 1; i++)
-                {
-                    if (isSpinDashAllowed((Character)i))
-                        return true;
-                }
-            }
-
-            return false;
-        }
     }
 
 

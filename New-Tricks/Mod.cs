@@ -2,8 +2,6 @@
 using New_Tricks.Template;
 using Reloaded.Hooks.ReloadedII.Interfaces;
 using Reloaded.Mod.Interfaces;
-using Heroes.SDK;
-using Heroes.SDK.Definitions.Enums;
 
 
 namespace New_Tricks
@@ -44,10 +42,6 @@ namespace New_Tricks
         /// </summary>
         private readonly IModConfig _modConfig;
 
-
-
-        private Team _TeamMemb;
-
         private NativeMod _nativemods;
 
 
@@ -70,12 +64,8 @@ namespace New_Tricks
             // and some other neat features, override the methods in ModBase.
 
 
-            _modLoader.GetController<IReloadedHooks>().TryGetTarget(out var reloadedHooks);
-            SDK.Init(reloadedHooks, null);
-
             //string directoryFolder = _modLoader.GetDirectoryForModId(_modConfig.ModId);
 
-            //_TeamMemb = new Team();
             _configuration.InitCppConfig();
             _nativemods = new();
 
