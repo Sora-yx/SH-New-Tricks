@@ -39,9 +39,10 @@ Enjoy!
 
 ## Build this Repo (For Programmers)
 
+- Install [Latest .NET SDK](https://dotnet.microsoft.com/en-us/download)
+- Install [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) (During the install, make sure to check ``.NET Desktop Development`` and ``Desktop Developpment with C++``)
 - Download this repo
-- Get [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/)
-- Load the project from Visual Studio and use the Build menu to build the solution (make sure to select x86 as target).
+- Load the project from Visual Studio and use the Build menu to build the solution (make sure to select release x86 as target first).
 
 
 

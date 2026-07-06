@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Heroes.SDK": {
-      "commandName": "Project",
-      "nativeDebugging": true
-    }
-  }
-}
