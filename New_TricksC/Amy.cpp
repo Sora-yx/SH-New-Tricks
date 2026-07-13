@@ -103,7 +103,7 @@ namespace Amy
 		if (usedHover)
 			return false;
 
-		if (player_input[p->playerNo].jump.status & isOn)
+		if (player_input[p->teamNo_HHC].jump.status & isOn)
 		{
 			if (p->mm.reqaction != Animation_Trick && p->spd.y <= 0.0f)
 			{

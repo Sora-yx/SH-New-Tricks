@@ -53,7 +53,7 @@ namespace HammerJump
             return;
         }
 
-       auto pad = player_input[p->playerNo];
+       auto pad = player_input[p->teamNo_HHC];
 
         if ((p->flag & 3) != 0)
         {

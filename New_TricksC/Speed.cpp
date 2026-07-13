@@ -20,6 +20,7 @@ namespace SpeedChars
 
 		bool isSpinDash = isSpinDashAllowed((Character)p->characterKind);
 		ConfigData config = GetConfig();
+		
 
 		switch (smode)
 		{

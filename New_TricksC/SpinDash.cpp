@@ -31,7 +31,7 @@ namespace SpinDash
 
     bool Charge(TObjPlayer* p)
     {
-        uint8_t pno = p->playerNo;
+        uint8_t pno = p->teamNo_HHC;
 
         if (TObjSonicChkInput((TObjSonic*)p) || CheckBeInTheAir(p))
         {
@@ -123,7 +123,7 @@ namespace SpinDash
 
     void SetDefaultChargeSpd(TObjPlayer* p)
     {
-        spindashChargeTimer[p->playerNo] = 0;
+        spindashChargeTimer[p->teamNo_HHC] = 0;
         p->field_EC = p->spd.x <= 2.0f ? 2.0f : p->spd.x;
     }
 
