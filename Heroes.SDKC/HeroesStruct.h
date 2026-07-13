@@ -863,8 +863,9 @@ struct TObjPlayer
 	TObject tobj;
 	_BYTE gap28[4];
 	C_COLLI C_COLLI_;
-	_BYTE gapB4[4];
+	_BYTE gapB4[2];
 	char playerNo;
+	_BYTE gapBB[2];
 	char characterKind;
 	BYTE suitNo;
 	char field_BD;
