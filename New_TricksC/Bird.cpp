@@ -181,13 +181,7 @@ static vftableBird vfTablebird = { BirdDestructor, BirdExec, BirdDisp, BirdTDisp
 void LoadAmyBird()
 {
 	PrintMessage("Init Amy Bird Task..\n");
-	birdPtr = (TObjBird*)THeapCtrlMalloc(sizeof(TObjBird) + 8, TaskHeap);
-	tobject::tobject(&birdPtr->obj, TL_03);
 
-	ObjMoveOnGroundFv(&birdPtr->objMove);
-	birdPtr->obj.ClassName = (char*)"TObjBird";
-	birdPtr->obj.__vftable = &vfTablebird;
-	birdPtr->playerno = -1;
 
 	for (uint8_t i = 0; i < PMax; i++)
 	{
@@ -203,13 +197,22 @@ void LoadAmyBird()
 	}
 
 	auto oneFileMem = (ONEFILE*)RwEngineInstance->memoryFuncs.rwmalloc(sizeof(ONEFILE));
-
+	bool modelLoaded = false;
 	if (oneFileMem)
 	{
-		if (OneFileCtor((char*)"playmodel/bird.one", oneFileMem, 1))
+		auto birdOneFile = OneFileCtor((char*)"playmodel/bird.one", oneFileMem, 1);
+		if (birdOneFile && birdOneFile->memInfo.length > 0)
 		{
+			modelLoaded = true;
 			PrintMessage("Successfully Loaded One File Bird.\n");
 		}
+
+	}
+
+	if (!modelLoaded)
+	{
+		PrintMessage("Failed to load One File Bird.\n");
+		return;
 	}
 
 	void* BufferData = RwEngineInstance->memoryFuncs.rwmalloc(0x19000);
@@ -222,6 +225,14 @@ void LoadAmyBird()
 
 	if (BirdTexDictionary)
 		RwTexDictionarySetCurrent(BirdTexDictionary);
+
+	birdPtr = (TObjBird*)THeapCtrlMalloc(sizeof(TObjBird) + 8, TaskHeap);
+	tobject::tobject(&birdPtr->obj, TL_03);
+
+	ObjMoveOnGroundFv(&birdPtr->objMove);
+	birdPtr->obj.ClassName = (char*)"TObjBird";
+	birdPtr->obj.__vftable = &vfTablebird;
+	birdPtr->playerno = -1;
 
 	//load model
 	TObjBirdPclump[0] = OneFileLoadClump(2, BufferData, oneFileMem); //model
