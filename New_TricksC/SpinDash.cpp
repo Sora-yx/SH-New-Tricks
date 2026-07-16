@@ -10,7 +10,6 @@ namespace SpinDash
 
     void ResetSpinDashValues(const uint8_t pno)
     {
- 
         spindashChargeTimer[pno] = 0;
     }
 
@@ -31,11 +30,12 @@ namespace SpinDash
 
     bool Charge(TObjPlayer* p)
     {
-        uint8_t pno = p->teamNo_HHC;
+        const uint8_t pno = p->playerNo;
+        const uint8_t spindashPno = p->teamNo_HHC;
 
         if (TObjSonicChkInput((TObjSonic*)p) || CheckBeInTheAir(p))
         {
-            ResetSpinDashValues(pno);
+            ResetSpinDashValues(spindashPno);
             p->flag &= 0xFFFFDFFF;
             return true;
         }
@@ -43,7 +43,7 @@ namespace SpinDash
 
         if ((player_input[pno].action.status & isOn) != 0)
         {
-            spindashChargeTimer[pno]++;
+            spindashChargeTimer[spindashPno]++;
             if (p->field_EC < 10.0f * GetSpinDashSpdMultiplier(p->pTObjTeam)) //sa1 originally stop at 10, but it feels slow in Heroes.
             {
                 p->field_EC += 0.40f;
@@ -59,13 +59,13 @@ namespace SpinDash
             if (SndSE)
                 IsndSEPlay(8294, &p->position, SndSE, 0, 0);
 
-            ResetSpinDashValues(pno);
+            ResetSpinDashValues(spindashPno);
             return true;
         }
 
-        if (spindashChargeTimer[pno] >= 100.0f)
+        if (spindashChargeTimer[spindashPno] >= 100.0f)
         {
-            ResetSpinDashValues(pno);
+            ResetSpinDashValues(spindashPno);
             if (p->spd.x > 0.0f)
             {
                 p->mode = PlayerMode::ModeRunning;
