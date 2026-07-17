@@ -113,9 +113,5 @@ namespace PowerChars
 		if (config.TriangleDiveTweaks)
 			WriteNop(0x5AECFC, 0x2); //remove anim fan check so Triangle Dive can be used when falling.
 
-		if (1)
-		{
-
-		}
 	}
 }

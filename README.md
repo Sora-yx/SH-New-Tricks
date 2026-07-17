@@ -42,7 +42,7 @@ Enjoy!
 - Make sure Reloaded is installed with Heroes set up complete. (See previous section if not.)
 - Install [Latest .NET SDK](https://dotnet.microsoft.com/en-us/download)
 - Install [Visual Studio Community](https://visualstudio.microsoft.com/vs/community/) (During the install, make sure to check ``.NET Desktop Development`` and ``Desktop Developpment with C++``)
-- Download this repo
+- Clone this repo and its submodules, easiest way is to use Git and type in a terminal ``git clone --recurse submodules https://github.com/Sora-yx/SH-New-Tricks.git`` if you don't have .git installed, [grab the Windows version here.](https://git-scm.com/install/windows) 
 - Load the project from Visual Studio and use the Build menu to build the solution (make sure to select ``Release`` and ``x86`` as target first.
 - Once the repo is build, check your ``mods`` folder of Reloaded, you should have a new folder named ``New_Tricks``, open it.
 - Open the repo folder that you downloaded previously and look for the ``Mod Files`` folder, copy the ``Redirector`` folder and paste it in the ``New_Tricks`` folder.

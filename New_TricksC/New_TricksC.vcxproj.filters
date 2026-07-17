@@ -42,12 +42,6 @@
     <ClInclude Include="pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\SH.Solo.Duo\Solo.Duo\MinHook.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\SH.Solo.Duo\Solo.Duo\MinHookWrapper.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="mod.h">
       <Filter>Header Files</Filter>
     </ClInclude>
