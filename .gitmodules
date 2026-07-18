@@ -1,3 +1,6 @@
 [submodule "Heroes-SDK-Plus"]
 	path = Heroes-SDK-Plus
 	url = https://github.com/Sora-yx/Heroes-SDK-Plus.git
+[submodule "Heroes.Controller.Hook.ReloadedII"]
+	path = Heroes.Controller.Hook.ReloadedII
+	url = https://github.com/Sora-yx/Heroes.Controller.Hook.ReloadedII
