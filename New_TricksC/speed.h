@@ -21,3 +21,15 @@ namespace SpinDash
 	bool Charge(TObjPlayer* p);
 	bool Release_(TObjPlayer* p);
 }
+
+namespace Bounce
+{
+
+	extern short Act;
+	extern short ActRebound;
+	void RunPhysics(TObjPlayer* p);
+	void RunChkMode(TObjPlayer* p);
+	void RunChkModeRebounce(TObjPlayer* p);
+	bool CheckInputPress(TObjPlayer* p);
+	void Init();
+}

@@ -113,6 +113,23 @@ namespace SpeedChars
 			}
 		}
 		break;
+		case ModeJumping:
+		{
+			return Bounce::CheckInputPress(p);
+		}
+		break;
+		default:
+
+			if (p->mode == Bounce::Act)
+			{
+				Bounce::RunChkMode(p);
+			}
+			else if (p->mode == Bounce::ActRebound)
+			{
+				Bounce::RunChkModeRebounce(p);
+			}
+
+			break;
 		}
 
 		return false;
@@ -141,6 +158,15 @@ namespace SpeedChars
 				PGetSpeed(p);
 			}
 			break;
+		default:
+			if (charID == Char_Sonic || charID == Char_Amy)
+			{
+				if (p->mode == Bounce::Act || p->mode == Bounce::ActRebound)
+				{
+					Bounce::RunPhysics(p);
+					break;
+				}
+			}
 		}
 
 		return false;
@@ -207,6 +233,8 @@ namespace SpeedChars
 			SpinDash::Init();
 			WriteData<6>((int*)0x5A70AC, 0x90);
 		}
+
+		Bounce::Init();
 
 		Amy::Init();
 	}

@@ -112,6 +112,7 @@
   <ItemGroup>
     <ClCompile Include="Amy.cpp" />
     <ClCompile Include="Bird.cpp" />
+    <ClCompile Include="Bounce.cpp" />
     <ClCompile Include="Chocola.cpp" />
     <ClCompile Include="common.cpp" />
     <ClCompile Include="config.cpp" />

@@ -54,7 +54,7 @@ namespace HammerJump
             return;
         }
 
-       auto pad = player_input[p->teamNo_HHC];
+       auto pad = player_input[p->playerNo];
 
         if ((p->flag & 3) != 0)
         {
@@ -91,7 +91,7 @@ namespace HammerJump
 
         auto anim = &amy_motions[Mtn];
 
-        anim->speed = 0.8f;
+        anim->speed = 1.0f;
         anim->mtnmode = 4;
         anim->next = (short)Animation_BackFlip;
 

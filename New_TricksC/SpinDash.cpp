@@ -132,7 +132,7 @@ namespace SpinDash
         PGetRotation(p);
         PGetBreak(p);
         RunCommonPhysics(p);
-        SetEffectObi(0);
+        SetEffectObi(p->playerNo);
     }
 
     void RunReleasePhysics(TObjPlayer* p)
@@ -143,7 +143,7 @@ namespace SpinDash
 
         if (p->mm.action == 10 || p->mm.reqaction == 10)
         {
-            SetEffectObi(0);
+            SetEffectObi(p->playerNo);
         }
     }
 

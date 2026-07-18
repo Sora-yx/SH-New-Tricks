@@ -175,3 +175,7 @@ namespace TQuestSeqCtrl
         return result;
     }
 }
+
+static auto SetEffectDash = GenerateUsercallWrapper<int* (*)(BYTE formationTypeID)>(rEAX, 0x6348E0, rBL);
+static auto VibeShot = GenerateUsercallWrapper<void (*)(int a1, int controllerNo, int a3, int count)>(noret, 0x4442D0, rEAX, rECX, stack4, stack4);
+FunctionPointer(int*, SetEffectRocketJump, (char character), 0x639F20);

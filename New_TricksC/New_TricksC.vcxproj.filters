@@ -131,5 +131,8 @@
     <ClCompile Include="inputs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Bounce.cpp">
+      <Filter>Source Files\Team\Speed\Moveset</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
