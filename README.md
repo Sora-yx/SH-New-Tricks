@@ -20,17 +20,19 @@ This is a mod for Sonic Heroes that tweaks the moveset of the characters, it rep
 ### Speed Type:
 - SA1 Spin Dash (toggleable for each speed character) replace Rocket Accel.
 - SA2 Bounce - Give Sonic and Amy the SA2 Bounce.
-- Amy Propeller Tweaks - Increase duration and speed depending on your current speed level, you can also trigger it while falling to do some fancy speed combo.
-- Amy Tornado - Make Amy able to move when creating a Tornado mid air
-- Amy Hammer Jump - Give Amy her SA1 Hammer Jump
+
+### Amy Exclusive:
+- Propeller Tweaks - Increase duration and speed depending on your current speed level, you can also trigger it while falling to do some fancy speed combo.
+- Tornado - Make Amy able to move when creating a Tornado mid air.
+- Hammer Jump - Give her SA1 Hammer Jump back.
 
 
 ### Fly Type:
-- Flight Tweaks - Make the fly duration and speed faster as your fly level raise
+- Flight Tweaks - Make the fly duration and speed faster as your fly level rise
 
 
 ### Power Type
-- Triangle Dive Tweaks - Duration increase as the power level raise, you can also trigger it while falling
+- Triangle Dive Tweaks - Duration increase as the power level rise, you can also trigger it while falling
 - Wide Power Attack - Make Power characters able to move when firing Wide Power attack.
 
 
