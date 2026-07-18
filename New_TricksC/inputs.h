@@ -1,5 +1,10 @@
 #pragma once
 
+#ifdef BUILD_DLL
+#define DLL_EXPORT __declspec(dllexport)
+#else
+#define DLL_EXPORT __declspec(dllimport)
+#endif
 
 enum ButtonFlags
 {
@@ -22,3 +27,9 @@ enum ButtonFlags
 
 int IsButtonPressed(uint32_t buttonMask, int port);
 void Init_InputHooks();
+
+;
+
+extern "C" {
+    DLL_EXPORT void UpdateInputState(uint32_t buttonFlags, uint32_t oneFramePressFlags, int port);
+}
