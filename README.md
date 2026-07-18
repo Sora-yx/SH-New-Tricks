@@ -7,10 +7,24 @@
 
 This is a mod that tweaks the moveset of the characters and replace or add new actions:
 
+> [!CAUTION]
+> This mod replaces Formation changes to the d-pad left and right, this is needed due to Heroes's lack of available buttons for cusotm moves.
+> You can disable this in the mod config, but you won't be able to use all the custom moves such as Hammer Jump and Bounce.
+
+
+> [!NOTE]
+> New Tricks now use the following dependencies:
+> * [Sonic Heroes Action Expander](https://github.com/Sora-yx/SH-Action-Expander)
+> * [SH Essentials: Controller Hook](https://github.com/Sewer56/Heroes.Controller.Hook.ReloadedII/releases)
+
+
 ### Speed Type:
 - SA1 Spin Dash (toggleable for each speed character) replace Rocket Accel.
+- SA2 Bounce - Give Sonic and Amy the SA2 Bounce.
 - Amy Propeller Tweaks - Increase duration and speed depending on your current speed level, you can also trigger it while falling to do some fancy speed combo.
 - Amy Tornado - Make Amy able to move when creating a Tornado mid air
+- Amy Hammer Jump - Give Amy her SA1 Hammer Jump
+
 
 ### Fly Type:
 - Flight Tweaks - Make the fly duration and speed faster as your fly level raise
