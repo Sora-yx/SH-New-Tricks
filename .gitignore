@@ -197,3 +197,4 @@ SADXModLoader/git_version.h
 *.ide
 /.vs
 *.svg
+/New-Tricks/Properties/launchSettings.json
