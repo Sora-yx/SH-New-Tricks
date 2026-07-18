@@ -20,6 +20,11 @@ bool isSpinDashEnabledForAtLeastOneCharacter()
 	return config.AmySpinDash || config.SonkSpinDash || config.ShadowSpinDash || config.EspioSpinDash;
 }
 
+bool isDPadUsedForFormSwap()
+{
+	return config.UseDPadForFormSwap;
+}
+
 bool isSpinDashAllowed(Character chara)
 {
 	switch (chara)

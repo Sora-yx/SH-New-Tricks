@@ -8,6 +8,7 @@ namespace New_Tricks.Configuration
     [StructLayout(LayoutKind.Sequential, Pack = 1)]
     public struct ConfigData
     {
+        [MarshalAs(UnmanagedType.I1)] public bool UseDPadForFormSwap;
         [MarshalAs(UnmanagedType.I1)] public bool SonkSpinDash;
         [MarshalAs(UnmanagedType.I1)] public bool ShadowSpinDash;
         [MarshalAs(UnmanagedType.I1)] public bool AmySpinDash;
@@ -40,6 +41,13 @@ namespace New_Tricks.Configuration
         public static extern ConfigData GetConfig();
 
 
+        [Category("General")]
+        [DisplayName("Use d-pad for formation changes")]
+        [Description("Make d-pad left or right swap team member, this is needed for some custom moves that use Y and B." +
+            "\n Note: For keyboard users, use the Controller Hook method to set a key for d-pad." +
+            "\n\nWARNING, DISABLING THIS WILL PREVENT SOME CUSTOM MOVES TO WORK.")]
+        [DefaultValue(true)]
+        public bool UseDPadForFormSwap { get; set; } = true;
 
         [Category("Sonic")]
         [DisplayName("SA1 Spin Dash")]
@@ -118,6 +126,7 @@ namespace New_Tricks.Configuration
 
         public void InitCppConfig()
         {
+            config.UseDPadForFormSwap = UseDPadForFormSwap;
             config.SonkSpinDash = SonkSpinDash;
             config.ShadowSpinDash = ShadowSpinDash;
             config.AmySpinDash = AmySpinDash;
@@ -129,7 +138,7 @@ namespace New_Tricks.Configuration
             config.IncreaseSpeedCap = IncreaseSpeedCap;
             config.CheeseTweaks = CheeseTweaks;
             config.WidePowerTweaks = WidePowerTweaks;
-            config.TriangleDiveTweaks = TriangleDiveTweaks;
+            config.TriangleDiveTweaks = TriangleDiveTweaks;  
             SetConfigData(config);
         }
 

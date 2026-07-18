@@ -16,42 +16,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Heroes.Controller.Hook.Inte
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
-		Release|Any CPU = Release|Any CPU
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{696BDD81-BB22-4F99-A9D5-FD3EA93F3558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{696BDD81-BB22-4F99-A9D5-FD3EA93F3558}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{696BDD81-BB22-4F99-A9D5-FD3EA93F3558}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{696BDD81-BB22-4F99-A9D5-FD3EA93F3558}.Debug|x86.Build.0 = Debug|Any CPU
-		{696BDD81-BB22-4F99-A9D5-FD3EA93F3558}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{696BDD81-BB22-4F99-A9D5-FD3EA93F3558}.Release|Any CPU.Build.0 = Release|Any CPU
 		{696BDD81-BB22-4F99-A9D5-FD3EA93F3558}.Release|x86.ActiveCfg = Release|Any CPU
 		{696BDD81-BB22-4F99-A9D5-FD3EA93F3558}.Release|x86.Build.0 = Release|Any CPU
-		{959F60D2-7BF4-41F9-91FA-DCAD7FC52F67}.Debug|Any CPU.ActiveCfg = Debug|x64
-		{959F60D2-7BF4-41F9-91FA-DCAD7FC52F67}.Debug|Any CPU.Build.0 = Debug|x64
 		{959F60D2-7BF4-41F9-91FA-DCAD7FC52F67}.Debug|x86.ActiveCfg = Debug|Win32
 		{959F60D2-7BF4-41F9-91FA-DCAD7FC52F67}.Debug|x86.Build.0 = Debug|Win32
-		{959F60D2-7BF4-41F9-91FA-DCAD7FC52F67}.Release|Any CPU.ActiveCfg = Release|x64
-		{959F60D2-7BF4-41F9-91FA-DCAD7FC52F67}.Release|Any CPU.Build.0 = Release|x64
 		{959F60D2-7BF4-41F9-91FA-DCAD7FC52F67}.Release|x86.ActiveCfg = Release|Win32
 		{959F60D2-7BF4-41F9-91FA-DCAD7FC52F67}.Release|x86.Build.0 = Release|Win32
-		{6DC57D0B-0896-4DFA-868A-AAE968EBE28C}.Debug|Any CPU.ActiveCfg = Debug|Win32
-		{6DC57D0B-0896-4DFA-868A-AAE968EBE28C}.Debug|Any CPU.Build.0 = Debug|Win32
 		{6DC57D0B-0896-4DFA-868A-AAE968EBE28C}.Debug|x86.ActiveCfg = Debug|Win32
 		{6DC57D0B-0896-4DFA-868A-AAE968EBE28C}.Debug|x86.Build.0 = Debug|Win32
-		{6DC57D0B-0896-4DFA-868A-AAE968EBE28C}.Release|Any CPU.ActiveCfg = Release|Win32
-		{6DC57D0B-0896-4DFA-868A-AAE968EBE28C}.Release|Any CPU.Build.0 = Release|Win32
 		{6DC57D0B-0896-4DFA-868A-AAE968EBE28C}.Release|x86.ActiveCfg = Release|Win32
 		{6DC57D0B-0896-4DFA-868A-AAE968EBE28C}.Release|x86.Build.0 = Release|Win32
-		{4E233DC5-6330-4CFA-6080-F71AB1C96099}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4E233DC5-6330-4CFA-6080-F71AB1C96099}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E233DC5-6330-4CFA-6080-F71AB1C96099}.Debug|x86.ActiveCfg = Debug|Any CPU
 		{4E233DC5-6330-4CFA-6080-F71AB1C96099}.Debug|x86.Build.0 = Debug|Any CPU
-		{4E233DC5-6330-4CFA-6080-F71AB1C96099}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4E233DC5-6330-4CFA-6080-F71AB1C96099}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4E233DC5-6330-4CFA-6080-F71AB1C96099}.Release|x86.ActiveCfg = Release|Any CPU
 		{4E233DC5-6330-4CFA-6080-F71AB1C96099}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection

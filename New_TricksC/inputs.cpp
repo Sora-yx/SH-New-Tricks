@@ -140,6 +140,11 @@ __declspec(naked) void FormChangeRHookWrapper2()
 
 void Init_InputHooks()
 {
+	if (isDPadUsedForFormSwap() == false)
+	{
+		return;
+	}
+
 	WriteJump((void*)0x05AFA57, FormChangeHookWrapper1);
 	WriteData<2>((uint8_t*)0x5AFA5C, 0x90);
 

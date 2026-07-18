@@ -26,7 +26,7 @@ namespace New_Tricks
 
         private void OnInputReceived(IExtendedHeroesController inputs, int port)
         {
-            UpdateInputState((uint)inputs.ButtonFlags, (uint)inputs.OneFramePressButtonFlag, port);
+                UpdateInputState((uint)inputs.ButtonFlags, (uint)inputs.OneFramePressButtonFlag, port);
         }
 
 

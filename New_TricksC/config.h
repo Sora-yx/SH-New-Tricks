@@ -10,6 +10,7 @@
 #pragma pack(push, 1) // Ensure 1-byte packing
 typedef struct ConfigData 
 {
+    bool UseDPadForFormSwap;
     bool SonkSpinDash;
     bool ShadowSpinDash;
     bool AmySpinDash;
@@ -28,6 +29,7 @@ typedef struct ConfigData
 
 bool isSpinDashEnabledForAtLeastOneCharacter();
 bool isSpinDashAllowed(Character chara);
+bool isDPadUsedForFormSwap();
 
 extern "C" {
     DLL_EXPORT void SetConfigData(ConfigData data);
