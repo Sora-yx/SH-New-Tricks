@@ -5,12 +5,11 @@
 
 ## About
 
-This is a mod that tweaks the moveset of the characters and replace or add new actions:
+This is a mod for Sonic Heroes that tweaks the moveset of the characters, it replaces and add new actions.
 
 > [!CAUTION]
-> This mod replaces Formation changes to the d-pad left and right, this is needed due to Heroes's lack of available buttons for cusotm moves.
-> You can disable this in the mod config, but you won't be able to use all the custom moves such as Hammer Jump and Bounce.
-
+> This mod replaces Formation Changes to the d-pad left and right instead of Y and B, this is needed due to Heroes's lack of available buttons for custom moves.
+> You can disable this in the mod config, but you won't be able to use all the custom moves such as Hammer Jump and Bounce in that case.
 
 > [!NOTE]
 > New Tricks now use the following dependencies:
