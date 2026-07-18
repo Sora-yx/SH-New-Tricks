@@ -13,7 +13,7 @@ This is a mod for Sonic Heroes that tweaks the moveset of the characters, it rep
 
 > [!NOTE]
 > New Tricks now use the following dependencies:
-> * [Sonic Heroes Action Expander](https://github.com/Sora-yx/SH-Action-Expander)
+> * [Sonic Heroes Action Expander](https://github.com/Sora-yx/SH-Action-Expander/releases)
 > * [SH Essentials: Controller Hook](https://github.com/Sewer56/Heroes.Controller.Hook.ReloadedII/releases)
 
 
