@@ -172,6 +172,9 @@ namespace Amy
 
 			if (p->spd.x > 4.0f && (player_input[p->teamNo_HHC].change_leader.status & isPress) != 0)
 			{
+				if (isDPadUsedForFormSwap() == false || isExpandedActLoaded == false)
+					return false;
+
 				p->mode = HammerJump::Act;
 				p->mm.reqaction = HammerJump::Mtn;
 			}
@@ -216,12 +219,13 @@ namespace Amy
 	{
 		if (!p || p->characterKind != Char_Amy)
 			return;
-
+		
+		auto config = GetConfig();
 	
 		switch (p->mode)
 		{
 		case (short)ModeAmy_Tornado:
-			if (1 /**ConfigV._modConfig.AmyTornadoTweaks*/)
+			if (config.BetterProp)
 			{
 				if (p->spd.y <= 0.0f)
 					p->spd.y = 0.0f;

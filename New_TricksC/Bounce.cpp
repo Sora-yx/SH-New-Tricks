@@ -29,6 +29,9 @@ namespace Bounce
 
 	bool CheckInputPress(TObjPlayer* p)
 	{
+		if (isDPadUsedForFormSwap() == false || isExpandedActLoaded == false)
+			return false;
+
 		if (!p || (player_input[p->playerNo].change_leaderR.status & isPress) == 0)
 		{
 			return false;
@@ -64,6 +67,9 @@ namespace Bounce
 
 	bool CheckInputPressRebounce(TObjPlayer* p)
 	{
+		if (isDPadUsedForFormSwap() == false || isExpandedActLoaded == false)
+			return false;
+
 		if (!p || (player_input[p->playerNo].change_leaderR.status & isPress) == 0)
 		{
 			return false;
