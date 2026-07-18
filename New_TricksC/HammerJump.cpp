@@ -24,8 +24,8 @@ namespace HammerJump
         return 2.0f;
     }
 
-    short HammerJumpAct = 90;
-    short HammerJumpMtn = 51;
+    short Act = 90;
+    short Mtn = 51;
 
     void RunPhysics(TObjPlayer* p)
     {
@@ -43,7 +43,7 @@ namespace HammerJump
             return;
         }
 
-        if (p->mm.reqaction == HammerJumpMtn)
+        if (p->mm.reqaction == Mtn)
         {
 
             if (p->mm.nframe >= 18.0f)
@@ -82,14 +82,14 @@ namespace HammerJump
             return;
 
 
-        HammerJumpAct = ActExp_RegisterNewCharacterMode(charaType::speedType);
+        Act = ActExp_RegisterNewCharacterMode(charaType::speedType);
 
-        if (HammerJumpAct < 85)
+        if (Act < 85)
         {
             return;
         }
 
-        auto anim = &amy_motions[HammerJumpMtn];
+        auto anim = &amy_motions[Mtn];
 
         anim->speed = 0.8f;
         anim->mtnmode = 4;

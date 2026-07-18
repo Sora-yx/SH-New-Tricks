@@ -18,7 +18,7 @@ namespace Amy
 	uint8_t bytesHoverDuration[4] = { 0xF0, 0x0, 0x0, 0x0 };
 	intptr_t hoverTimeAddr = 0x5D139E;
 
-	int HoldHammerAnims[] = { PlayerAnim::Animation_JumpRoll, PlayerAnim::Animation_JumpDash, PlayerAnim::Animation_BackFlip, PlayerAnim::Animation_BackFlip2, PlayerAnim::Animation_SideFlip, 51 };
+	int HoldHammerAnims[] = {  PlayerAnim::Animation_JumpRoll, PlayerAnim::Animation_JumpDash, PlayerAnim::Animation_BackFlip, PlayerAnim::Animation_BackFlip2, PlayerAnim::Animation_SideFlip, 51 };
 
 	FastFastcallHook<void, TObjPlayer*> TriggerAmyHammer_h(0x5CCDD0);
 
@@ -170,10 +170,10 @@ namespace Amy
 		case (short)ModeRunning:
 
 
-			if (player_input[p->teamNo_HHC].change_leader.status & isPress)
+			if (p->spd.x > 4.0f && (player_input[p->teamNo_HHC].change_leader.status & isPress) != 0)
 			{
-				p->mode = HammerJump::HammerJumpAct;
-				p->mm.reqaction = HammerJump::HammerJumpMtn;
+				p->mode = HammerJump::Act;
+				p->mm.reqaction = HammerJump::Mtn;
 			}
 			break;
 		case (short)ModeHammerFloat:
@@ -201,7 +201,7 @@ namespace Amy
 			}
 			break;
 		default:
-			if (p->mode == HammerJump::HammerJumpAct)
+			if (p->mode == HammerJump::Act)
 			{
 				HammerJump::RunChkMode(p);
 			}
@@ -236,7 +236,7 @@ namespace Amy
 			break;
 
 		default:
-			if (p->mode == HammerJump::HammerJumpAct)
+			if (p->mode == HammerJump::Act)
 			{
 				HammerJump::RunPhysics(p);
 			}
@@ -251,12 +251,14 @@ namespace Amy
 	{
 		char mode = (char)p->mode;
 		bool triggered = false;
-		if (p->mode < INT8_MAX && (mode == (char)ModeJumping || mode == ModeJumpDash || mode == 90))
+
+
+		if (p->mode < INT8_MAX && (mode == (char)ModeJumping || mode == ModeJumpDash || mode == HammerJump::Act || mode == ModeRunning && p->spd.x > 4.0f))
 		{
 			USHORT mtn = (USHORT)p->mm.reqaction;
 			short hamMtn = GetHammerAnims((PlayerAnim)p->mm.reqaction);
 
-			if (hamMtn > -1 && mtn == hamMtn)
+			if (hamMtn > -1 && mtn == hamMtn || mode == ModeRunning && p->spd.x > 4.0f)
 			{
 				triggered = true;
 				WriteData<1>((void*)0x5CCDEA, (uint8_t)mode); //change the action check 
