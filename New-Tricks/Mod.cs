@@ -2,10 +2,13 @@
 using New_Tricks.Template;
 using Reloaded.Hooks.ReloadedII.Interfaces;
 using Reloaded.Mod.Interfaces;
+using Heroes.Controller.Hook.Interfaces;
+using Heroes.Controller.Hook.Interfaces.Structures.Interfaces;
 
 
 namespace New_Tricks
 {
+
     /// <summary>
     /// Your mod logic goes here.
     /// </summary>
@@ -44,6 +47,7 @@ namespace New_Tricks
 
         private NativeMod _nativemods;
 
+        private Controller _controller;
 
 
         public Mod(ModContext context)
@@ -54,6 +58,8 @@ namespace New_Tricks
             _owner = context.Owner;
             _configuration = context.Configuration;
             _modConfig = context.ModConfig;
+
+
 
             ConfigV._modConfig = _configuration;
 
@@ -68,7 +74,10 @@ namespace New_Tricks
 
             _configuration.InitCppConfig();
             _nativemods = new();
+            _controller = new();
 
+            _controller.controllerHookReference = _modLoader.GetController<IControllerHook>();
+            _controller.DependencyController_SetEvent();
 
         }
 

@@ -160,6 +160,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="Fly.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="inputs.h" />
     <ClInclude Include="InteropBridge.h" />
     <ClInclude Include="mod.h" />
     <ClInclude Include="pch.h" />
@@ -177,6 +178,7 @@
     <ClCompile Include="dllmain.cpp" />
     <ClCompile Include="Fly.cpp" />
     <ClCompile Include="HammerJump.cpp" />
+    <ClCompile Include="inputs.cpp" />
     <ClCompile Include="mod.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>

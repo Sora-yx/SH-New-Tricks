@@ -33,8 +33,6 @@ bool RunCommonExec(TObjPlayer* p)
 
 void TObjPlayExecCommonmode_r(TObjPlayer* p)
 {
-	if (p)
-		PrintVar("Player Mode", p->mode);
 
 	if (RunCommonExec(p))
 		return;

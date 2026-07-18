@@ -8,6 +8,7 @@
 #include "Fly.h"
 #include "Power.h"
 #include "config.h"
+#include <inputs.h>
 
 
 extern "C"
@@ -44,5 +45,6 @@ extern "C"
 		SpeedChars::Init();
 		FlyChars::Init();
 		PowerChars::Init();
+		Init_InputHooks();
 	}
 }
