@@ -169,11 +169,12 @@ namespace Amy
 
 		case (short)ModeRunning:
 
-			/**if ((pad.sfa.status & BTN_STATUS.isPress) != 0)
+
+			if (player_input[p->teamNo_HHC].change_leader.status & isPress)
 			{
-				//p->mode = HammerJump.HammerJumpAct;
-				//p->mm.reqaction = HammerJump.HammerJumpMtn;
-			}*/
+				p->mode = HammerJump::HammerJumpAct;
+				p->mm.reqaction = HammerJump::HammerJumpMtn;
+			}
 			break;
 		case (short)ModeHammerFloat:
 			if (config.BetterProp)
@@ -199,8 +200,12 @@ namespace Amy
 				CheckHammerFloatInput(p);
 			}
 			break;
-		case 90:
-			//HammerJump.RunChkMode(p);
+		default:
+			if (p->mode == HammerJump::HammerJumpAct)
+			{
+				HammerJump::RunChkMode(p);
+			}
+			//
 			break;
 		}
 
@@ -212,7 +217,7 @@ namespace Amy
 		if (!p || p->characterKind != Char_Amy)
 			return;
 
-
+	
 		switch (p->mode)
 		{
 		case (short)ModeAmy_Tornado:
@@ -230,8 +235,12 @@ namespace Amy
 
 			break;
 
-		case 90:
-			//HammerJump.RunPhysics(p);
+		default:
+			if (p->mode == HammerJump::HammerJumpAct)
+			{
+				HammerJump::RunPhysics(p);
+			}
+			
 			break;
 		}
 

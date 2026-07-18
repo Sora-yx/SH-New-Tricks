@@ -13,4 +13,8 @@ namespace Amy
 namespace HammerJump
 {
 	void Init();
+	extern short HammerJumpAct;
+	extern short HammerJumpMtn;
+	void RunPhysics(TObjPlayer* p);
+	void RunChkMode(TObjPlayer* p);
 }

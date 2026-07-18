@@ -25,7 +25,7 @@ namespace HammerJump
     }
 
     short HammerJumpAct = 90;
-    const short HammerJumpMtn = 51;
+    short HammerJumpMtn = 51;
 
     void RunPhysics(TObjPlayer* p)
     {

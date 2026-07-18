@@ -34,6 +34,12 @@
     <Filter Include="Source Files\Team\Power">
       <UniqueIdentifier>{5399d75e-1af5-43a8-8abf-0de58397cd1f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\fly">
+      <UniqueIdentifier>{1c7af57a-c6ad-4bbf-bb06-09f8ba33f5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\speed">
+      <UniqueIdentifier>{1af7ef19-695e-4191-96c3-8ef0df94b1d5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -45,22 +51,10 @@
     <ClInclude Include="mod.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Chocola.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Util.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Amy.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="SH-Util.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="speed.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Fly.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Power.h">
@@ -77,6 +71,18 @@
     </ClInclude>
     <ClInclude Include="acts_api.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Fly.h">
+      <Filter>Header Files\fly</Filter>
+    </ClInclude>
+    <ClInclude Include="speed.h">
+      <Filter>Header Files\speed</Filter>
+    </ClInclude>
+    <ClInclude Include="Amy.h">
+      <Filter>Header Files\speed</Filter>
+    </ClInclude>
+    <ClInclude Include="Chocola.h">
+      <Filter>Header Files\fly</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
