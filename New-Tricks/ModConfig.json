@@ -23,9 +23,39 @@
     "\\.runtimeconfig\\.json",
     "ModConfig\\.json"
   ],
-  "PluginData": {},
+  "PluginData": {
+    "GitHubDependencies": {
+      "IdToConfigMap": {
+        "reloaded.sharedlib.hooks": {
+          "Config": {
+            "UserName": "Sewer56",
+            "RepositoryName": "Reloaded.SharedLib.Hooks.ReloadedII",
+            "UseReleaseTag": true,
+            "AssetFileName": "reloaded.sharedlib.hooks.zip"
+          },
+          "ReleaseMetadataName": "Sewer56.Update.ReleaseMetadata.json"
+        },
+        "sonicheroes.controller.hook": {
+          "Config": {
+            "UserName": "Heroes.Controller.Hook.ReloadedII",
+            "RepositoryName": "Sewer56",
+            "UseReleaseTag": false,
+            "AssetFileName": "Mod.zip"
+          },
+          "ReleaseMetadataName": "Heroes.Controller.Hook.ReleaseMetadata.json"
+        }
+      }
+    },
+    "GitHubRelease": {
+      "UserName": "Sora-yx",
+      "RepositoryName": "SH-New-Tricks",
+      "UseReleaseTag": true,
+      "AssetFileName": "SH-New-Tricks.7z"
+    }
+  },
   "IsUniversalMod": false,
   "ModDependencies": [
+    "SH.Action.Expander",
     "reloaded.sharedlib.hooks",
     "sonicheroes.controller.hook"
   ],

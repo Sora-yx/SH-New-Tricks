@@ -16,11 +16,13 @@ typedef struct ConfigData
     bool AmySpinDash;
     bool BetterProp;
     bool AmyTornadoTweaks;
+    bool AmyBird;
     bool EspioSpinDash;
     bool EspioTornadoTweaks;
     bool FlightTweaks;
     bool IncreaseSpeedCap;
     bool CheeseTweaks;
+    bool EnableChocola;
     bool WidePowerTweaks;
     bool TriangleDiveTweaks;
 

@@ -1,6 +1,7 @@
 #pragma once
 
 const uint8_t PMax = 8;
+extern bool isExpandedActLoaded;
 
 extern "C"
 {

@@ -495,5 +495,9 @@ void loadCreamAndCheese_r(TObjTeam* Team, unsigned int formationType, char a3)
 
 void InitChocola()
 {
-	loadCreamAndCheese_h.Hook(loadCreamAndCheese_r);
+	auto config = GetConfig();
+	if (config.EnableChocola)
+	{
+		loadCreamAndCheese_h.Hook(loadCreamAndCheese_r);
+	}
 }

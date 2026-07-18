@@ -75,6 +75,9 @@
     <ClInclude Include="inputs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="acts_api.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

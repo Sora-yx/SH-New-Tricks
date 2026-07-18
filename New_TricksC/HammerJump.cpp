@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Amy.h"
+#include "acts_api.h"
 
 namespace HammerJump
 {
@@ -23,7 +24,7 @@ namespace HammerJump
         return 2.0f;
     }
 
-    const short HammerJumpAct = 90;
+    short HammerJumpAct = 90;
     const short HammerJumpMtn = 51;
 
     void RunPhysics(TObjPlayer* p)
@@ -77,6 +78,17 @@ namespace HammerJump
 
     void Init()
     {
+        if (isDPadUsedForFormSwap() == false || isExpandedActLoaded == false)
+            return;
+
+
+        HammerJumpAct = ActExp_RegisterNewCharacterMode(charaType::speedType);
+
+        if (HammerJumpAct < 85)
+        {
+            return;
+        }
+
         auto anim = &amy_motions[HammerJumpMtn];
 
         anim->speed = 0.8f;

@@ -14,11 +14,13 @@ namespace New_Tricks.Configuration
         [MarshalAs(UnmanagedType.I1)] public bool AmySpinDash;
         [MarshalAs(UnmanagedType.I1)] public bool BetterProp;
         [MarshalAs(UnmanagedType.I1)] public bool AmyTornadoTweaks;
+        [MarshalAs(UnmanagedType.I1)] public bool AmyBird;
         [MarshalAs(UnmanagedType.I1)] public bool EspioSpinDash;
         [MarshalAs(UnmanagedType.I1)] public bool EspioTornadoTweaks;
         [MarshalAs(UnmanagedType.I1)] public bool FlightTweaks;
         [MarshalAs(UnmanagedType.I1)] public bool IncreaseSpeedCap;
         [MarshalAs(UnmanagedType.I1)] public bool CheeseTweaks;
+        [MarshalAs(UnmanagedType.I1)] public bool EnableChocola;
         [MarshalAs(UnmanagedType.I1)] public bool WidePowerTweaks;
         [MarshalAs(UnmanagedType.I1)] public bool TriangleDiveTweaks;
     }
@@ -79,6 +81,13 @@ namespace New_Tricks.Configuration
         [DefaultValue(true)]
         public bool AmyTornadoTweaks { get; set; } = true;
 
+        [Category("Amy")]
+        [DisplayName("Enable Bird")]
+        [Description("Bring back the SA1 Bird that follow Amy for maximum nostalgia.")]
+        [DefaultValue(true)]
+
+        public bool AmyBird { get; set; } = true;
+
         [Category("Espio")]
         [DisplayName("SA1 Spin Dash")]
         [Description("Replace Rocket Accel with SA1 Spin Dash for Espio, the Spin Dash goes faster as the Speed Level raise.")]
@@ -110,6 +119,12 @@ namespace New_Tricks.Configuration
         [DefaultValue(true)]
         public bool CheeseTweaks { get; set; } = true;
 
+        [Category("Cream")]
+        [DisplayName("Enable Chocola")]
+        [Description("Make Chocola show up with Cheese after completing Team Rose.")]
+        [DefaultValue(true)]
+        public bool EnableChocola { get; set; } = true;
+
         [Category("Power Characters")]
         [DisplayName("Wide Power Attack Tweaks")]
         [Description("Allow Power characters to move during the Wide Power Attack.")]
@@ -132,11 +147,13 @@ namespace New_Tricks.Configuration
             config.AmySpinDash = AmySpinDash;
             config.BetterProp = BetterProp;
             config.AmyTornadoTweaks = AmyTornadoTweaks;
+            config.AmyBird = AmyBird;
             config.EspioSpinDash = EspioSpinDash;
             config.EspioTornadoTweaks = EspioTornadoTweaks;
             config.FlightTweaks = FlightTweaks;
             config.IncreaseSpeedCap = IncreaseSpeedCap;
             config.CheeseTweaks = CheeseTweaks;
+            config.EnableChocola = EnableChocola;
             config.WidePowerTweaks = WidePowerTweaks;
             config.TriangleDiveTweaks = TriangleDiveTweaks;  
             SetConfigData(config);

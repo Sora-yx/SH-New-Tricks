@@ -267,13 +267,15 @@ namespace Amy
 		TriggerAmyHammer_h.Hook(TriggerAmyHammerHook);
 		initBird();
 
-		if (1 /**ConfigV._modConfig.BetterProp*/)
+		ConfigData config = GetConfig();
+
+		if (config.BetterProp)
 		{
 			//prop
 			WriteNop(0x5CEFC1, 2); //remove anim check for prop
 		}
 
-		if (1 /**ConfigV._modConfig.AmyTornadoTweaks*/)
+		if (config.AmyTornadoTweaks)
 		{
 			WriteData<5>((int*)0x5D13CF, 0x90); //remove clear speed
 			WriteData<5>((int*)0x5D114F, 0x90); //remove clear speed for Hammer mov

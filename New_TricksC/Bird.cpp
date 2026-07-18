@@ -284,5 +284,9 @@ TObjPlayer* __cdecl SetAmyRose_Team_r(TObjTeam* a2, unsigned int a3, char a5)
 
 void initBird()
 {
-	SetAmyRose_Team_t.Hook(SetAmyRose_Team_r);
+	auto config = GetConfig();
+	if (config.AmyBird)
+	{
+		SetAmyRose_Team_t.Hook(SetAmyRose_Team_r);
+	}
 }

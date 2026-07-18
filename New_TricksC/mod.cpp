@@ -10,6 +10,8 @@
 #include "config.h"
 #include <inputs.h>
 
+bool isExpandedActLoaded = false;
+
 
 extern "C"
 {
@@ -41,6 +43,18 @@ extern "C"
 	{
 
 		PrintMessage("New Tricks says Hello from C++\n");
+
+		HMODULE newActApi = GetModuleHandleW(L"SH-Action-Expander.dll");
+
+		if (!newActApi)
+		{
+			printf("Couldn't find dependency Sonic Heroes Action Expander, some custom moves won't work\n");
+		}
+		else
+		{
+			isExpandedActLoaded = true;
+		}
+		
 
 		SpeedChars::Init();
 		FlyChars::Init();
