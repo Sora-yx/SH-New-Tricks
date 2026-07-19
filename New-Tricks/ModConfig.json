@@ -26,6 +26,15 @@
   "PluginData": {
     "GitHubDependencies": {
       "IdToConfigMap": {
+        "SH.Action.Expander": {
+          "Config": {
+            "UserName": "Sora-yx",
+            "RepositoryName": "SH-Action-Expander",
+            "UseReleaseTag": true,
+            "AssetFileName": "SH-Action-Expander.7z"
+          },
+          "ReleaseMetadataName": "Action_Expander.ReleaseMetadata.json"
+        },
         "reloaded.sharedlib.hooks": {
           "Config": {
             "UserName": "Sewer56",
