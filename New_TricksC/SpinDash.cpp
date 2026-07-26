@@ -88,6 +88,7 @@ namespace SpinDash
     {
         if (TObjSonicChkInput((TObjSonic*)p))
         {
+            p->flag &= 0xFFFFFAFF;
             return true;
         }
 

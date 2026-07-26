@@ -53,7 +53,7 @@ namespace HammerJump
 
 	void RunChkMode(TObjPlayer* p)
 	{
-		if (ChkInputLight(p) > 0)
+		if (TObjSonicChkInput((TObjSonic*)p) > 0)
 		{
 			return;
 		}

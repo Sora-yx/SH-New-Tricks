@@ -102,7 +102,7 @@ namespace Bounce
 	void RunChkMode(TObjPlayer* p)
 	{
 
-		if (ChkInputLight(p) > 0)
+		if (TObjSonicChkInput((TObjSonic*)p) > 0)
 		{
 			return;
 		}
@@ -144,30 +144,32 @@ namespace Bounce
 
 	void RunChkModeRebounce(TObjPlayer* p)
 	{
-		if (ChkInputLight(p) > 0)
+		if (TObjSonicChkInput((TObjSonic*)p) > 0)
 		{
 			return;
 		}
 
 		if ((p->flag & 3) != 0)
 		{
+
 			p->ang.x = p->mwp.ang_aim.x;
 			p->ang.z = p->mwp.ang_aim.z;
-			p->flag &= 0xFFFFAFFF;
+
 
 			if (PCheckStop(p) == 0)
 			{
-				p->mm.reqaction = 1;
+				p->mm.reqaction = PlayerAnim::Animation_LandWalking;
 				p->mode = PlayerMode::ModeRunning;
 			}
 			else
 			{
 				p->mode = PlayerMode::ModeWait;
-				p->idleTime = 0;
-				p->mm.reqaction = 0;
+				p->mm.reqaction = PlayerAnim::Animation_StandingLand2;
 
 			}
 
+			TObjOldPlayer_SoundLanding(p);
+			p->flag &= 0xFFFFFAFF;
 			return;
 		}
 

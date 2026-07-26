@@ -192,7 +192,7 @@ void WriteNop(intptr_t address, const uint16_t count)
 
  bool PlayerCheckSlowSpinSpinDash(TObjPlayer* p)
 {
-	if (p->spd.x >= p->p.jog_speed)
+	if (p->spd.x >= p->p.jog_speed + 0.3f)
 		return false;
 
 	if (p->spd.x > 0.0f)
@@ -203,9 +203,10 @@ void WriteNop(intptr_t address, const uint16_t count)
 	{
 		p->mode = 0;
 		p->idleTime = 0;
+		p->mm.reqaction = PlayerAnim::Animation_Stand;
 	}
 
-	p->mm.reqaction = PlayerAnim::Animation_Land_;
+
 
 	return true;
 }

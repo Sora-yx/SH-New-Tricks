@@ -88,7 +88,7 @@ DataPointer(sPeriCtrl, PeriCtrl, 0xA23678);
 DataArray(unsigned int, PeriCtrlMap, 0x7C7418, 7);
 FunctionPointer(RwBool, RpClumpDestroy, (RpClump* clump), 0x66BC60);
 FunctionPointer(RwBool, RwTexDictionaryDestroy, (RwTexDictionary* dict), 0x64E060);
-
+StdcallFunctionPointer(char, TObjOldPlayer_SoundLanding, (TObjPlayer* p), 0x5A4ED0);
 
 //void __userpurge THeapCtrl::Free(void *addr@<eax>, THeapCtrl *this)
 static const void* const THeapCtrlFreePtr = (void*)0x4282D0;
