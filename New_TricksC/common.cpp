@@ -1,10 +1,12 @@
 #include "pch.h"
 #include "speed.h"
+#include "config.h"
+#include "Amy.h"
 
 //in Sonic Heroes, the exec function that run physics is split into two functions: "ExecCommonMode" and "ExecMode"
 //ExecCommonMode is shared by everyone and is for actions (mode) < 54
 //ExecMode is unique per character type (speed, fly, power) and run action >= 54
-
+FastFunctionHook<int> InitPlayersWork_h(0x57EFA0);
 void TObjPlayExecCommonmode_r(TObjPlayer* p);
 FastUsercallHook<void, TObjPlayer*> TObjPlayExecCommonmode_h(0x5A7B50, TObjPlayExecCommonmode_r, noret, rEAX);
 //UsercallFuncVoid(TObjPlayExecCommonmode_h, (TObjPlayer* p), (p), 0x5A7B50, rEAX);
@@ -38,4 +40,17 @@ void TObjPlayExecCommonmode_r(TObjPlayer* p)
 		return;
 
 	TObjPlayExecCommonmode_h.Original(p);
+}
+
+
+int PlayerMasterInitPlayersWork_r()
+{
+	auto res = InitPlayersWork_h.Original();
+	HammerJump::Init();
+	return res;
+}
+
+void initCommon()
+{
+	InitPlayersWork_h.Hook(PlayerMasterInitPlayersWork_r);
 }

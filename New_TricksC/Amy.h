@@ -1,6 +1,6 @@
 #pragma once
 
-void initBird();
+void LoadAmyBird();
 
 namespace Amy
 {
@@ -8,13 +8,23 @@ namespace Amy
 	bool CheckHammerFloatInput(TObjPlayer* p);
 	void RunAmyExecMode(TObjPlayer* p);
 	bool RunAmyChkMode(TObjPlayer* p);
+
 }
 
 namespace HammerJump
 {
+
+	enum AmyCustomAnimE
+	{
+		anm_HammerJump,
+		anm_flip1,
+		anm_flip2,
+		anm_flip3
+	};
+
 	void Init();
 	extern short Act;
-	extern short Mtn;
+	extern int AmyNewAnimIndex[];
 	void RunPhysics(TObjPlayer* p);
 	void RunChkMode(TObjPlayer* p);
 }

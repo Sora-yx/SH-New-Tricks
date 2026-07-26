@@ -30,7 +30,7 @@
           "Config": {
             "UserName": "Sora-yx",
             "RepositoryName": "SH-Action-Expander",
-            "UseReleaseTag": true,
+            "UseReleaseTag": false,
             "AssetFileName": "SH-Action-Expander.7z"
           },
           "ReleaseMetadataName": "Action_Expander.ReleaseMetadata.json"
@@ -58,7 +58,7 @@
     "GitHubRelease": {
       "UserName": "Sora-yx",
       "RepositoryName": "SH-New-Tricks",
-      "UseReleaseTag": true,
+      "UseReleaseTag": false,
       "AssetFileName": "SH-New-Tricks.7z"
     }
   },

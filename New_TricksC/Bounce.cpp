@@ -32,7 +32,7 @@ namespace Bounce
 		if (isDPadUsedForFormSwap() == false || isExpandedActLoaded == false)
 			return false;
 
-		if (!p || (player_input[p->playerNo].change_leaderR.status & isPress) == 0)
+		if (!p || (player_input[p->playerNo].change_leaderR.status & isPress) == 0 || p->characterKind != Character::Char_Sonic && p->characterKind != Character::Char_Amy)
 		{
 			return false;
 		}
@@ -70,7 +70,7 @@ namespace Bounce
 		if (isDPadUsedForFormSwap() == false || isExpandedActLoaded == false)
 			return false;
 
-		if (!p || (player_input[p->playerNo].change_leaderR.status & isPress) == 0)
+		if (!p || (player_input[p->playerNo].change_leaderR.status & isPress) == 0 || p->characterKind != Character::Char_Sonic && p->characterKind != Character::Char_Amy)
 		{
 			return false;
 		}

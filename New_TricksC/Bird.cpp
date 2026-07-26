@@ -1,6 +1,5 @@
 #include "pch.h"
 
-FastFunctionHook<TObjPlayer*, TObjTeam*, unsigned int, char> SetAmyRose_Team_t(0x5CB7D0);
 
 struct TObjBird
 {
@@ -274,19 +273,3 @@ void LoadAmyBird()
 	}
 }
 
-TObjPlayer* __cdecl SetAmyRose_Team_r(TObjTeam* a2, unsigned int a3, char a5)
-{
-	auto res = SetAmyRose_Team_t.Original(a2, a3, a5);
-	LoadAmyBird();
-	return NULL;
-}
-
-
-void initBird()
-{
-	auto config = GetConfig();
-	if (config.AmyBird)
-	{
-		SetAmyRose_Team_t.Hook(SetAmyRose_Team_r);
-	}
-}

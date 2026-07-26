@@ -84,6 +84,9 @@
     <ClInclude Include="Chocola.h">
       <Filter>Header Files\fly</Filter>
     </ClInclude>
+    <ClInclude Include="common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

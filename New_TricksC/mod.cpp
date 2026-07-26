@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <fcntl.h>
 #include <io.h>
+#include "common.h"
 #include "speed.h"
 #include "Fly.h"
 #include "Power.h"
@@ -55,10 +56,11 @@ extern "C"
 			isExpandedActLoaded = true;
 		}
 		
-
+		//
 		SpeedChars::Init();
 		FlyChars::Init();
 		PowerChars::Init();
 		Init_InputHooks();
+		initCommon();
 	}
 }
