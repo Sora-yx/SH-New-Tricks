@@ -10,7 +10,6 @@ namespace SpeedChars
 	FastStdcallHook<signed int, TObjPlayer*> TObjSonicChkInput_h(0x5D35F0);
 	FastFastcallHook<void, TObjPlayer*> TObjPModeChgReadyToRocketAccel_h(0x5A6E10);
 
-
 	signed int __stdcall TobjSonkChkInput_r(TObjPlayer* p)
 	{
 		if ((p->flag & PL_FLAG_INPUT) == 0)

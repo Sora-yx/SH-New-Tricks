@@ -73,11 +73,11 @@ namespace SpinDash
                 p->flag &= 0xFFFFDFFF;
             }
             else
-            {
-                p->flag &= 0xFFFFDFFF;
+            {        
                 p->mode = PlayerMode::ModeWait;
                 p->idleTime = 0;
                 p->mm.reqaction = 0;
+                p->flag &= 0xFFFFDFFF;
             }
         }
 

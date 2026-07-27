@@ -95,7 +95,7 @@ namespace Bounce
 		PGetSpeed(p);
 		PSetPosition(p);
 		PResetPosition(p);
-
+		SetEffectObi(p->playerNo);
 
 	}
 
